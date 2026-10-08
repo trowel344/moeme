@@ -22,3 +22,10 @@ cloud-inbox/
 *.safetensors
 *.f32
 
+# Generated cloud staging copy of src/ + scripts/ (reproduce with
+# scripts/stage_free_cloud_job.py). Not part of the source release.
+/cloud-jobs/
+
+# Internal working docs — the public README is the only shipped doc.
+docs/*.md
+
