@@ -71,7 +71,7 @@ Both are **exact Top-12** conversions: all 12 routed experts are active, so the
 model is functionally the source dense model, reorganized and quantized — not a
 new or "smarter" model. That is the honest description of the deliverable.
 
-- Hugging Face: **_[https://huggingface.co/trowel344/moeme-27b](https://huggingface.co/trowel344/moeme-27b)_**
+- Hugging Face: **https://huggingface.co/bwn2000/moeme-27b**
 
 ## Key measured results
 
