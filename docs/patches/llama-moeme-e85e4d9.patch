@@ -1,0 +1,187 @@
+diff --git a/ggml/src/ggml-backend.cpp b/ggml/src/ggml-backend.cpp
+index 83f52cb..dd715cd 100644
+--- a/ggml/src/ggml-backend.cpp
++++ b/ggml/src/ggml-backend.cpp
+@@ -87,8 +87,11 @@ static void resolve_expert_cache_config() {
+     }
+ }
+ 
+-#define GGML_EXPERT_CACHE
+-#define GGML_EXPERT_RAM_CACHE
++// MoEMe baseline build: use llama.cpp's ordinary MoE execution path.  The
++// experimental cache assumes many more experts than MoEMe's 12 and otherwise
++// reads beyond the expert dimension while pre-populating its default 110 slots.
++// #define GGML_EXPERT_CACHE
++// #define GGML_EXPERT_RAM_CACHE
+ 
+ // example usage:
+ // GGML_EXPERT_CACHE_MAX=90 GGML_EXPERT_RAM_CACHE_MAX=166 GGML_OP_OFFLOAD_MIN_BATCH=1 ./build/bin/llama-cli -fa on -ctk q8_0 -ctv q8_0 -m ~/Qwen3.5-35B-A3B-UD-IQ4_NL.gguf -c 32000 --jinja --mmap -ngl 99 --cpu-moe -t 11 -n 1000 -f test-prompt.txt --perf --single-turn
+diff --git a/src/llama-graph.cpp b/src/llama-graph.cpp
+index 7468bd9..acbe269 100644
+--- a/src/llama-graph.cpp
++++ b/src/llama-graph.cpp
+@@ -1788,25 +1788,22 @@ ggml_tensor * llm_graph_context::build_moe_ffn(
+     assert(n_expert_used > 0);
+ 
+     // order the views before the adds
+-    for (uint32_t i = 0; i < hparams.n_expert_used; ++i) {
++    for (uint32_t i = 0; i < n_expert_used; ++i) {
+         cur_experts[i] = ggml_view_2d(ctx0, experts, n_embd, n_tokens, experts->nb[2], i*experts->nb[1]);
+ 
+         ggml_build_forward_expand(gf, cur_experts[i]);
+     }
+ 
+     // aggregate experts
+-    // note: here we explicitly use hparams.n_expert_used instead of n_expert_used
+-    //       to avoid potentially a large number of add nodes during warmup
+-    //       ref: https://github.com/ggml-org/llama.cpp/pull/14753
+     ggml_tensor * moe_out = cur_experts[0];
+ 
+-    for (uint32_t i = 1; i < hparams.n_expert_used; ++i) {
++    for (uint32_t i = 1; i < n_expert_used; ++i) {
+         moe_out = ggml_add(ctx0, moe_out, cur_experts[i]);
+ 
+         ggml_build_forward_expand(gf, moe_out);
+     }
+ 
+-    if (hparams.n_expert_used == 1) {
++    if (n_expert_used == 1) {
+         // avoid returning a non-contiguous tensor
+         moe_out = ggml_cont(ctx0, moe_out);
+     }
+diff --git a/src/models/qwen35moe.cpp b/src/models/qwen35moe.cpp
+index eb5e9a4..55ee053 100644
+--- a/src/models/qwen35moe.cpp
++++ b/src/models/qwen35moe.cpp
+@@ -4,6 +4,7 @@
+ void llama_model_qwen35moe::load_arch_hparams(llama_model_loader & ml) {
+     ml.get_key(LLM_KV_EXPERT_FEED_FORWARD_LENGTH,        hparams.n_ff_exp, false);
+     ml.get_key(LLM_KV_EXPERT_SHARED_FEED_FORWARD_LENGTH, hparams.n_ff_shexp, false);
++    ml.get_key(LLM_KV_EXPERT_WEIGHTS_SCALE,              hparams.expert_weights_scale, false);
+     ml.get_key(LLM_KV_ATTENTION_LAYERNORM_RMS_EPS,       hparams.f_norm_rms_eps);
+ 
+     ml.get_key_or_arr(LLM_KV_ROPE_DIMENSION_SECTIONS,    hparams.rope_sections, 4, true);
+@@ -495,6 +496,45 @@ ggml_tensor * llama_model_qwen35moe::graph::build_layer_ffn(ggml_tensor * cur, c
+     // Check if this is an MoE layer
+     GGML_ASSERT(model.layers[il].ffn_gate_inp != nullptr);
+ 
++    int64_t layer_expert_used = n_expert_used;
++    float layer_expert_scale = hparams.expert_weights_scale;
++    // MoEMe active-width override, used to measure quality as a function of
++    // how many routed experts a layer activates. MOEME_ACTIVE_K selects K
++    // (default 4, the original Top-4 diagnostic); MOEME_ACTIVE_K_LAYERS names
++    // the layers to apply it to. MOEME_TOP4_LAYERS / MOEME_TOP4_LAYER stay
++    // supported as aliases so earlier sweeps and their receipts reproduce
++    // byte-for-byte.
++    const char * sparse_layers = getenv("MOEME_ACTIVE_K_LAYERS");
++    if (sparse_layers == nullptr) {
++        sparse_layers = getenv("MOEME_TOP4_LAYERS");
++    }
++    if (sparse_layers == nullptr) {
++        sparse_layers = getenv("MOEME_TOP4_LAYER");
++    }
++    if (sparse_layers != nullptr) {
++        int64_t active_k = 4;
++        const char * active_k_env = getenv("MOEME_ACTIVE_K");
++        if (active_k_env != nullptr && active_k_env[0] != '\0') {
++            char * end = nullptr;
++            const long parsed = std::strtol(active_k_env, &end, 10);
++            if (end != active_k_env && *end == '\0' && parsed >= 1 && parsed <= n_expert) {
++                active_k = parsed;
++            } else {
++                LLAMA_LOG_WARN("%s: ignoring invalid MOEME_ACTIVE_K=%s (want 1..%d)\n",
++                               __func__, active_k_env, (int) n_expert);
++            }
++        }
++        const std::string configured = "," + std::string(sparse_layers) + ",";
++        const std::string needle = "," + std::to_string(il) + ",";
++        if (configured.find(needle) != std::string::npos) {
++            layer_expert_used = active_k;
++            // Preserve the project's top-k renormalization: the selected
++            // experts keep unit average weight (softmax over K, scaled by K),
++            // so scale tracks K exactly as it does for the shipped Top-12.
++            layer_expert_scale = (float) active_k;
++        }
++    }
++
+     ggml_tensor * moe_out =
+         build_moe_ffn(cur,
+             model.layers[il].ffn_gate_inp,
+@@ -502,9 +542,9 @@ ggml_tensor * llama_model_qwen35moe::graph::build_layer_ffn(ggml_tensor * cur, c
+             model.layers[il].ffn_gate_exps,
+             model.layers[il].ffn_down_exps,
+             nullptr,
+-            n_expert, n_expert_used,
++            n_expert, layer_expert_used,
+             LLM_FFN_SILU, true,
+-            hparams.expert_weights_scale,
++            layer_expert_scale,
+             LLAMA_EXPERT_GATING_FUNC_TYPE_SOFTMAX, il,
+             nullptr, model.layers[il].ffn_gate_up_exps,
+             model.layers[il].ffn_up_exps_s,
+diff --git a/tools/imatrix/imatrix.cpp b/tools/imatrix/imatrix.cpp
+index 3431a4e..1a47c82 100644
+--- a/tools/imatrix/imatrix.cpp
++++ b/tools/imatrix/imatrix.cpp
+@@ -16,6 +16,7 @@
+ #include <mutex>
+ #include <vector>
+ #include <fstream>
++#include <filesystem>
+ #include <unordered_map>
+ #include <map>
+ #include <regex>
+@@ -256,6 +257,53 @@ bool IMatrixCollector::collect_imatrix(struct ggml_tensor * t, bool ask, void *
+     const char * data = is_host ? (const char *) src1->data : m_src1_data.data();
+     GGML_ASSERT(src1->nb[0] == ggml_element_size(src1));
+ 
++    // Optional MoEMe calibration capture. Store the normalized input to each
++    // dense FFN gate as chunked F32 matrices without changing normal imatrix
++    // behavior. A fresh output directory is required for each campaign.
++    if (const char * capture_dir = getenv("MOEME_CAPTURE_DIR")) {
++        // Dense layers expose the normalized FFN input at ffn_gate.weight.
++        // Converted MoE layers expose the same pre-routing input at
++        // ffn_gate_inp.weight; expert inputs are selected/repeated and are not
++        // a valid replacement for the original token rows.
++        static const std::regex ffn_gate_pattern(
++            R"(^blk\.(\d+)\.ffn_gate(?:_inp)?\.weight$)");
++        std::smatch match;
++        const char * capture_layer = getenv("MOEME_CAPTURE_LAYER");
++        if (std::regex_match(wname, match, ffn_gate_pattern) &&
++            (!capture_layer || match[1].str() == capture_layer)) {
++            const uint32_t n_embd = src1->ne[0];
++            const uint32_t n_tokens = ggml_nrows(src1);
++            std::filesystem::create_directories(capture_dir);
++            const auto path = std::filesystem::path(capture_dir) /
++                ("layer-" + match[1].str() + ".f32");
++            const bool needs_header = !std::filesystem::exists(path) ||
++                std::filesystem::file_size(path) == 0;
++            std::ofstream capture(path, std::ios::binary | std::ios::app);
++            if (needs_header) {
++                constexpr uint32_t magic = 0x4d4f454d; // "MOEM"
++                constexpr uint32_t version = 1;
++                capture.write(reinterpret_cast<const char *>(&magic), sizeof(magic));
++                capture.write(reinterpret_cast<const char *>(&version), sizeof(version));
++                capture.write(reinterpret_cast<const char *>(&n_embd), sizeof(n_embd));
++            }
++            capture.write(reinterpret_cast<const char *>(&n_tokens), sizeof(n_tokens));
++            for (int64_t i3 = 0; i3 < src1->ne[3]; ++i3) {
++                for (int64_t i2 = 0; i2 < src1->ne[2]; ++i2) {
++                    for (int64_t row = 0; row < src1->ne[1]; ++row) {
++                        const char * values = data + row * src1->nb[1] +
++                            i2 * src1->nb[2] + i3 * src1->nb[3];
++                        capture.write(values, n_embd * sizeof(float));
++                    }
++                }
++            }
++            if (!capture) {
++                LOG_ERR("%s: failed writing MoEMe activation capture %s\n",
++                    __func__, path.c_str());
++                return false;
++            }
++        }
++    }
++
+     // this has been adapted to the new format of storing merged experts in a single 3d tensor
+     // ref: https://github.com/ggml-org/llama.cpp/pull/6387
+     if (t->op == GGML_OP_MUL_MAT_ID) {

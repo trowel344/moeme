@@ -1,0 +1,18 @@
+[
+  {
+    "batch": 2048,
+    "context": 2048,
+    "extra": ["--split-mode", "layer", "--ctx-checkpoints", "2"],
+    "gpu_layers": 99,
+    "name": "t4x2-full-residency-c2048",
+    "ubatch": 512
+  },
+  {
+    "batch": 2048,
+    "context": 8192,
+    "extra": ["--split-mode", "layer", "--ctx-checkpoints", "2"],
+    "gpu_layers": 99,
+    "name": "t4x2-full-residency-c8192",
+    "ubatch": 512
+  }
+]

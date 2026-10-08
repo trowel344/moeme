@@ -1,0 +1,40 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "moeme"
+version = "0.1.0"
+description = "Experiment-first dense-to-sparse-MoE conversion tools"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "accelerate>=1.10",
+  "huggingface-hub>=1.0",
+  "safetensors>=0.6",
+  "torch>=2.5",
+  "transformers>=5.6",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.9"]
+
+[project.scripts]
+moeme = "moeme.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/moeme"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = [
+  "cloud-inbox",
+  "cloud-inputs",
+  "cloud-jobs",
+  "cloud-results",
+]

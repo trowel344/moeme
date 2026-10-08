@@ -1,0 +1,33 @@
+{
+  "bytes": 465954,
+  "format": "moeme-router-calibration-v1",
+  "instruction_examples": 4,
+  "math_examples": 50,
+  "output": "/home/cleanerbox/Documents/moeme/data/calibration/router-v1.txt",
+  "project_files": [
+    "src/moeme/__init__.py",
+    "src/moeme/architecture.py",
+    "src/moeme/automation.py",
+    "src/moeme/autopilot.py",
+    "src/moeme/checkpoint.py",
+    "src/moeme/cli.py",
+    "src/moeme/gguf_bridge.py",
+    "src/moeme/layout.py",
+    "src/moeme/ledger.py",
+    "src/moeme/nn.py",
+    "src/moeme/parity.py",
+    "src/moeme/partition.py",
+    "src/moeme/runtime.py",
+    "src/moeme/runtime_contract.py",
+    "src/moeme/safetensors_stream.py",
+    "docs/architecture-baseline.md",
+    "docs/experiment-gates.md"
+  ],
+  "sha256": "2d30b5c37376586fce55297e483269517e03741a0e28497a9f8d51fd121b3cdd",
+  "wikitext": {
+    "file": "wikitext-2-raw-v1/train-00000-of-00001.parquet",
+    "lines": 800,
+    "repo": "Salesforce/wikitext",
+    "revision": "b08601e04326c79dfdd32d625aee71d232d685c3"
+  }
+}

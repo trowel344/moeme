@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+dist/
+build/
+*.egg-info/
+
+# Large / generated experiment outputs — not part of the source release.
+# These are multi-gigabyte and reproducible from the scripts in this repo.
+artifacts/
+checkpoints/
+.moeme/
+cloud-inputs/
+cloud-results/
+cloud-inbox/
+
+# Model weights never belong in git; they live on Hugging Face.
+*.gguf
+*.safetensors
+*.f32
+

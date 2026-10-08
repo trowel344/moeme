@@ -1,0 +1,48 @@
+{
+  "bytes": 843165,
+  "format": "moeme-sparse-training-corpus-v1",
+  "output": "/home/cleanerbox/Documents/moeme/data/training/layer63-de-risk-200k.txt",
+  "project_files": [
+    "src/moeme/__init__.py",
+    "src/moeme/activations.py",
+    "src/moeme/architecture.py",
+    "src/moeme/automation.py",
+    "src/moeme/autopilot.py",
+    "src/moeme/checkpoint.py",
+    "src/moeme/cli.py",
+    "src/moeme/gguf_bridge.py",
+    "src/moeme/layout.py",
+    "src/moeme/ledger.py",
+    "src/moeme/nn.py",
+    "src/moeme/parity.py",
+    "src/moeme/partition.py",
+    "src/moeme/runtime.py",
+    "src/moeme/runtime_contract.py",
+    "src/moeme/safetensors_stream.py",
+    "docs/active-compute-ablation.md",
+    "docs/active-width-gate.md",
+    "docs/architecture-baseline.md",
+    "docs/experiment-gates.md",
+    "docs/free-cloud-training.md",
+    "docs/handoff.md",
+    "docs/moeme-serving-status.md",
+    "docs/terminal-spec.md",
+    "docs/throughput-research.md",
+    "docs/top4-feasibility.md"
+  ],
+  "sha256": "364fd7277aa1aa52d4a800da25e3b4d88f83aafe3a7ca6c85734b82914b51dba",
+  "target_tokens": 205000,
+  "tokenizer": "/home/cleanerbox/Documents/moeme/artifacts/moeme-27b-48e",
+  "tokens": 205009,
+  "wikitext": {
+    "files": [
+      {
+        "cached_path": "/home/cleanerbox/.cache/huggingface/hub/datasets--Salesforce--wikitext/snapshots/b08601e04326c79dfdd32d625aee71d232d685c3/wikitext-103-raw-v1/train-00000-of-00002.parquet",
+        "repo_file": "wikitext-103-raw-v1/train-00000-of-00002.parquet",
+        "sha256": "74da360f23826045b3e6ac6375411fdb15f003030aa74f2596ed08b857cb9212"
+      }
+    ],
+    "repo": "Salesforce/wikitext",
+    "revision": "b08601e04326c79dfdd32d625aee71d232d685c3"
+  }
+}
