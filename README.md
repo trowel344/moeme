@@ -108,6 +108,22 @@ geometry**, not the router. Per-channel selection instead of contiguous blocks
 does much better (`0.05` vs `0.15` at `0.50F`), but has no contiguous expert
 blocks to page, which discards the only mechanism that was supposed to pay off.
 
+**Two further levers were taken to the end and ruled out:**
+
+- **Co-activation clustering** (MoEfication-style: reorder FFN channels so
+  co-activating neurons land in the same contiguous expert). A full 64-layer
+  `activation_cluster` sweep is *worse* than importance-contiguous — median
+  Top-4 error `0.472` vs `0.454`, better on only **1 of 64** layers. Reordering
+  channels does not lower the error floor.
+- **A learned router over a frozen partition** (layer 63, Top-8, 200k tokens,
+  40k steps): `0.2349` → best `0.0883` (65% of the gap closed), then
+  early-stopped flat. The static Top-8 oracle floor for that layer is `0.0761`,
+  so the trained router plateaus *above* the oracle and ~`9x` above the `~0.01`
+  quality budget (`candidate_ready: false`).
+
+Neither moves the floor, which is consistent with the diagnosis: the deficiency
+is the partition geometry, not the router or the grouping.
+
 The full experiment record, including the dead ends and the three recipe bugs we
 found and fixed, is summarized in the Reddit write-up (see below). Detailed
 internal docs are intentionally not shipped in this repository.
