@@ -27,9 +27,9 @@
     "nvme_mmap_cold_1M_us": 1378
   },
   "effective_capacity": {
-    "_comment": "What a runtime actually obtains, measured rather than assumed. The desktop holds ~2.9 GiB of VRAM; ~15.4 GiB of RAM is present but only ~10.2 GiB is usable for model weights without swapping (swap was already ~3.2/4.0 GiB in use at measurement time).",
-    "vram_usable_gib": 3.6,
-    "ram_usable_gib": 10.2,
+    "_comment": "What a runtime actually obtains, measured rather than assumed. VRAM: the card has 8188 MiB but the desktop holds ~2.9 GiB and ollama peaked at 3906 MiB of model memory (6884 - 2978 MiB baseline). RAM: MemAvailable during the runs was 10.23e9 bytes = 9.5 GiB -- therefore GB, NOT GiB. Mixing the two units overstates the RAM tier by ~7%, which is why the key is named ram_usable_gb.",
+    "vram_usable_gib": 3.8,
+    "ram_usable_gb": 10.2,
     "note": "Set vram_usable_gib to 0 to model a headless/display-free run."
   },
   "calibration": {
@@ -41,6 +41,7 @@
   "known_limitations": [
     "NVMe throughput measures 0.8-1.9 GB/s against a ~6.6 GB/s datasheet figure for the Micron 3400. Cause not established (thermals, ASPM/APST power state, PCIe link width, or sustained-state fallback). A healthy drive would materially change the streaming budget; worth checking before designing around this number.",
     "The RAM tier bandwidth is a memcpy figure (40.7 GB/s). Real quantised CPU GEMV kernels differ: a naive torch bf16 GEMV reached only 19.3 GB/s here, while llama.cpp int4 kernels evidently exceed 40 GB/s (ornith-1.5:9b ran at 24.6 tok/s with ~2.7 GB on CPU).",
+    "Tier capacities are effective, not physical: the tier model ignores that real runtimes overlap CPU and GPU work, so it over-predicts some configurations by up to ~1.7x. It is a ceiling estimator validated within ~2x on three measured points, not a forecast.",
     "Vulkan/ROCm were not tested; only CUDA."
   ]
 }

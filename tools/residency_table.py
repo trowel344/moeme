@@ -28,9 +28,11 @@ from moeme.accounting import (  # noqa: E402
 
 GIB = 1024 ** 3
 
-# measured effective capacities and bandwidths (configs/tiers.json)
-VRAM_USABLE_GIB = 3.6
-RAM_USABLE_GIB = 10.2
+# Measured effective capacities and bandwidths (configs/tiers.json).
+# RAM is in GB (1e9), not GiB: the source measurement is MemAvailable in bytes
+# (10.23e9). Mixing GB and GiB here would overstate the RAM tier by ~7%.
+VRAM_USABLE_GIB = 3.8
+RAM_USABLE_GB = 10.2
 BW_GPU = 246.8e9
 BW_RAM = 40.7e9
 BW_DISK = 1.5e9
@@ -44,18 +46,18 @@ QUANTS = [
 def tiers() -> tuple[MemoryTier, MemoryTier, MemoryTier]:
     return (
         MemoryTier("gpu", VRAM_USABLE_GIB * GIB, BW_GPU),
-        MemoryTier("ram", RAM_USABLE_GIB * GIB, BW_RAM),
+        MemoryTier("ram", RAM_USABLE_GB * 1e9, BW_RAM),
         MemoryTier("disk", 1e15, BW_DISK),
     )
 
 
 def main() -> int:
     params = Qwen38_27B().measured_total
-    resident_gb = (VRAM_USABLE_GIB + RAM_USABLE_GIB) * GIB / 1e9
+    resident_bytes = VRAM_USABLE_GIB * GIB + RAM_USABLE_GB * 1e9
 
     print(f"Qwen3.8-27B: {params:,} params")
-    print(f"usable fast memory: {VRAM_USABLE_GIB} GiB VRAM + {RAM_USABLE_GIB} GiB RAM "
-          f"= {resident_gb:.1f} GB")
+    print(f"usable fast memory: {VRAM_USABLE_GIB} GiB VRAM + {RAM_USABLE_GB} GB RAM "
+          f"= {resident_bytes/1e9:.1f} GB (RAM measured as bytes, not GiB)")
     print(f"measured bandwidths: gpu {BW_GPU/1e9:.0f} GB/s, ram {BW_RAM/1e9:.0f} GB/s, "
           f"disk {BW_DISK/1e9:.2f} GB/s\n")
     print(f"{'quant':>8} {'bpw':>5} {'model GB':>9} {'per-token':>10} "
@@ -74,7 +76,6 @@ def main() -> int:
 
     print()
     print("Residency threshold (largest model that fits without streaming):")
-    resident_bytes = (VRAM_USABLE_GIB + RAM_USABLE_GIB) * GIB
     for name, bpw in QUANTS:
         cap = resident_bytes / (bpw / 8) / 1e9
         mark = "  <- Qwen3.8-27B fits" if cap >= params / 1e9 else ""

@@ -20,13 +20,14 @@ are committed under `results/` so the claims can be checked against raw data.
    output. The router is not the bottleneck (oracle-vs-learned gap ≤ 0.033), so
    better routing cannot fix it.
 3. **The target model runs at 0.561 tok/s today** (Q4_K_M), and prefill at
-   1.6 tok/s. Predicted independently from hardware constants at 0.57 tok/s.
+   1.6 tok/s. Independently predicted from hardware constants at 0.48 tok/s.
 4. **The bottleneck is storage streaming, not compute.** The SSD measures
    **0.8–1.9 GB/s** against a ~6.6 GB/s datasheet figure, and 2.2 GB/token has
    to come off it at Q4_K_M. *This is the whole problem.*
 5. **The fix is aggressive quantisation to full residency, not sparsity.**
-   Below ~3.4 bpw the model fits entirely in VRAM+RAM, which predicts ~4–6 tok/s
-   — an ~8x gain with **no training and no architecture change**.
+   Below ~3.4 bpw the model fits entirely in VRAM+RAM, which predicts
+   4.9 tok/s at Q3_K_M and 6.4 tok/s at Q2_K — an ~9x gain with **no training
+   and no architecture change**.
 
 Read `docs/feasibility_report.md` then `docs/decision_memo.md`.
 
@@ -45,6 +46,7 @@ tools/residency_table.py         what quantisation fits resident, and the tok/s 
 tools/summarise_results.py       re-print every headline number from results/*.json
 experiments/verify_real_ffn.py   partitioning verified on REAL 27B weights
 experiments/pilot_sparsity.py    sparsity pilot with real activations
+experiments/eval_gate.py         evaluation set with EXECUTABLE code checks
 configs/tiers.json               measured constants, with provenance and limitations
 docs/                            source validation, feasibility report, decision memo
 results/                         raw evidence: JSON + printed tables
@@ -60,12 +62,18 @@ make bench-inference
 make verify-sources      # re-derive parameter counts from the real artefacts
 ```
 
-Optional, requires network and a GPU:
+Optional, requires network and (for `pilot`) a GPU:
 
 ```bash
 make verify-real-ffn   # 535 MB ranged download; exactness on real 27B weights
 make pilot             # ~1.8 GB download; real activations
+make eval MODEL=qwen3:4b NUM_PREDICT=1536   # 30-task gate, executable code checks
 ```
+
+`make eval` runs the gate that `docs/decision_memo.md` Path A depends on:
+coding tasks are **executed** against fixed cases, not string-matched. Thinking
+models need a large `NUM_PREDICT`; truncated runs are reported as `TRUNCATED`
+rather than scored as capability failures.
 
 `make help` lists everything. `make clean-results` removes regenerable outputs.
 
@@ -92,8 +100,8 @@ measurement.)
 
 | Quantity | Measured |
 |---|---:|
-| Usable VRAM (desktop holds ~2.9 GiB) | ~3.6 GiB |
-| Usable RAM for weights | ~10.2 GiB |
+| Usable VRAM (desktop holds ~2.9 GiB) | ~3.8 GiB |
+| Usable RAM for weights | ~10.2 GB (9.5 GiB) |
 | GPU memory bandwidth | 246.8 GB/s |
 | CPU RAM bandwidth (memcpy) | 40.7 GB/s |
 | NVMe cold read | 0.82–1.9 GB/s |
@@ -112,6 +120,7 @@ measurement.)
 | Partitioning is not free | `make verify-real-ffn` (throughput section) |
 | No latent expert structure | `make pilot` + `make report` |
 | 0.561 tok/s and the tier model | `make bench-inference`, `python3 tools/residency_table.py` |
+| Evaluation scorer is correct | `make test` (`tests/test_eval_gate.py`, 37 tests) |
 
 ## Scope and limitations
 

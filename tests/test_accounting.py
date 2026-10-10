@@ -79,15 +79,19 @@ def test_bytes_for_params_units():
 
 # Measured on this machine (results/hardware.json):
 #   GPU 246.8 GB/s, RAM copy 40.7 GB/s, NVMe cold read 1.5 GB/s (4 MB blocks).
-# Capacities are the *effective* ones a runtime actually obtains, measured from
-# the ollama runs: ~3.6 GiB of the 8 GiB card (the desktop holds ~2.9 GiB) and
-# ~10.2 GiB of the 15.4 GiB of RAM.
+# Capacities are the *effective* ones a runtime actually obtains:
+#   VRAM: 3.8 GiB. The card has 8188 MiB but the desktop holds ~2.9 GiB, and
+#         ollama peaked at 3906 MiB of model memory (6884 - 2978 MiB baseline).
+#   RAM : 10.2 GB = 9.5 GiB. This is the measured MemAvailable during the runs
+#         (10.23e9 bytes). NOTE: GB, not GiB -- mixing the two overstates the
+#         tier by ~7%.
 BW_GPU, BW_RAM, BW_DISK = 246.8e9, 40.7e9, 1.5e9
 
-def _tiers(gpu_gib=3.6, ram_gib=10.2):
+
+def _tiers(gpu_gib=3.8, ram_gb=10.2):
     return (
         MemoryTier("gpu", gpu_gib * 1024 ** 3, BW_GPU),
-        MemoryTier("ram", ram_gib * 1024 ** 3, BW_RAM),
+        MemoryTier("ram", ram_gb * 1e9, BW_RAM),
         MemoryTier("disk", 1e15, BW_DISK),
     )
 
@@ -95,8 +99,8 @@ def _tiers(gpu_gib=3.6, ram_gib=10.2):
 def test_tier_model_predicts_measured_27b_q4_rate():
     """The tier model must reproduce the measured end-to-end 0.561 tok/s.
 
-    Qwen3.8-27B at Q4_K_M is 17.0 GB (4.9 bits/param). With ~3.6 GiB usable
-    VRAM and ~10.2 GiB usable RAM, ~2.2 GB per token must come off the SSD, and
+    Qwen3.8-27B at Q4_K_M is 17.0 GB (4.9 bits/param). With ~3.8 GiB usable
+    VRAM and ~10.2 GB usable RAM, ~2.7 GB per token must come off the SSD, and
     at 1.5 GB/s that dominates everything else.
     """
     gpu, ram, disk = _tiers()
@@ -149,7 +153,7 @@ def test_tier_model_marks_rate_limited_by_slowest_tier():
 
 
 def test_tier_model_reports_unplaceable_when_nothing_fits():
-    gpu, ram, disk = _tiers(gpu_gib=0.0, ram_gib=0.0)
+    gpu, ram, disk = _tiers(gpu_gib=0.0, ram_gb=0.0)
     pred = predicted_decode_tok_s(
         active_params=27_781_427_952, bits_per_param=4.5,
         gpu=gpu, ram=ram, disk=disk,

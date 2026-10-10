@@ -1,0 +1,234 @@
+{
+  "tasks_total": 20,
+  "models": {
+    "qwen3:4b": {
+      "summary": {
+        "format": {
+          "passed": 1,
+          "total": 6,
+          "rate": 0.16666666666666666
+        },
+        "instruction": {
+          "passed": 5,
+          "total": 6,
+          "rate": 0.8333333333333334
+        },
+        "reasoning": {
+          "passed": 3,
+          "total": 8,
+          "rate": 0.375
+        }
+      },
+      "overall": {
+        "passed": 9,
+        "total": 20,
+        "rate": 0.45
+      },
+      "truncated_tasks": 9,
+      "num_predict": 1024,
+      "wall_s": 320.1153772249818,
+      "tasks": [
+        {
+          "id": "r_train",
+          "category": "reasoning",
+          "passed": true,
+          "detail": "got 16:50, want 16:50",
+          "decode_tok_s": 56.87538579076024,
+          "done_reason": "stop",
+          "thinking_chars": 1933,
+          "response_chars": 509
+        },
+        {
+          "id": "r_bat_ball",
+          "category": "reasoning",
+          "passed": false,
+          "detail": "TRUNCATED during reasoning (1024 tokens, empty answer; raise --num-predict)",
+          "decode_tok_s": 56.5308944374428,
+          "done_reason": "length",
+          "thinking_chars": 2880,
+          "response_chars": 0
+        },
+        {
+          "id": "r_work_rate",
+          "category": "reasoning",
+          "passed": false,
+          "detail": "TRUNCATED during reasoning (1024 tokens, empty answer; raise --num-predict)",
+          "decode_tok_s": 57.62419928248868,
+          "done_reason": "length",
+          "thinking_chars": 3389,
+          "response_chars": 0
+        },
+        {
+          "id": "r_lily",
+          "category": "reasoning",
+          "passed": true,
+          "detail": "got 47.0, want 47",
+          "decode_tok_s": 57.88342597470441,
+          "done_reason": "stop",
+          "thinking_chars": 2228,
+          "response_chars": 228
+        },
+        {
+          "id": "r_combinatorics",
+          "category": "reasoning",
+          "passed": false,
+          "detail": "got 2.0, want 30",
+          "decode_tok_s": 57.12217585508104,
+          "done_reason": "length",
+          "thinking_chars": 2817,
+          "response_chars": 454
+        },
+        {
+          "id": "r_modular",
+          "category": "reasoning",
+          "passed": false,
+          "detail": "TRUNCATED during reasoning (1024 tokens, empty answer; raise --num-predict)",
+          "decode_tok_s": 56.70936593944658,
+          "done_reason": "length",
+          "thinking_chars": 1989,
+          "response_chars": 0
+        },
+        {
+          "id": "r_percent",
+          "category": "reasoning",
+          "passed": false,
+          "detail": "got 25.0, want 0.0",
+          "decode_tok_s": 55.691645366697124,
+          "done_reason": "length",
+          "thinking_chars": 2816,
+          "response_chars": 88
+        },
+        {
+          "id": "r_sequence",
+          "category": "reasoning",
+          "passed": true,
+          "detail": "got 42.0, want 42",
+          "decode_tok_s": 56.94225840237326,
+          "done_reason": "stop",
+          "thinking_chars": 1574,
+          "response_chars": 875
+        },
+        {
+          "id": "f_json_three_actions",
+          "category": "format",
+          "passed": true,
+          "detail": "ok",
+          "decode_tok_s": 55.83057180203279,
+          "done_reason": "stop",
+          "thinking_chars": 4639,
+          "response_chars": 303
+        },
+        {
+          "id": "f_json_tool_call",
+          "category": "format",
+          "passed": false,
+          "detail": "TRUNCATED during reasoning (1024 tokens, empty answer; raise --num-predict)",
+          "decode_tok_s": 55.36979997010896,
+          "done_reason": "length",
+          "thinking_chars": 4302,
+          "response_chars": 0
+        },
+        {
+          "id": "f_json_no_prose",
+          "category": "format",
+          "passed": false,
+          "detail": "TRUNCATED during reasoning (1024 tokens, empty answer; raise --num-predict)",
+          "decode_tok_s": 56.36456689940169,
+          "done_reason": "length",
+          "thinking_chars": 4145,
+          "response_chars": 0
+        },
+        {
+          "id": "f_json_nested",
+          "category": "format",
+          "passed": false,
+          "detail": "TRUNCATED during reasoning (1024 tokens, empty answer; raise --num-predict)",
+          "decode_tok_s": 55.70170301973402,
+          "done_reason": "length",
+          "thinking_chars": 4135,
+          "response_chars": 0
+        },
+        {
+          "id": "f_json_array",
+          "category": "format",
+          "passed": false,
+          "detail": "TRUNCATED during reasoning (1024 tokens, empty answer; raise --num-predict)",
+          "decode_tok_s": 54.667029476366196,
+          "done_reason": "length",
+          "thinking_chars": 3826,
+          "response_chars": 0
+        },
+        {
+          "id": "f_json_nulls",
+          "category": "format",
+          "passed": false,
+          "detail": "TRUNCATED during reasoning (1024 tokens, empty answer; raise --num-predict)",
+          "decode_tok_s": 56.1033423566209,
+          "done_reason": "length",
+          "thinking_chars": 4203,
+          "response_chars": 0
+        },
+        {
+          "id": "i_exact_three_bullets",
+          "category": "instruction",
+          "passed": false,
+          "detail": "TRUNCATED during reasoning (1024 tokens, empty answer; raise --num-predict)",
+          "decode_tok_s": 55.273749994129865,
+          "done_reason": "length",
+          "thinking_chars": 4877,
+          "response_chars": 0
+        },
+        {
+          "id": "i_only_word",
+          "category": "instruction",
+          "passed": true,
+          "detail": "got 'yes'",
+          "decode_tok_s": 58.55951746957605,
+          "done_reason": "stop",
+          "thinking_chars": 750,
+          "response_chars": 3
+        },
+        {
+          "id": "i_uppercase",
+          "category": "instruction",
+          "passed": true,
+          "detail": "got 'CONFIRMED'",
+          "decode_tok_s": 60.89667747727684,
+          "done_reason": "stop",
+          "thinking_chars": 106,
+          "response_chars": 9
+        },
+        {
+          "id": "i_five_words",
+          "category": "instruction",
+          "passed": true,
+          "detail": "5 words, want 5",
+          "decode_tok_s": 54.67286700308959,
+          "done_reason": "stop",
+          "thinking_chars": 3782,
+          "response_chars": 27
+        },
+        {
+          "id": "i_lowercase_start",
+          "category": "instruction",
+          "passed": true,
+          "detail": "starts with 'c'",
+          "decode_tok_s": 55.708080982537105,
+          "done_reason": "stop",
+          "thinking_chars": 2895,
+          "response_chars": 48
+        },
+        {
+          "id": "i_no_letter_e",
+          "category": "instruction",
+          "passed": true,
+          "detail": "contains 'e'",
+          "decode_tok_s": 55.561985336085165,
+          "done_reason": "length",
+          "thinking_chars": 3279,
+          "response_chars": 0
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "tasks_total": 10,
+  "models": {
+    "qwen3:4b": {
+      "summary": {
+        "coding": {
+          "passed": 3,
+          "total": 10,
+          "rate": 0.3
+        }
+      },
+      "overall": {
+        "passed": 3,
+        "total": 10,
+        "rate": 0.3
+      },
+      "truncated_tasks": 7,
+      "num_predict": 1024,
+      "wall_s": 155.8771761850221,
+      "tasks": [
+        {
+          "id": "c_sum_evens",
+          "category": "coding",
+          "passed": true,
+          "detail": "4/4 cases passed",
+          "decode_tok_s": 57.474608852912326,
+          "done_reason": "stop",
+          "thinking_chars": 2757,
+          "response_chars": 82
+        },
+        {
+          "id": "c_reverse_words",
+          "category": "coding",
+          "passed": false,
+          "detail": "TRUNCATED during reasoning (1024 tokens, empty answer; raise --num-predict)",
+          "decode_tok_s": 55.65791514798646,
+          "done_reason": "length",
+          "thinking_chars": 4635,
+          "response_chars": 0
+        },
+        {
+          "id": "c_fizzbuzz",
+          "category": "coding",
+          "passed": true,
+          "detail": "2/2 cases passed",
+          "decode_tok_s": 54.970454624314876,
+          "done_reason": "stop",
+          "thinking_chars": 1153,
+          "response_chars": 319
+        },
+        {
+          "id": "c_is_palindrome",
+          "category": "coding",
+          "passed": false,
+          "detail": "TRUNCATED during reasoning (1024 tokens, empty answer; raise --num-predict)",
+          "decode_tok_s": 53.793183804742505,
+          "done_reason": "length",
+          "thinking_chars": 4369,
+          "response_chars": 0
+        },
+        {
+          "id": "c_binary_search",
+          "category": "coding",
+          "passed": true,
+          "detail": "4/4 cases passed",
+          "decode_tok_s": 58.02063707647095,
+          "done_reason": "stop",
+          "thinking_chars": 496,
+          "response_chars": 293
+        },
+        {
+          "id": "c_unique_ordered",
+          "category": "coding",
+          "passed": false,
+          "detail": "TRUNCATED during reasoning (1024 tokens, empty answer; raise --num-predict)",
+          "decode_tok_s": 54.56524316568997,
+          "done_reason": "length",
+          "thinking_chars": 4291,
+          "response_chars": 0
+        },
+        {
+          "id": "c_gcd",
+          "category": "coding",
+          "passed": false,
+          "detail": "TRUNCATED during reasoning (1024 tokens, empty answer; raise --num-predict)",
+          "decode_tok_s": 55.382793809912734,
+          "done_reason": "length",
+          "thinking_chars": 4498,
+          "response_chars": 0
+        },
+        {
+          "id": "c_flatten",
+          "category": "coding",
+          "passed": false,
+          "detail": "TRUNCATED during reasoning (1024 tokens, empty answer; raise --num-predict)",
+          "decode_tok_s": 54.945417576320075,
+          "done_reason": "length",
+          "thinking_chars": 4403,
+          "response_chars": 0
+        },
+        {
+          "id": "c_two_sum",
+          "category": "coding",
+          "passed": false,
+          "detail": "TRUNCATED during reasoning (1024 tokens, empty answer; raise --num-predict)",
+          "decode_tok_s": 55.10113264037202,
+          "done_reason": "length",
+          "thinking_chars": 4311,
+          "response_chars": 0
+        },
+        {
+          "id": "c_word_count",
+          "category": "coding",
+          "passed": false,
+          "detail": "TRUNCATED during reasoning (1024 tokens, empty answer; raise --num-predict)",
+          "decode_tok_s": 55.36124156234398,
+          "done_reason": "length",
+          "thinking_chars": 4605,
+          "response_chars": 0
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,277 @@
+{
+  "tasks_total": 30,
+  "models": {
+    "qwen3:4b": {
+      "summary": {
+        "coding": {
+          "passed": 0,
+          "total": 10,
+          "rate": 0.0
+        },
+        "format": {
+          "passed": 0,
+          "total": 6,
+          "rate": 0.0
+        },
+        "instruction": {
+          "passed": 3,
+          "total": 6,
+          "rate": 0.5
+        },
+        "reasoning": {
+          "passed": 0,
+          "total": 8,
+          "rate": 0.0
+        }
+      },
+      "overall": {
+        "passed": 3,
+        "total": 30,
+        "rate": 0.1
+      },
+      "wall_s": 239.7761989069404,
+      "tasks": [
+        {
+          "id": "c_sum_evens",
+          "category": "coding",
+          "passed": false,
+          "detail": "no solve() function found",
+          "decode_tok_s": 62.8313911029523,
+          "response_chars": 0
+        },
+        {
+          "id": "c_reverse_words",
+          "category": "coding",
+          "passed": false,
+          "detail": "no solve() function found",
+          "decode_tok_s": 62.37717970626405,
+          "response_chars": 0
+        },
+        {
+          "id": "c_fizzbuzz",
+          "category": "coding",
+          "passed": false,
+          "detail": "runtime error: IndentationError: unexpected indent",
+          "decode_tok_s": 61.06848623067151,
+          "response_chars": 319
+        },
+        {
+          "id": "c_is_palindrome",
+          "category": "coding",
+          "passed": false,
+          "detail": "no solve() function found",
+          "decode_tok_s": 58.91370718299621,
+          "response_chars": 0
+        },
+        {
+          "id": "c_binary_search",
+          "category": "coding",
+          "passed": false,
+          "detail": "runtime error: IndentationError: unexpected indent",
+          "decode_tok_s": 59.3640233548117,
+          "response_chars": 299
+        },
+        {
+          "id": "c_unique_ordered",
+          "category": "coding",
+          "passed": false,
+          "detail": "no solve() function found",
+          "decode_tok_s": 58.15699571864554,
+          "response_chars": 0
+        },
+        {
+          "id": "c_gcd",
+          "category": "coding",
+          "passed": false,
+          "detail": "no solve() function found",
+          "decode_tok_s": 60.12485537566407,
+          "response_chars": 0
+        },
+        {
+          "id": "c_flatten",
+          "category": "coding",
+          "passed": false,
+          "detail": "no solve() function found",
+          "decode_tok_s": 59.425430370109005,
+          "response_chars": 0
+        },
+        {
+          "id": "c_two_sum",
+          "category": "coding",
+          "passed": false,
+          "detail": "no solve() function found",
+          "decode_tok_s": 58.834324266527304,
+          "response_chars": 0
+        },
+        {
+          "id": "c_word_count",
+          "category": "coding",
+          "passed": false,
+          "detail": "no solve() function found",
+          "decode_tok_s": 60.72511720125525,
+          "response_chars": 0
+        },
+        {
+          "id": "r_train",
+          "category": "reasoning",
+          "passed": false,
+          "detail": "got None, want 16:50",
+          "decode_tok_s": 63.75736338397187,
+          "response_chars": 0
+        },
+        {
+          "id": "r_bat_ball",
+          "category": "reasoning",
+          "passed": false,
+          "detail": "no number found",
+          "decode_tok_s": 63.381687866727134,
+          "response_chars": 0
+        },
+        {
+          "id": "r_work_rate",
+          "category": "reasoning",
+          "passed": false,
+          "detail": "no number found",
+          "decode_tok_s": 63.671597816362656,
+          "response_chars": 0
+        },
+        {
+          "id": "r_lily",
+          "category": "reasoning",
+          "passed": false,
+          "detail": "no number found",
+          "decode_tok_s": 63.696906233799744,
+          "response_chars": 0
+        },
+        {
+          "id": "r_combinatorics",
+          "category": "reasoning",
+          "passed": false,
+          "detail": "no number found",
+          "decode_tok_s": 62.27559651689669,
+          "response_chars": 0
+        },
+        {
+          "id": "r_modular",
+          "category": "reasoning",
+          "passed": false,
+          "detail": "no number found",
+          "decode_tok_s": 63.474581219631844,
+          "response_chars": 0
+        },
+        {
+          "id": "r_percent",
+          "category": "reasoning",
+          "passed": false,
+          "detail": "no number found",
+          "decode_tok_s": 60.81546651342436,
+          "response_chars": 0
+        },
+        {
+          "id": "r_sequence",
+          "category": "reasoning",
+          "passed": false,
+          "detail": "no number found",
+          "decode_tok_s": 62.13925552802711,
+          "response_chars": 0
+        },
+        {
+          "id": "f_json_three_actions",
+          "category": "format",
+          "passed": false,
+          "detail": "no JSON",
+          "decode_tok_s": 61.58695386235003,
+          "response_chars": 0
+        },
+        {
+          "id": "f_json_tool_call",
+          "category": "format",
+          "passed": false,
+          "detail": "no JSON",
+          "decode_tok_s": 62.67708265111818,
+          "response_chars": 0
+        },
+        {
+          "id": "f_json_no_prose",
+          "category": "format",
+          "passed": false,
+          "detail": "no JSON",
+          "decode_tok_s": 61.700975388987416,
+          "response_chars": 0
+        },
+        {
+          "id": "f_json_nested",
+          "category": "format",
+          "passed": false,
+          "detail": "no JSON",
+          "decode_tok_s": 61.846945479622455,
+          "response_chars": 0
+        },
+        {
+          "id": "f_json_array",
+          "category": "format",
+          "passed": false,
+          "detail": "no JSON",
+          "decode_tok_s": 61.61330837833892,
+          "response_chars": 0
+        },
+        {
+          "id": "f_json_nulls",
+          "category": "format",
+          "passed": false,
+          "detail": "no JSON",
+          "decode_tok_s": 62.73817838718769,
+          "response_chars": 0
+        },
+        {
+          "id": "i_exact_three_bullets",
+          "category": "instruction",
+          "passed": false,
+          "detail": "0 bullets, want 3",
+          "decode_tok_s": 61.66229009670649,
+          "response_chars": 0
+        },
+        {
+          "id": "i_only_word",
+          "category": "instruction",
+          "passed": true,
+          "detail": "got 'yes'",
+          "decode_tok_s": 62.85797164023498,
+          "response_chars": 3
+        },
+        {
+          "id": "i_uppercase",
+          "category": "instruction",
+          "passed": true,
+          "detail": "got 'CONFIRMED'",
+          "decode_tok_s": 66.62986172710286,
+          "response_chars": 9
+        },
+        {
+          "id": "i_five_words",
+          "category": "instruction",
+          "passed": false,
+          "detail": "0 words, want 5",
+          "decode_tok_s": 62.30360522488743,
+          "response_chars": 0
+        },
+        {
+          "id": "i_lowercase_start",
+          "category": "instruction",
+          "passed": false,
+          "detail": "starts with ''",
+          "decode_tok_s": 61.335971738492645,
+          "response_chars": 0
+        },
+        {
+          "id": "i_no_letter_e",
+          "category": "instruction",
+          "passed": true,
+          "detail": "contains 'e'",
+          "decode_tok_s": 58.44143095669992,
+          "response_chars": 0
+        }
+      ]
+    }
+  }
+}

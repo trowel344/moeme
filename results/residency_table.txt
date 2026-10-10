@@ -1,33 +1,33 @@
 Qwen3.8-27B: 27,781,427,952 params
-usable fast memory: 3.6 GiB VRAM + 10.2 GiB RAM = 14.8 GB
+usable fast memory: 3.8 GiB VRAM + 10.2 GB RAM = 14.3 GB (RAM measured as bytes, not GiB)
 measured bandwidths: gpu 247 GB/s, ram 41 GB/s, disk 1.50 GB/s
 
    quant   bpw  model GB  per-token  streamed GB  pred tok/s       regime
 ------------------------------------------------------------------------
-    Q2_K   2.8       9.7        9.7         0.00        6.27     RESIDENT
-  Q3_K_M   3.4      11.8       11.8         0.00        4.74     RESIDENT
-  Q4_K_S   4.4      15.3       15.3         0.46        1.69   disk-bound
-  Q4_K_M   4.9      17.0       17.0         2.20        0.57   disk-bound
-  Q5_K_M   5.6      19.4       19.4         4.63        0.30   disk-bound
-    Q6_K   6.6      22.9       22.9         8.10        0.18   disk-bound
-    Q8_0   8.5      29.5       29.5        14.70        0.10   disk-bound
-    bf16  16.0      55.6       55.6        40.75        0.04   disk-bound
+    Q2_K   2.8       9.7        9.7         0.00        6.44     RESIDENT
+  Q3_K_M   3.4      11.8       11.8         0.00        4.85     RESIDENT
+  Q4_K_S   4.4      15.3       15.3         1.00        1.07   disk-bound
+  Q4_K_M   4.9      17.0       17.0         2.74        0.48   disk-bound
+  Q5_K_M   5.6      19.4       19.4         5.17        0.27   disk-bound
+    Q6_K   6.6      22.9       22.9         8.64        0.17   disk-bound
+    Q8_0   8.5      29.5       29.5        15.24        0.10   disk-bound
+    bf16  16.0      55.6       55.6        41.28        0.04   disk-bound
 
 Residency threshold (largest model that fits without streaming):
-  at    Q2_K (2.8 bpw, 0.350 bytes/param):  42.3B params  <- Qwen3.8-27B fits
-  at  Q3_K_M (3.4 bpw, 0.425 bytes/param):  34.9B params  <- Qwen3.8-27B fits
-  at  Q4_K_S (4.4 bpw, 0.550 bytes/param):  26.9B params
-  at  Q4_K_M (4.9 bpw, 0.613 bytes/param):  24.2B params
-  at  Q5_K_M (5.6 bpw, 0.700 bytes/param):  21.2B params
-  at    Q6_K (6.6 bpw, 0.825 bytes/param):  18.0B params
-  at    Q8_0 (8.5 bpw, 1.062 bytes/param):  13.9B params
-  at    bf16 (16.0 bpw, 2.000 bytes/param):   7.4B params
+  at    Q2_K (2.8 bpw, 0.350 bytes/param):  40.8B params  <- Qwen3.8-27B fits
+  at  Q3_K_M (3.4 bpw, 0.425 bytes/param):  33.6B params  <- Qwen3.8-27B fits
+  at  Q4_K_S (4.4 bpw, 0.550 bytes/param):  26.0B params
+  at  Q4_K_M (4.9 bpw, 0.613 bytes/param):  23.3B params
+  at  Q5_K_M (5.6 bpw, 0.700 bytes/param):  20.4B params
+  at    Q6_K (6.6 bpw, 0.825 bytes/param):  17.3B params
+  at    Q8_0 (8.5 bpw, 1.062 bytes/param):  13.4B params
+  at    bf16 (16.0 bpw, 2.000 bytes/param):   7.1B params
 
   Qwen3.8-27B is 27.78B -> above the Q4 threshold, below the Q3 threshold.
 
 The 9B-active question, separated from the total-size question:
   9B active at 4.9 bpw = 5.51 GB read per token.
-  If fully resident: 17.8 tok/s (bottleneck: ram).
+  If fully resident: 19.3 tok/s (bottleneck: ram).
   So 9B *active* is not itself a speed problem -- a fully resident 9B-active
   model would decode fine. The problem is that a model with 9B active and
   near-27B quality needs far more than 9B *total*, and the total has to fit.

@@ -29,9 +29,9 @@ everything else:
 | Quantity | Measured | Note |
 |---|---:|---|
 | VRAM total | 8188 MiB | RTX 4060 Laptop |
-| VRAM **usable** | **~3.6 GiB** | the desktop already holds ~2.9 GiB |
+| VRAM **usable** | **~3.8 GiB** | the desktop already holds ~2.9 GiB; ollama peaked at 3906 MiB of model memory |
 | RAM total | 15.4 GiB | |
-| RAM **usable** for weights | **~10.2 GiB** | swap was already 3.2/4.0 GiB in use |
+| RAM **usable** for weights | **~10.2 GB** (9.5 GiB) | measured `MemAvailable`; swap was already 3.2/4.0 GiB in use |
 | GPU memory bandwidth | 246.8 GB/s | measured with a real kernel |
 | CPU RAM bandwidth | 40.7 GB/s | memcpy; naive torch bf16 GEMV only 19.3 GB/s |
 | **NVMe cold read** | **0.82–1.9 GB/s** | 3 independent methods; datasheet says ~6.6 |
@@ -148,15 +148,20 @@ residency**. From `tools/residency_table.py` (measured tier constants):
 
 | Quant | bpw | Model size | Streamed/token | Predicted | Regime |
 |---|---:|---:|---:|---:|---|
-| Q2_K | 2.8 | 9.7 GB | 0.00 | **6.27 tok/s** | resident |
-| Q3_K_M | 3.4 | 11.8 GB | 0.00 | **4.74 tok/s** | resident |
-| Q4_K_S | 4.4 | 15.3 GB | 0.46 | 1.69 tok/s | disk-bound |
-| Q4_K_M | 4.9 | 17.0 GB | 2.20 | **0.57 tok/s** | disk-bound (measured: 0.561) |
+| Q2_K | 2.8 | 9.7 GB | 0.00 | **6.44 tok/s** | resident |
+| Q3_K_M | 3.4 | 11.8 GB | 0.00 | **4.85 tok/s** | resident |
+| Q4_K_S | 4.4 | 15.3 GB | 1.00 | 1.07 tok/s | disk-bound |
+| Q4_K_M | 4.9 | 17.0 GB | 2.74 | **0.48 tok/s** | disk-bound (measured: 0.561) |
 
 Qwen3.8-27B at **Q3_K_M or below becomes fully resident** and should go from
 0.56 tok/s to roughly 4–6 tok/s — an ~8x improvement for free, with **no
 training and no architecture change**. That is the highest-value experiment on
 the table, and it costs one download.
+
+(Residency threshold across quantisation levels: 40.8B params at Q2_K, 33.6B at
+Q3_K_M, 26.0B at Q4_K_S, 23.3B at Q4_K_M. The 27B sits between Q4_K_S and
+Q3_K_M, which is why the level matters so much: it is the difference between
+streaming 2.74 GB per token and streaming nothing.)
 
 ## 7. Risk assessment
 

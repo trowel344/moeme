@@ -30,8 +30,9 @@ That is one download and one afternoon.
 | Partitioning is exact on real weights | worst rel. L2 error 5.1e-07 | `results/real_ffn.json` |
 | Partitioning is *free* however? No | 2.42x (E=32) to 3.89x (E=128) slower at batch 1 | same |
 | Target model today | **0.561 tok/s**, prefill 1.6 tok/s | `results/inference_27b.json` |
-| ...predicted independently from hardware constants | 0.57 tok/s | `tools/residency_table.py` |
-| Residency makes it viable | Q3_K_M 11.8 GB resident -> ~4.7 tok/s predicted | `results/residency_table.txt` |
+| Usable fast memory | 3.8 GiB VRAM + 10.2 GB RAM = 14.3 GB | `configs/tiers.json` |
+| ...predicted independently from hardware constants | 0.48 tok/s | `tools/residency_table.py` |
+| Residency makes it viable | Q3_K_M 11.8 GB resident -> ~4.9 tok/s predicted | `results/residency_table.txt` |
 
 ## 3. Three paths, ranked
 
@@ -41,9 +42,10 @@ That is one download and one afternoon.
 VRAM/RAM, and held-out task scores against the existing Q4_K_M baseline.
 
 *Why it is the right first move:* the measured bottleneck is **storage
-streaming, not compute**. At Q4_K_M the model is 17.0 GB against ~14.8 GB of
-usable fast memory, so 2.2 GB/token comes off an SSD that delivers 1.5 GB/s.
-Below ~3.4 bpw the model fits entirely in VRAM+RAM and that cost disappears.
+streaming, not compute**. At Q4_K_M the model is 17.0 GB against ~14.3 GB of
+usable fast memory (3.8 GiB VRAM + 10.2 GB RAM), so 2.74 GB/token comes off an
+SSD that delivers 1.5 GB/s. Below ~3.4 bpw the model fits entirely in VRAM+RAM
+and that cost disappears.
 
 *Cost:* £0, ~10–15 GB download, a few hours of work. *Expected outcome:*
 ~4–6 tok/s if the tier model is right, at some quality cost that must be
@@ -76,8 +78,8 @@ architecture if aggressive sparsity fails oracle recovery." It failed. Stopping.
 *What the goal actually requires:* a model with ~9B active *and* near-27B
 quality. Section 4 of the feasibility report shows the active-parameter side of
 that is speed-feasible — a fully resident 9B-active model is predicted at
-~17.8 tok/s here. The blocker is that it needs far more than 9B *total*, and the
-total must fit in ~14.8 GB, which forces exceptionally aggressive quantisation
+~19 tok/s here. The blocker is that it needs far more than 9B *total*, and the
+total must fit in ~14.3 GB, which forces exceptionally aggressive quantisation
 of a model whose experts were never trained to tolerate it.
 
 *Why it is blocked:* training a ~20B-A9B MoE is a pretraining-scale project
@@ -94,8 +96,9 @@ it is not startable.
   but only with *trained* experts, and the pilot shows post-hoc splits have no
   operating point.
 - **Reachable as a design point on this hardware? Yes, in principle.** A
-  fully resident ~12B-active model is predicted at roughly 12 tok/s here
-  (bandwidth-bound on RAM). The hardware is not the obstacle.
+  fully resident ~12B-active model is predicted at ~10 tok/s here
+  (bandwidth-bound on RAM), and a 9B-active one at ~19 tok/s. The hardware is
+  not the obstacle.
 - **Reachable within this budget? No.** It requires pretraining compute that
   free tiers cannot supply by orders of magnitude.
 
