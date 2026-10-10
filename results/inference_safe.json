@@ -1,0 +1,44 @@
+{
+  "results": [
+    {
+      "model": "qwen3:4b",
+      "num_gpu": -1,
+      "num_predict": 64,
+      "wall_s": 7.802243335987441,
+      "peak_vram_mib": 6798,
+      "peak_ram_used_bytes": 6220181504,
+      "min_ram_available_bytes": 10231554048,
+      "error": null,
+      "eval_count": 64,
+      "prompt_eval_count": 40,
+      "load_s": 6.663459098,
+      "prompt_eval_s": 0.071399,
+      "decode_s": 1.054919,
+      "decode_tok_s": 60.66816504395125,
+      "prefill_tok_s": 560.2319360215129,
+      "ttft_s": 6.734858098,
+      "response_chars": 0,
+      "response_preview": ""
+    },
+    {
+      "model": "ornith-1.5:9b",
+      "num_gpu": -1,
+      "num_predict": 32,
+      "wall_s": 16.99329308292363,
+      "peak_vram_mib": 6884,
+      "peak_ram_used_bytes": 6212792320,
+      "min_ram_available_bytes": 10238943232,
+      "error": null,
+      "eval_count": 32,
+      "prompt_eval_count": 40,
+      "load_s": 15.370835539,
+      "prompt_eval_s": 0.287916,
+      "decode_s": 1.299272,
+      "decode_tok_s": 24.629176954479124,
+      "prefill_tok_s": 138.92940996679587,
+      "ttft_s": 15.658751539,
+      "response_chars": 152,
+      "response_preview": "The user wants a Python function that merges two sorted lists into one sorted list in O(n) time. This is a classic merge operation, similar to the merge"
+    }
+  ]
+}

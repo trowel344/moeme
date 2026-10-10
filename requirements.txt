@@ -1,0 +1,25 @@
+# moeme dependencies.
+#
+# The core library (src/moeme) and the unit tests need ONLY torch.
+# Everything else is for the optional experiment scripts, which are marked below.
+#
+# On this machine torch/numpy/transformers were already present system-wide, so
+# the recommended setup is a --system-site-packages venv (see `make venv`):
+#   python3 -m venv --system-site-packages .venv && .venv/bin/pip install pytest
+
+# --- core: required by src/moeme and tests/ ---
+torch>=2.4
+
+# --- optional: tools/bench_hardware.py (RAM/GPU bandwidth) ---
+numpy>=1.26
+
+# --- optional: experiments/pilot_sparsity.py (loading a real model) ---
+# NOTE: Qwen3.5/Qwen3.8 use Gated DeltaNet, whose causal_conv1d kernel is
+# CUDA-only in this environment. The pilot therefore requires a working CUDA
+# device; it cannot run on CPU-only hosts.
+transformers>=4.51
+accelerate>=0.30
+safetensors>=0.4
+
+# --- dev ---
+pytest>=8.0

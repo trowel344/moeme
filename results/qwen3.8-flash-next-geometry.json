@@ -1,0 +1,484 @@
+{
+  "repo": "Qwen/Qwen3.8-Flash-Next",
+  "total_params": 179999981459,
+  "tensors": 1658,
+  "dtypes": {
+    "BF16": 179999981424,
+    "I64": 35
+  },
+  "by_component": {
+    "norms": 1037824,
+    "other": 6553600,
+    "other_layer": 51549593635,
+    "linear_attention": 2086505856,
+    "vision_tower": 448931056,
+    "ffn": 121411461120,
+    "mtp_head": 2607150848,
+    "attention": 617349120,
+    "token_embedding": 635699200,
+    "lm_head": 635699200
+  },
+  "by_detail": {
+    "norms": 1037824,
+    "model.language_model.hyper_connection_mixer.input_mix_weight_down.weight": 3276800,
+    "model.language_model.hyper_connection_mixer.input_mix_weight_up.weight": 3276800,
+    "other_layer:attn_hyper_connection.block_inject_weight": 1966080,
+    "other_layer:attn_hyper_connection.input_mix_weight_down": 157286400,
+    "other_layer:attn_hyper_connection.input_mix_weight_up": 157286400,
+    "linear_attention:linear_attn": 3456,
+    "linear_attention:linear_attn.conv1d": 1474560,
+    "linear_attention:linear_attn.in_proj_a": 4423680,
+    "linear_attention:linear_attn.in_proj_b": 4423680,
+    "linear_attention:linear_attn.in_proj_qkv": 943718400,
+    "linear_attention:linear_attn.in_proj_z": 566231040,
+    "linear_attention:linear_attn.out_proj": 566231040,
+    "vision_tower": 448931056,
+    "mlp.experts": 120795955200,
+    "mlp.gate": 62914560,
+    "mlp.shared_expert.down_proj": 78643200,
+    "mlp.shared_expert.gate_proj": 78643200,
+    "mlp.shared_expert.up_proj": 78643200,
+    "mlp.shared_expert_gate": 122880,
+    "mlp_hyper_connection.block_inject_weight": 1966080,
+    "mlp_hyper_connection.input_mix_weight_down": 157286400,
+    "mlp_hyper_connection.input_mix_weight_up": 157286400,
+    "other_layer:ple.ple_embedding": 35,
+    "other_layer:ple.key_proj": 26214400,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_0": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_1": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_2": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_3": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_4": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_5": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_6": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_7": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_8": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_9": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_10": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_11": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_12": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_13": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_14": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_15": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_16": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_17": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_18": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_19": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_20": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_21": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_22": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_23": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_24": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_25": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_26": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_27": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_28": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_29": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_30": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_31": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_32": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_33": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_34": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_35": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_36": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_37": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_38": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_39": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_40": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_41": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_42": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_43": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_44": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_45": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_46": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_47": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_48": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_49": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_50": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_51": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_52": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_53": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_54": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_55": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_56": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_57": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_58": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_59": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_60": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_61": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_62": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_63": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_64": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_65": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_66": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_67": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_68": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_69": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_70": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_71": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_72": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_73": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_74": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_75": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_76": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_77": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_78": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_79": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_80": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_81": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_82": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_83": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_84": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_85": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_86": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_87": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_88": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_89": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_90": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_91": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_92": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_93": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_94": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_95": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_96": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_97": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_100": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_101": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_98": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_99": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_102": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_103": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_104": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_105": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_106": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_107": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_108": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_109": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_110": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_111": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_112": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_113": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_114": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_115": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_116": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_117": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_118": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_119": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_120": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_121": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_122": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_123": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_124": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_125": 400001920,
+    "other_layer:ple.conv1d": 40960,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_126": 400001920,
+    "other_layer:ple.ple_embedding.ngram_embedding.shard_127": 400001920,
+    "other_layer:ple.value_proj": 6553600,
+    "mtp_head": 2607150848,
+    "attention:self_attn.indexer.index_qk_proj": 19660800,
+    "attention:self_attn.k_proj": 15728640,
+    "attention:self_attn.o_proj": 188743680,
+    "attention:self_attn.q_proj": 377487360,
+    "attention:self_attn.v_proj": 15728640,
+    "token_embedding": 635699200,
+    "lm_head": 635699200
+  },
+  "by_layer": {
+    "-1": {
+      "norms": 10240,
+      "other": 6553600,
+      "vision_tower": 448931056,
+      "mtp_head": 19683840,
+      "token_embedding": 635699200,
+      "lm_head": 635699200
+    },
+    "0": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "1": {
+      "other_layer": 51239649315,
+      "norms": 51328,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "10": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "11": {
+      "other_layer": 6594560,
+      "norms": 21248,
+      "ffn": 2529405440,
+      "attention": 51445760
+    },
+    "12": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "13": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "14": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "15": {
+      "other_layer": 6594560,
+      "norms": 21248,
+      "ffn": 2529405440,
+      "attention": 51445760
+    },
+    "16": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "17": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "18": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "19": {
+      "other_layer": 6594560,
+      "norms": 21248,
+      "ffn": 2529405440,
+      "attention": 51445760
+    },
+    "2": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "20": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "21": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "22": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "23": {
+      "other_layer": 6594560,
+      "norms": 21248,
+      "ffn": 2529405440,
+      "attention": 51445760
+    },
+    "24": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "25": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "26": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "27": {
+      "other_layer": 6594560,
+      "norms": 21248,
+      "ffn": 2529405440,
+      "attention": 51445760
+    },
+    "28": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "29": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "3": {
+      "other_layer": 6594560,
+      "norms": 21248,
+      "ffn": 2529405440,
+      "attention": 51445760
+    },
+    "30": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "31": {
+      "other_layer": 6594560,
+      "norms": 21248,
+      "ffn": 2529405440,
+      "attention": 51445760
+    },
+    "32": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "33": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "34": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "35": {
+      "other_layer": 6594560,
+      "norms": 21248,
+      "ffn": 2529405440,
+      "attention": 51445760
+    },
+    "36": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "37": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "38": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "39": {
+      "other_layer": 6594560,
+      "norms": 21248,
+      "ffn": 2529405440,
+      "attention": 51445760
+    },
+    "4": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "40": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "41": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "42": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "43": {
+      "other_layer": 6594560,
+      "norms": 21248,
+      "ffn": 2529405440,
+      "attention": 51445760
+    },
+    "44": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "45": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "46": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "47": {
+      "other_layer": 6594560,
+      "norms": 21248,
+      "ffn": 2529405440,
+      "attention": 51445760
+    },
+    "5": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "6": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "7": {
+      "other_layer": 6594560,
+      "norms": 21248,
+      "ffn": 2529405440,
+      "attention": 51445760
+    },
+    "8": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    },
+    "9": {
+      "other_layer": 6594560,
+      "norms": 20608,
+      "linear_attention": 57958496,
+      "ffn": 2529405440
+    }
+  }
+}

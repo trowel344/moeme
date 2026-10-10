@@ -1,0 +1,24 @@
+{
+  "results": [
+    {
+      "model": "qwen3.8:latest",
+      "num_gpu": -1,
+      "num_predict": 6,
+      "wall_s": 82.3569334440399,
+      "peak_vram_mib": 6884,
+      "peak_ram_used_bytes": 8527200256,
+      "min_ram_available_bytes": 7924580352,
+      "error": null,
+      "eval_count": 6,
+      "prompt_eval_count": 40,
+      "load_s": 46.761087243,
+      "prompt_eval_s": 24.855309,
+      "decode_s": 10.691172,
+      "decode_tok_s": 0.5612106885942907,
+      "prefill_tok_s": 1.609314130836193,
+      "ttft_s": 71.616396243,
+      "response_chars": 0,
+      "response_preview": ""
+    }
+  ]
+}

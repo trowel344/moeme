@@ -1,0 +1,3914 @@
+{
+  "model": "Qwen/Qwen3.5-0.8B",
+  "layers": {
+    "0": {
+      "geometry": {
+        "hidden": 1024,
+        "intermediate": 3584
+      },
+      "n_tokens": 512,
+      "n_train": 256,
+      "exactness_rel_error": 3.29910307073078e-07,
+      "contiguous_E8": {
+        "expert_sizes": {
+          "min": 448,
+          "max": 448,
+          "mean": 448.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.125
+        },
+        "concentration": {
+          "n_experts": 8,
+          "participation_ratio": 5.747623920440674,
+          "top1_energy_share": 0.30919507145881653,
+          "entropy_normalised": 0.9211699962615967
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.7459490895271301,
+            "median_rel_residual": 0.7778328657150269,
+            "p90_rel_residual": 0.8792790174484253,
+            "max_rel_residual": 0.947343111038208,
+            "rms_rel_residual": 0.7558609247207642
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.6331414580345154,
+            "median_rel_residual": 0.6449053287506104,
+            "p90_rel_residual": 0.7888965606689453,
+            "max_rel_residual": 0.8681551814079285,
+            "rms_rel_residual": 0.6445702910423279
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "active_fraction": 0.5,
+            "mean_rel_residual": 0.4742056429386139,
+            "median_rel_residual": 0.47537797689437866,
+            "p90_rel_residual": 0.6163955926895142,
+            "max_rel_residual": 0.665298581123352,
+            "rms_rel_residual": 0.4859781563282013
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "active_fraction": 1.0,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0,
+            "max_rel_residual": 0.0,
+            "rms_rel_residual": 0.0
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "mean_rel_residual": 0.7791000604629517,
+            "median_rel_residual": 0.8245112895965576,
+            "p90_rel_residual": 0.9285602569580078
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "mean_rel_residual": 0.6943135857582092,
+            "median_rel_residual": 0.7116063833236694,
+            "p90_rel_residual": 0.8494086861610413
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "mean_rel_residual": 0.5436133146286011,
+            "median_rel_residual": 0.5470138788223267,
+            "p90_rel_residual": 0.6919142603874207
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0
+          }
+        },
+        "router_top1_accuracy": 0.7109375
+      },
+      "contiguous_E32": {
+        "expert_sizes": {
+          "min": 112,
+          "max": 112,
+          "mean": 112.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.03125
+        },
+        "concentration": {
+          "n_experts": 32,
+          "participation_ratio": 21.971996307373047,
+          "top1_energy_share": 0.09906956553459167,
+          "entropy_normalised": 0.9475051164627075
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.8351889848709106,
+            "median_rel_residual": 0.852209210395813,
+            "p90_rel_residual": 0.949743390083313,
+            "max_rel_residual": 0.9777432084083557,
+            "rms_rel_residual": 0.8414418697357178
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.7690903544425964,
+            "median_rel_residual": 0.771399974822998,
+            "p90_rel_residual": 0.9088201522827148,
+            "max_rel_residual": 0.950920820236206,
+            "rms_rel_residual": 0.7772876024246216
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.6954913139343262,
+            "median_rel_residual": 0.7037119269371033,
+            "p90_rel_residual": 0.8505311012268066,
+            "max_rel_residual": 0.9137712717056274,
+            "rms_rel_residual": 0.7055087685585022
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.6028337478637695,
+            "median_rel_residual": 0.6097391843795776,
+            "p90_rel_residual": 0.7564818263053894,
+            "max_rel_residual": 0.8231956958770752,
+            "rms_rel_residual": 0.6136763095855713
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "mean_rel_residual": 0.8954606056213379,
+            "median_rel_residual": 0.9287658333778381,
+            "p90_rel_residual": 0.9872993230819702
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "mean_rel_residual": 0.8536353707313538,
+            "median_rel_residual": 0.8923166990280151,
+            "p90_rel_residual": 0.9627468585968018
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "mean_rel_residual": 0.7994009256362915,
+            "median_rel_residual": 0.8357563018798828,
+            "p90_rel_residual": 0.9109734296798706
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "mean_rel_residual": 0.7080807685852051,
+            "median_rel_residual": 0.7328915596008301,
+            "p90_rel_residual": 0.8506011366844177
+          }
+        },
+        "router_top1_accuracy": 0.44140625
+      },
+      "contiguous_E64": {
+        "expert_sizes": {
+          "min": 56,
+          "max": 56,
+          "mean": 56.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.015625
+        },
+        "concentration": {
+          "n_experts": 64,
+          "participation_ratio": 38.03034973144531,
+          "top1_energy_share": 0.07045340538024902,
+          "entropy_normalised": 0.9430295825004578
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 64,
+            "active_fraction": 0.015625,
+            "mean_rel_residual": 0.8622010946273804,
+            "median_rel_residual": 0.8792535066604614,
+            "p90_rel_residual": 0.9639480113983154,
+            "max_rel_residual": 0.9868420958518982,
+            "rms_rel_residual": 0.8678843975067139
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 64,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.80091392993927,
+            "median_rel_residual": 0.8105230927467346,
+            "p90_rel_residual": 0.9332374334335327,
+            "max_rel_residual": 0.976505696773529,
+            "rms_rel_residual": 0.808408260345459
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 64,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.7439969778060913,
+            "median_rel_residual": 0.7465805411338806,
+            "p90_rel_residual": 0.8920461535453796,
+            "max_rel_residual": 0.9349584579467773,
+            "rms_rel_residual": 0.7530770897865295
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 64,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.6806066632270813,
+            "median_rel_residual": 0.684649646282196,
+            "p90_rel_residual": 0.834819495677948,
+            "max_rel_residual": 0.8771265149116516,
+            "rms_rel_residual": 0.6905958652496338
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9264939427375793,
+            "median_rel_residual": 0.9518603086471558,
+            "p90_rel_residual": 0.9955683946609497
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 64,
+            "mean_rel_residual": 0.8934224843978882,
+            "median_rel_residual": 0.9268607497215271,
+            "p90_rel_residual": 0.985748291015625
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 64,
+            "mean_rel_residual": 0.8571112155914307,
+            "median_rel_residual": 0.8944960832595825,
+            "p90_rel_residual": 0.9543605446815491
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 64,
+            "mean_rel_residual": 0.8067373037338257,
+            "median_rel_residual": 0.8429646492004395,
+            "p90_rel_residual": 0.916370689868927
+          }
+        },
+        "router_top1_accuracy": 0.34765625
+      },
+      "interleaved_E8": {
+        "expert_sizes": {
+          "min": 448,
+          "max": 448,
+          "mean": 448.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.125
+        },
+        "concentration": {
+          "n_experts": 8,
+          "participation_ratio": 7.798147678375244,
+          "top1_energy_share": 0.16169577836990356,
+          "entropy_normalised": 0.9938623905181885
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.8219712376594543,
+            "median_rel_residual": 0.8421130776405334,
+            "p90_rel_residual": 0.9092830419540405,
+            "max_rel_residual": 0.9404354095458984,
+            "rms_rel_residual": 0.8265780210494995
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.7095888257026672,
+            "median_rel_residual": 0.7187470197677612,
+            "p90_rel_residual": 0.8150173425674438,
+            "max_rel_residual": 0.8597790598869324,
+            "rms_rel_residual": 0.7153455018997192
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "active_fraction": 0.5,
+            "mean_rel_residual": 0.5331347584724426,
+            "median_rel_residual": 0.5411080121994019,
+            "p90_rel_residual": 0.6364214420318604,
+            "max_rel_residual": 0.7013271450996399,
+            "rms_rel_residual": 0.5395194888114929
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "active_fraction": 1.0,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0,
+            "max_rel_residual": 0.0,
+            "rms_rel_residual": 0.0
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "mean_rel_residual": 0.8854377269744873,
+            "median_rel_residual": 0.9143845438957214,
+            "p90_rel_residual": 0.9542092084884644
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "mean_rel_residual": 0.7958354353904724,
+            "median_rel_residual": 0.8190951943397522,
+            "p90_rel_residual": 0.900880753993988
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "mean_rel_residual": 0.6324024796485901,
+            "median_rel_residual": 0.6448841691017151,
+            "p90_rel_residual": 0.7621333599090576
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0
+          }
+        },
+        "router_top1_accuracy": 0.3828125
+      },
+      "interleaved_E32": {
+        "expert_sizes": {
+          "min": 112,
+          "max": 112,
+          "mean": 112.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.03125
+        },
+        "concentration": {
+          "n_experts": 32,
+          "participation_ratio": 28.75421142578125,
+          "top1_energy_share": 0.062217485159635544,
+          "entropy_normalised": 0.9850592017173767
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.8737843036651611,
+            "median_rel_residual": 0.9010239839553833,
+            "p90_rel_residual": 0.9611954689025879,
+            "max_rel_residual": 0.982990562915802,
+            "rms_rel_residual": 0.8787898421287537
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.815186619758606,
+            "median_rel_residual": 0.8324847221374512,
+            "p90_rel_residual": 0.9284439086914062,
+            "max_rel_residual": 0.9687491059303284,
+            "rms_rel_residual": 0.8214482665061951
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.746340274810791,
+            "median_rel_residual": 0.7562623620033264,
+            "p90_rel_residual": 0.8769453763961792,
+            "max_rel_residual": 0.9166986346244812,
+            "rms_rel_residual": 0.7536532878875732
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.6517484188079834,
+            "median_rel_residual": 0.6585553288459778,
+            "p90_rel_residual": 0.7846077084541321,
+            "max_rel_residual": 0.8301944136619568,
+            "rms_rel_residual": 0.6594929695129395
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "mean_rel_residual": 0.9349688291549683,
+            "median_rel_residual": 0.9651873707771301,
+            "p90_rel_residual": 0.9909027814865112
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "mean_rel_residual": 0.9042613506317139,
+            "median_rel_residual": 0.9383577108383179,
+            "p90_rel_residual": 0.9777439832687378
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "mean_rel_residual": 0.8543558120727539,
+            "median_rel_residual": 0.8850086331367493,
+            "p90_rel_residual": 0.9475047588348389
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "mean_rel_residual": 0.7782472968101501,
+            "median_rel_residual": 0.7973920702934265,
+            "p90_rel_residual": 0.8877301216125488
+          }
+        },
+        "router_top1_accuracy": 0.328125
+      },
+      "interleaved_E64": {
+        "expert_sizes": {
+          "min": 56,
+          "max": 56,
+          "mean": 56.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.015625
+        },
+        "concentration": {
+          "n_experts": 64,
+          "participation_ratio": 50.852210998535156,
+          "top1_energy_share": 0.049423206597566605,
+          "entropy_normalised": 0.9752820730209351
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 64,
+            "active_fraction": 0.015625,
+            "mean_rel_residual": 0.8824977874755859,
+            "median_rel_residual": 0.9092878699302673,
+            "p90_rel_residual": 0.9724651575088501,
+            "max_rel_residual": 1.0015753507614136,
+            "rms_rel_residual": 0.8876314163208008
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 64,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.829605221748352,
+            "median_rel_residual": 0.8462501168251038,
+            "p90_rel_residual": 0.9466463327407837,
+            "max_rel_residual": 0.9760805368423462,
+            "rms_rel_residual": 0.8360665440559387
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 64,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.776267945766449,
+            "median_rel_residual": 0.7819292545318604,
+            "p90_rel_residual": 0.9076160192489624,
+            "max_rel_residual": 0.9491974711418152,
+            "rms_rel_residual": 0.7837824821472168
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 64,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.7176473736763,
+            "median_rel_residual": 0.7183915376663208,
+            "p90_rel_residual": 0.8513078689575195,
+            "max_rel_residual": 0.9140446782112122,
+            "rms_rel_residual": 0.7257117629051208
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9407179355621338,
+            "median_rel_residual": 0.9709521532058716,
+            "p90_rel_residual": 0.9962707757949829
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9196113348007202,
+            "median_rel_residual": 0.9523181915283203,
+            "p90_rel_residual": 0.9893631935119629
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 64,
+            "mean_rel_residual": 0.8898515701293945,
+            "median_rel_residual": 0.9219433069229126,
+            "p90_rel_residual": 0.9734014272689819
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 64,
+            "mean_rel_residual": 0.8515359163284302,
+            "median_rel_residual": 0.8766250610351562,
+            "p90_rel_residual": 0.9435878992080688
+          }
+        },
+        "router_top1_accuracy": 0.30859375
+      },
+      "random_E8": {
+        "expert_sizes": {
+          "min": 448,
+          "max": 448,
+          "mean": 448.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.125
+        },
+        "concentration": {
+          "n_experts": 8,
+          "participation_ratio": 7.678413391113281,
+          "top1_energy_share": 0.1767643690109253,
+          "entropy_normalised": 0.9902209639549255
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.8193405866622925,
+            "median_rel_residual": 0.8428105115890503,
+            "p90_rel_residual": 0.9054023623466492,
+            "max_rel_residual": 0.9590780138969421,
+            "rms_rel_residual": 0.824521541595459
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.7075440883636475,
+            "median_rel_residual": 0.7208290100097656,
+            "p90_rel_residual": 0.8100473880767822,
+            "max_rel_residual": 0.8626390695571899,
+            "rms_rel_residual": 0.7135187387466431
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "active_fraction": 0.5,
+            "mean_rel_residual": 0.5334572792053223,
+            "median_rel_residual": 0.5352632999420166,
+            "p90_rel_residual": 0.6344279050827026,
+            "max_rel_residual": 0.6856728792190552,
+            "rms_rel_residual": 0.539695143699646
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "active_fraction": 1.0,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0,
+            "max_rel_residual": 0.0,
+            "rms_rel_residual": 0.0
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "mean_rel_residual": 0.8926818370819092,
+            "median_rel_residual": 0.9112234115600586,
+            "p90_rel_residual": 0.9658154249191284
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "mean_rel_residual": 0.7914602756500244,
+            "median_rel_residual": 0.8159749507904053,
+            "p90_rel_residual": 0.8970508575439453
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "mean_rel_residual": 0.6208068132400513,
+            "median_rel_residual": 0.6338818073272705,
+            "p90_rel_residual": 0.7550384402275085
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0
+          }
+        },
+        "router_top1_accuracy": 0.34375
+      },
+      "random_E32": {
+        "expert_sizes": {
+          "min": 112,
+          "max": 112,
+          "mean": 112.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.03125
+        },
+        "concentration": {
+          "n_experts": 32,
+          "participation_ratio": 27.666357040405273,
+          "top1_energy_share": 0.07559116184711456,
+          "entropy_normalised": 0.980484127998352
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.8738458156585693,
+            "median_rel_residual": 0.9038259387016296,
+            "p90_rel_residual": 0.95969557762146,
+            "max_rel_residual": 1.0024852752685547,
+            "rms_rel_residual": 0.8790238499641418
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.8144670724868774,
+            "median_rel_residual": 0.8303934931755066,
+            "p90_rel_residual": 0.9241781234741211,
+            "max_rel_residual": 0.9811421632766724,
+            "rms_rel_residual": 0.8208131194114685
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.7434234619140625,
+            "median_rel_residual": 0.7522539496421814,
+            "p90_rel_residual": 0.8686067461967468,
+            "max_rel_residual": 0.9497652053833008,
+            "rms_rel_residual": 0.7507948875427246
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.65004563331604,
+            "median_rel_residual": 0.6581329703330994,
+            "p90_rel_residual": 0.7725766897201538,
+            "max_rel_residual": 0.8398601412773132,
+            "rms_rel_residual": 0.6577972173690796
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "mean_rel_residual": 0.9364083409309387,
+            "median_rel_residual": 0.9602824449539185,
+            "p90_rel_residual": 0.9932314157485962
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "mean_rel_residual": 0.8975719809532166,
+            "median_rel_residual": 0.9251316785812378,
+            "p90_rel_residual": 0.9770377278327942
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "mean_rel_residual": 0.8556725978851318,
+            "median_rel_residual": 0.8815441131591797,
+            "p90_rel_residual": 0.9459953308105469
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "mean_rel_residual": 0.7875227332115173,
+            "median_rel_residual": 0.8020945191383362,
+            "p90_rel_residual": 0.8913171291351318
+          }
+        },
+        "router_top1_accuracy": 0.3125
+      },
+      "random_E64": {
+        "expert_sizes": {
+          "min": 56,
+          "max": 56,
+          "mean": 56.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.015625
+        },
+        "concentration": {
+          "n_experts": 64,
+          "participation_ratio": 49.297027587890625,
+          "top1_energy_share": 0.05176527425646782,
+          "entropy_normalised": 0.9719243049621582
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 64,
+            "active_fraction": 0.015625,
+            "mean_rel_residual": 0.8829666376113892,
+            "median_rel_residual": 0.9154725074768066,
+            "p90_rel_residual": 0.9707610607147217,
+            "max_rel_residual": 0.9973745942115784,
+            "rms_rel_residual": 0.8881834745407104
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 64,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.8314673900604248,
+            "median_rel_residual": 0.8463054895401001,
+            "p90_rel_residual": 0.9443938732147217,
+            "max_rel_residual": 0.9819658994674683,
+            "rms_rel_residual": 0.8378540277481079
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 64,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.7765851616859436,
+            "median_rel_residual": 0.7844551205635071,
+            "p90_rel_residual": 0.907692551612854,
+            "max_rel_residual": 0.9584941864013672,
+            "rms_rel_residual": 0.7839580774307251
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 64,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.7163523435592651,
+            "median_rel_residual": 0.7224417924880981,
+            "p90_rel_residual": 0.8484745025634766,
+            "max_rel_residual": 0.9168180227279663,
+            "rms_rel_residual": 0.7241841554641724
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9452755451202393,
+            "median_rel_residual": 0.9670432806015015,
+            "p90_rel_residual": 0.9972121715545654
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9140381217002869,
+            "median_rel_residual": 0.9431396126747131,
+            "p90_rel_residual": 0.9896242618560791
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 64,
+            "mean_rel_residual": 0.8835829496383667,
+            "median_rel_residual": 0.913227379322052,
+            "p90_rel_residual": 0.9719105958938599
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 64,
+            "mean_rel_residual": 0.8440924882888794,
+            "median_rel_residual": 0.8709191679954529,
+            "p90_rel_residual": 0.9362059831619263
+          }
+        },
+        "router_top1_accuracy": 0.31640625
+      },
+      "clustered_E8": {
+        "expert_sizes": {
+          "min": 1,
+          "max": 1349,
+          "mean": 448.0,
+          "max_over_mean": 3.0111606121063232,
+          "largest_share": 0.3763950765132904
+        },
+        "concentration": {
+          "n_experts": 8,
+          "participation_ratio": 4.087395668029785,
+          "top1_energy_share": 0.28855982422828674,
+          "entropy_normalised": 0.7176511883735657
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.7371629476547241,
+            "median_rel_residual": 0.7594336271286011,
+            "p90_rel_residual": 0.813321590423584,
+            "max_rel_residual": 0.8703296780586243,
+            "rms_rel_residual": 0.7409735321998596
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.5328555107116699,
+            "median_rel_residual": 0.5407305955886841,
+            "p90_rel_residual": 0.6131370067596436,
+            "max_rel_residual": 0.7157667279243469,
+            "rms_rel_residual": 0.5369330644607544
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "active_fraction": 0.5,
+            "mean_rel_residual": 0.14474369585514069,
+            "median_rel_residual": 0.13803698122501373,
+            "p90_rel_residual": 0.18269707262516022,
+            "max_rel_residual": 0.3672180771827698,
+            "rms_rel_residual": 0.1505405455827713
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "active_fraction": 1.0,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0,
+            "max_rel_residual": 0.0,
+            "rms_rel_residual": 0.0
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "mean_rel_residual": 0.7937923669815063,
+            "median_rel_residual": 0.7966300845146179,
+            "p90_rel_residual": 0.8882662057876587
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "mean_rel_residual": 0.5879424810409546,
+            "median_rel_residual": 0.5792900323867798,
+            "p90_rel_residual": 0.7000464200973511
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "mean_rel_residual": 0.15962031483650208,
+            "median_rel_residual": 0.13983723521232605,
+            "p90_rel_residual": 0.19704028964042664
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0
+          }
+        },
+        "router_top1_accuracy": 0.53125
+      },
+      "clustered_E32": {
+        "expert_sizes": {
+          "min": 1,
+          "max": 971,
+          "mean": 112.0,
+          "max_over_mean": 8.669642448425293,
+          "largest_share": 0.2709263265132904
+        },
+        "concentration": {
+          "n_experts": 32,
+          "participation_ratio": 7.934622764587402,
+          "top1_energy_share": 0.24751965701580048,
+          "entropy_normalised": 0.6930234432220459
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.7963608503341675,
+            "median_rel_residual": 0.8163776993751526,
+            "p90_rel_residual": 0.8671193718910217,
+            "max_rel_residual": 0.9299474954605103,
+            "rms_rel_residual": 0.800356388092041
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.6678997278213501,
+            "median_rel_residual": 0.6741929054260254,
+            "p90_rel_residual": 0.7545132637023926,
+            "max_rel_residual": 0.8311939239501953,
+            "rms_rel_residual": 0.6723311543464661
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.48480749130249023,
+            "median_rel_residual": 0.4955187439918518,
+            "p90_rel_residual": 0.5635842680931091,
+            "max_rel_residual": 0.6559408903121948,
+            "rms_rel_residual": 0.4899700880050659
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.27655166387557983,
+            "median_rel_residual": 0.2796546518802643,
+            "p90_rel_residual": 0.3385828137397766,
+            "max_rel_residual": 0.3878439664840698,
+            "rms_rel_residual": 0.2803991436958313
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "mean_rel_residual": 0.8349719643592834,
+            "median_rel_residual": 0.8469153046607971,
+            "p90_rel_residual": 0.9177333116531372
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "mean_rel_residual": 0.7146979570388794,
+            "median_rel_residual": 0.717312753200531,
+            "p90_rel_residual": 0.833925724029541
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "mean_rel_residual": 0.6207332015037537,
+            "median_rel_residual": 0.6154374480247498,
+            "p90_rel_residual": 0.7506717443466187
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "mean_rel_residual": 0.41725683212280273,
+            "median_rel_residual": 0.40363258123397827,
+            "p90_rel_residual": 0.5434918403625488
+          }
+        },
+        "router_top1_accuracy": 0.68359375
+      }
+    },
+    "3": {
+      "geometry": {
+        "hidden": 1024,
+        "intermediate": 3584
+      },
+      "n_tokens": 512,
+      "n_train": 256,
+      "exactness_rel_error": 3.535604946591775e-07,
+      "contiguous_E8": {
+        "expert_sizes": {
+          "min": 448,
+          "max": 448,
+          "mean": 448.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.125
+        },
+        "concentration": {
+          "n_experts": 8,
+          "participation_ratio": 7.269322872161865,
+          "top1_energy_share": 0.21605640649795532,
+          "entropy_normalised": 0.9783630967140198
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.8458957672119141,
+            "median_rel_residual": 0.8670047521591187,
+            "p90_rel_residual": 0.9099410772323608,
+            "max_rel_residual": 0.9399070143699646,
+            "rms_rel_residual": 0.8482679724693298
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.754593014717102,
+            "median_rel_residual": 0.7662449479103088,
+            "p90_rel_residual": 0.8204696178436279,
+            "max_rel_residual": 0.8580340147018433,
+            "rms_rel_residual": 0.7570198178291321
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "active_fraction": 0.5,
+            "mean_rel_residual": 0.5801247358322144,
+            "median_rel_residual": 0.5891324281692505,
+            "p90_rel_residual": 0.6393324732780457,
+            "max_rel_residual": 0.6871559619903564,
+            "rms_rel_residual": 0.5822360515594482
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "active_fraction": 1.0,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0,
+            "max_rel_residual": 0.0,
+            "rms_rel_residual": 0.0
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "mean_rel_residual": 0.871580183506012,
+            "median_rel_residual": 0.8873391151428223,
+            "p90_rel_residual": 0.9417189359664917
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "mean_rel_residual": 0.7850227952003479,
+            "median_rel_residual": 0.7907987236976624,
+            "p90_rel_residual": 0.8625688552856445
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "mean_rel_residual": 0.6199268102645874,
+            "median_rel_residual": 0.622421145439148,
+            "p90_rel_residual": 0.6926614046096802
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0
+          }
+        },
+        "router_top1_accuracy": 0.59765625
+      },
+      "contiguous_E32": {
+        "expert_sizes": {
+          "min": 112,
+          "max": 112,
+          "mean": 112.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.03125
+        },
+        "concentration": {
+          "n_experts": 32,
+          "participation_ratio": 27.98958969116211,
+          "top1_energy_share": 0.07430636882781982,
+          "entropy_normalised": 0.9824020862579346
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.9138369560241699,
+            "median_rel_residual": 0.9306604862213135,
+            "p90_rel_residual": 0.9694456458091736,
+            "max_rel_residual": 0.9850313067436218,
+            "rms_rel_residual": 0.9158396124839783
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.8744657039642334,
+            "median_rel_residual": 0.8941081762313843,
+            "p90_rel_residual": 0.9390555620193481,
+            "max_rel_residual": 0.9667954444885254,
+            "rms_rel_residual": 0.8768956065177917
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.819237232208252,
+            "median_rel_residual": 0.8356108069419861,
+            "p90_rel_residual": 0.885836660861969,
+            "max_rel_residual": 0.9216089844703674,
+            "rms_rel_residual": 0.8216884732246399
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.7274850606918335,
+            "median_rel_residual": 0.7354137897491455,
+            "p90_rel_residual": 0.7933701276779175,
+            "max_rel_residual": 0.8294470310211182,
+            "rms_rel_residual": 0.7298404574394226
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "mean_rel_residual": 0.9469807147979736,
+            "median_rel_residual": 0.9666325449943542,
+            "p90_rel_residual": 0.989495575428009
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "mean_rel_residual": 0.915485143661499,
+            "median_rel_residual": 0.933177649974823,
+            "p90_rel_residual": 0.9708272814750671
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "mean_rel_residual": 0.8725831508636475,
+            "median_rel_residual": 0.888617753982544,
+            "p90_rel_residual": 0.9364093542098999
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "mean_rel_residual": 0.7941085696220398,
+            "median_rel_residual": 0.8013145923614502,
+            "p90_rel_residual": 0.8691749572753906
+          }
+        },
+        "router_top1_accuracy": 0.36328125
+      },
+      "contiguous_E64": {
+        "expert_sizes": {
+          "min": 56,
+          "max": 56,
+          "mean": 56.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.015625
+        },
+        "concentration": {
+          "n_experts": 64,
+          "participation_ratio": 53.35203552246094,
+          "top1_energy_share": 0.04978645220398903,
+          "entropy_normalised": 0.9811711311340332
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 64,
+            "active_fraction": 0.015625,
+            "mean_rel_residual": 0.9265626072883606,
+            "median_rel_residual": 0.9470704793930054,
+            "p90_rel_residual": 0.978476881980896,
+            "max_rel_residual": 1.0018949508666992,
+            "rms_rel_residual": 0.9284412860870361
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 64,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.8949524760246277,
+            "median_rel_residual": 0.9148293733596802,
+            "p90_rel_residual": 0.956652045249939,
+            "max_rel_residual": 0.9850313067436218,
+            "rms_rel_residual": 0.8972302079200745
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 64,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.8567858934402466,
+            "median_rel_residual": 0.8698225617408752,
+            "p90_rel_residual": 0.9222095012664795,
+            "max_rel_residual": 0.9629706740379333,
+            "rms_rel_residual": 0.8591451644897461
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 64,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.8020217418670654,
+            "median_rel_residual": 0.8154333829879761,
+            "p90_rel_residual": 0.8698429465293884,
+            "max_rel_residual": 0.9040651321411133,
+            "rms_rel_residual": 0.8044259548187256
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9595881700515747,
+            "median_rel_residual": 0.9770430326461792,
+            "p90_rel_residual": 0.9959834814071655
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9409801363945007,
+            "median_rel_residual": 0.9580913186073303,
+            "p90_rel_residual": 0.9854279160499573
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9122030138969421,
+            "median_rel_residual": 0.9279464483261108,
+            "p90_rel_residual": 0.9685384035110474
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 64,
+            "mean_rel_residual": 0.8724466562271118,
+            "median_rel_residual": 0.8863995671272278,
+            "p90_rel_residual": 0.9348267316818237
+          }
+        },
+        "router_top1_accuracy": 0.30859375
+      },
+      "interleaved_E8": {
+        "expert_sizes": {
+          "min": 448,
+          "max": 448,
+          "mean": 448.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.125
+        },
+        "concentration": {
+          "n_experts": 8,
+          "participation_ratio": 7.932280540466309,
+          "top1_energy_share": 0.15201528370380402,
+          "entropy_normalised": 0.9980244040489197
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.881281852722168,
+            "median_rel_residual": 0.8966405987739563,
+            "p90_rel_residual": 0.9297951459884644,
+            "max_rel_residual": 0.9482908844947815,
+            "rms_rel_residual": 0.8828548192977905
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.7914286851882935,
+            "median_rel_residual": 0.8034986257553101,
+            "p90_rel_residual": 0.8492723703384399,
+            "max_rel_residual": 0.877791166305542,
+            "rms_rel_residual": 0.7933392524719238
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "active_fraction": 0.5,
+            "mean_rel_residual": 0.6173536777496338,
+            "median_rel_residual": 0.6243048906326294,
+            "p90_rel_residual": 0.6720166206359863,
+            "max_rel_residual": 0.7065674066543579,
+            "rms_rel_residual": 0.6192200779914856
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "active_fraction": 1.0,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0,
+            "max_rel_residual": 0.0,
+            "rms_rel_residual": 0.0
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "mean_rel_residual": 0.9238860607147217,
+            "median_rel_residual": 0.9304395318031311,
+            "p90_rel_residual": 0.9597641825675964
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "mean_rel_residual": 0.8509239554405212,
+            "median_rel_residual": 0.8565017580986023,
+            "p90_rel_residual": 0.9040934443473816
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "mean_rel_residual": 0.6818788051605225,
+            "median_rel_residual": 0.6855748891830444,
+            "p90_rel_residual": 0.7468074560165405
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0
+          }
+        },
+        "router_top1_accuracy": 0.21484375
+      },
+      "interleaved_E32": {
+        "expert_sizes": {
+          "min": 112,
+          "max": 112,
+          "mean": 112.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.03125
+        },
+        "concentration": {
+          "n_experts": 32,
+          "participation_ratio": 31.12274932861328,
+          "top1_energy_share": 0.05320584028959274,
+          "entropy_normalised": 0.9963058233261108
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.9324213862419128,
+            "median_rel_residual": 0.9499976634979248,
+            "p90_rel_residual": 0.9771631956100464,
+            "max_rel_residual": 1.0215322971343994,
+            "rms_rel_residual": 0.9340663552284241
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.8970510959625244,
+            "median_rel_residual": 0.911946177482605,
+            "p90_rel_residual": 0.9516350626945496,
+            "max_rel_residual": 0.9821426868438721,
+            "rms_rel_residual": 0.8989603519439697
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.8423708081245422,
+            "median_rel_residual": 0.8558719754219055,
+            "p90_rel_residual": 0.9038631916046143,
+            "max_rel_residual": 0.9444577693939209,
+            "rms_rel_residual": 0.844508171081543
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.749636709690094,
+            "median_rel_residual": 0.7596210241317749,
+            "p90_rel_residual": 0.8111376762390137,
+            "max_rel_residual": 0.8425524234771729,
+            "rms_rel_residual": 0.7517291903495789
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "mean_rel_residual": 0.9732385873794556,
+            "median_rel_residual": 0.9819915890693665,
+            "p90_rel_residual": 0.9943822622299194
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "mean_rel_residual": 0.9518859386444092,
+            "median_rel_residual": 0.9633071422576904,
+            "p90_rel_residual": 0.9816829562187195
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "mean_rel_residual": 0.9118187427520752,
+            "median_rel_residual": 0.925810694694519,
+            "p90_rel_residual": 0.9561207890510559
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "mean_rel_residual": 0.8369889259338379,
+            "median_rel_residual": 0.8474007844924927,
+            "p90_rel_residual": 0.8996687531471252
+          }
+        },
+        "router_top1_accuracy": 0.1640625
+      },
+      "interleaved_E64": {
+        "expert_sizes": {
+          "min": 56,
+          "max": 56,
+          "mean": 56.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.015625
+        },
+        "concentration": {
+          "n_experts": 64,
+          "participation_ratio": 59.9680290222168,
+          "top1_energy_share": 0.03638594597578049,
+          "entropy_normalised": 0.9930666089057922
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 64,
+            "active_fraction": 0.015625,
+            "mean_rel_residual": 0.9407786726951599,
+            "median_rel_residual": 0.9597654938697815,
+            "p90_rel_residual": 0.9853044748306274,
+            "max_rel_residual": 1.0245987176895142,
+            "rms_rel_residual": 0.9424713850021362
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 64,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.9149173498153687,
+            "median_rel_residual": 0.9322226643562317,
+            "p90_rel_residual": 0.9694525003433228,
+            "max_rel_residual": 0.9916417598724365,
+            "rms_rel_residual": 0.9168659448623657
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 64,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.8780381679534912,
+            "median_rel_residual": 0.8903791904449463,
+            "p90_rel_residual": 0.9408374428749084,
+            "max_rel_residual": 0.9813385605812073,
+            "rms_rel_residual": 0.8802066445350647
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 64,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.820992112159729,
+            "median_rel_residual": 0.8323230147361755,
+            "p90_rel_residual": 0.8879152536392212,
+            "max_rel_residual": 0.9462109208106995,
+            "rms_rel_residual": 0.8232508897781372
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9808056950569153,
+            "median_rel_residual": 0.9900315403938293,
+            "p90_rel_residual": 0.9976067543029785
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9696153402328491,
+            "median_rel_residual": 0.9789841175079346,
+            "p90_rel_residual": 0.9922224283218384
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 64,
+            "mean_rel_residual": 0.950769305229187,
+            "median_rel_residual": 0.9615968465805054,
+            "p90_rel_residual": 0.978912353515625
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9134219884872437,
+            "median_rel_residual": 0.9248608350753784,
+            "p90_rel_residual": 0.9530462026596069
+          }
+        },
+        "router_top1_accuracy": 0.14453125
+      },
+      "random_E8": {
+        "expert_sizes": {
+          "min": 448,
+          "max": 448,
+          "mean": 448.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.125
+        },
+        "concentration": {
+          "n_experts": 8,
+          "participation_ratio": 7.933994293212891,
+          "top1_energy_share": 0.14989013969898224,
+          "entropy_normalised": 0.9980430603027344
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.8766739368438721,
+            "median_rel_residual": 0.8897380232810974,
+            "p90_rel_residual": 0.9258918762207031,
+            "max_rel_residual": 0.9549688696861267,
+            "rms_rel_residual": 0.8783324956893921
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.7868540287017822,
+            "median_rel_residual": 0.7993078231811523,
+            "p90_rel_residual": 0.8413912653923035,
+            "max_rel_residual": 0.864457368850708,
+            "rms_rel_residual": 0.7886323928833008
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "active_fraction": 0.5,
+            "mean_rel_residual": 0.6124120950698853,
+            "median_rel_residual": 0.6211233735084534,
+            "p90_rel_residual": 0.660758376121521,
+            "max_rel_residual": 0.7125313878059387,
+            "rms_rel_residual": 0.6140528917312622
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "active_fraction": 1.0,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0,
+            "max_rel_residual": 0.0,
+            "rms_rel_residual": 0.0
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "mean_rel_residual": 0.919798731803894,
+            "median_rel_residual": 0.9289882779121399,
+            "p90_rel_residual": 0.9570924043655396
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "mean_rel_residual": 0.8484948873519897,
+            "median_rel_residual": 0.8540211915969849,
+            "p90_rel_residual": 0.9073406457901001
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "mean_rel_residual": 0.6795331239700317,
+            "median_rel_residual": 0.6737884879112244,
+            "p90_rel_residual": 0.7613335847854614
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0
+          }
+        },
+        "router_top1_accuracy": 0.2578125
+      },
+      "random_E32": {
+        "expert_sizes": {
+          "min": 112,
+          "max": 112,
+          "mean": 112.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.03125
+        },
+        "concentration": {
+          "n_experts": 32,
+          "participation_ratio": 31.138193130493164,
+          "top1_energy_share": 0.04578271135687828,
+          "entropy_normalised": 0.9961944222450256
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.9302095174789429,
+            "median_rel_residual": 0.9486279487609863,
+            "p90_rel_residual": 0.976703405380249,
+            "max_rel_residual": 1.0451503992080688,
+            "rms_rel_residual": 0.9319286346435547
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.8958626985549927,
+            "median_rel_residual": 0.909267008304596,
+            "p90_rel_residual": 0.9497874975204468,
+            "max_rel_residual": 1.0063539743423462,
+            "rms_rel_residual": 0.8978050351142883
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.8402156829833984,
+            "median_rel_residual": 0.8500568866729736,
+            "p90_rel_residual": 0.9032717943191528,
+            "max_rel_residual": 0.9261967539787292,
+            "rms_rel_residual": 0.8422698974609375
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.7471837401390076,
+            "median_rel_residual": 0.7537991404533386,
+            "p90_rel_residual": 0.811418890953064,
+            "max_rel_residual": 0.8513821959495544,
+            "rms_rel_residual": 0.7492129802703857
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "mean_rel_residual": 0.9696719646453857,
+            "median_rel_residual": 0.981353223323822,
+            "p90_rel_residual": 0.993375301361084
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "mean_rel_residual": 0.9485202431678772,
+            "median_rel_residual": 0.9602259397506714,
+            "p90_rel_residual": 0.9806444048881531
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "mean_rel_residual": 0.9109178185462952,
+            "median_rel_residual": 0.9230422973632812,
+            "p90_rel_residual": 0.9511926174163818
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "mean_rel_residual": 0.8315250873565674,
+            "median_rel_residual": 0.8406026363372803,
+            "p90_rel_residual": 0.8873037099838257
+          }
+        },
+        "router_top1_accuracy": 0.1796875
+      },
+      "random_E64": {
+        "expert_sizes": {
+          "min": 56,
+          "max": 56,
+          "mean": 56.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.015625
+        },
+        "concentration": {
+          "n_experts": 64,
+          "participation_ratio": 60.02946853637695,
+          "top1_energy_share": 0.03000660426914692,
+          "entropy_normalised": 0.99300217628479
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 64,
+            "active_fraction": 0.015625,
+            "mean_rel_residual": 0.9411871433258057,
+            "median_rel_residual": 0.9618478417396545,
+            "p90_rel_residual": 0.9859215021133423,
+            "max_rel_residual": 1.0519336462020874,
+            "rms_rel_residual": 0.9429161548614502
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 64,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.9143458604812622,
+            "median_rel_residual": 0.9292865991592407,
+            "p90_rel_residual": 0.9706196784973145,
+            "max_rel_residual": 1.0128754377365112,
+            "rms_rel_residual": 0.9163430333137512
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 64,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.8761411905288696,
+            "median_rel_residual": 0.8914371132850647,
+            "p90_rel_residual": 0.9405616521835327,
+            "max_rel_residual": 0.9664124846458435,
+            "rms_rel_residual": 0.8782866597175598
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 64,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.8166279792785645,
+            "median_rel_residual": 0.8287270665168762,
+            "p90_rel_residual": 0.8890324234962463,
+            "max_rel_residual": 0.9365441203117371,
+            "rms_rel_residual": 0.8189818859100342
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 64,
+            "mean_rel_residual": 0.979573667049408,
+            "median_rel_residual": 0.9895665645599365,
+            "p90_rel_residual": 0.9986764192581177
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9658223390579224,
+            "median_rel_residual": 0.9788209795951843,
+            "p90_rel_residual": 0.9927630424499512
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9445094466209412,
+            "median_rel_residual": 0.9562909007072449,
+            "p90_rel_residual": 0.9797119498252869
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9044526815414429,
+            "median_rel_residual": 0.9148629903793335,
+            "p90_rel_residual": 0.9481171369552612
+          }
+        },
+        "router_top1_accuracy": 0.15234375
+      },
+      "clustered_E8": {
+        "expert_sizes": {
+          "min": 1,
+          "max": 3009,
+          "mean": 448.0,
+          "max_over_mean": 6.716517925262451,
+          "largest_share": 0.8395647406578064
+        },
+        "concentration": {
+          "n_experts": 8,
+          "participation_ratio": 1.4517731666564941,
+          "top1_energy_share": 0.8076422214508057,
+          "entropy_normalised": 0.24005243182182312
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.4178394079208374,
+            "median_rel_residual": 0.3978153169155121,
+            "p90_rel_residual": 0.5327795743942261,
+            "max_rel_residual": 0.7299667596817017,
+            "rms_rel_residual": 0.42654767632484436
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.030403006821870804,
+            "median_rel_residual": 0.028900563716888428,
+            "p90_rel_residual": 0.04312276095151901,
+            "max_rel_residual": 0.13452135026454926,
+            "rms_rel_residual": 0.03338934853672981
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "active_fraction": 0.5,
+            "mean_rel_residual": 0.011781051754951477,
+            "median_rel_residual": 0.011389306746423244,
+            "p90_rel_residual": 0.01827475056052208,
+            "max_rel_residual": 0.034532543271780014,
+            "rms_rel_residual": 0.012942838482558727
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "active_fraction": 1.0,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0,
+            "max_rel_residual": 0.0,
+            "rms_rel_residual": 0.0
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "mean_rel_residual": 0.4202165901660919,
+            "median_rel_residual": 0.3978153169155121,
+            "p90_rel_residual": 0.5359519720077515
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "mean_rel_residual": 0.051536984741687775,
+            "median_rel_residual": 0.029469363391399384,
+            "p90_rel_residual": 0.0525369867682457
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "mean_rel_residual": 0.04564466327428818,
+            "median_rel_residual": 0.022177109494805336,
+            "p90_rel_residual": 0.04479110240936279
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0
+          }
+        },
+        "router_top1_accuracy": 0.984375
+      },
+      "clustered_E32": {
+        "expert_sizes": {
+          "min": 1,
+          "max": 2815,
+          "mean": 112.0,
+          "max_over_mean": 25.133928298950195,
+          "largest_share": 0.7854352593421936
+        },
+        "concentration": {
+          "n_experts": 32,
+          "participation_ratio": 1.6431750059127808,
+          "top1_energy_share": 0.7547644376754761,
+          "entropy_normalised": 0.21234413981437683
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.47626563906669617,
+            "median_rel_residual": 0.46250495314598083,
+            "p90_rel_residual": 0.5926607847213745,
+            "max_rel_residual": 0.7636733055114746,
+            "rms_rel_residual": 0.4830903708934784
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.21870027482509613,
+            "median_rel_residual": 0.20356856286525726,
+            "p90_rel_residual": 0.27728983759880066,
+            "max_rel_residual": 0.486176460981369,
+            "rms_rel_residual": 0.22597350180149078
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.07082715630531311,
+            "median_rel_residual": 0.07088422775268555,
+            "p90_rel_residual": 0.08560915291309357,
+            "max_rel_residual": 0.09795123338699341,
+            "rms_rel_residual": 0.07171614468097687
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.046093959361314774,
+            "median_rel_residual": 0.045504484325647354,
+            "p90_rel_residual": 0.05672029033303261,
+            "max_rel_residual": 0.07109691947698593,
+            "rms_rel_residual": 0.04682303965091705
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "mean_rel_residual": 0.47706085443496704,
+            "median_rel_residual": 0.46250495314598083,
+            "p90_rel_residual": 0.5926607847213745
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "mean_rel_residual": 0.21979498863220215,
+            "median_rel_residual": 0.20396819710731506,
+            "p90_rel_residual": 0.2854888439178467
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "mean_rel_residual": 0.21894684433937073,
+            "median_rel_residual": 0.2025836557149887,
+            "p90_rel_residual": 0.28503674268722534
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "mean_rel_residual": 0.08236055076122284,
+            "median_rel_residual": 0.07732322812080383,
+            "p90_rel_residual": 0.10374623537063599
+          }
+        },
+        "router_top1_accuracy": 0.98046875
+      }
+    },
+    "8": {
+      "geometry": {
+        "hidden": 1024,
+        "intermediate": 3584
+      },
+      "n_tokens": 512,
+      "n_train": 256,
+      "exactness_rel_error": 3.746809227322956e-07,
+      "contiguous_E8": {
+        "expert_sizes": {
+          "min": 448,
+          "max": 448,
+          "mean": 448.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.125
+        },
+        "concentration": {
+          "n_experts": 8,
+          "participation_ratio": 6.234972953796387,
+          "top1_energy_share": 0.28482785820961,
+          "entropy_normalised": 0.9431788325309753
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.8401182293891907,
+            "median_rel_residual": 0.8512091040611267,
+            "p90_rel_residual": 0.8969500064849854,
+            "max_rel_residual": 0.9285627603530884,
+            "rms_rel_residual": 0.8421180844306946
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.739064633846283,
+            "median_rel_residual": 0.74887615442276,
+            "p90_rel_residual": 0.8003788590431213,
+            "max_rel_residual": 0.8590547442436218,
+            "rms_rel_residual": 0.7414622902870178
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "active_fraction": 0.5,
+            "mean_rel_residual": 0.5626466274261475,
+            "median_rel_residual": 0.5694705843925476,
+            "p90_rel_residual": 0.6240270137786865,
+            "max_rel_residual": 0.6674669981002808,
+            "rms_rel_residual": 0.5651047825813293
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "active_fraction": 1.0,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0,
+            "max_rel_residual": 0.0,
+            "rms_rel_residual": 0.0
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "mean_rel_residual": 0.844541072845459,
+            "median_rel_residual": 0.8539476990699768,
+            "p90_rel_residual": 0.9067884683609009
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "mean_rel_residual": 0.7507635951042175,
+            "median_rel_residual": 0.7577667236328125,
+            "p90_rel_residual": 0.8240084648132324
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "mean_rel_residual": 0.590925395488739,
+            "median_rel_residual": 0.5919948220252991,
+            "p90_rel_residual": 0.6631040573120117
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0
+          }
+        },
+        "router_top1_accuracy": 0.87109375
+      },
+      "contiguous_E32": {
+        "expert_sizes": {
+          "min": 112,
+          "max": 112,
+          "mean": 112.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.03125
+        },
+        "concentration": {
+          "n_experts": 32,
+          "participation_ratio": 21.340682983398438,
+          "top1_energy_share": 0.13257433474063873,
+          "entropy_normalised": 0.9504777193069458
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.9358129501342773,
+            "median_rel_residual": 0.9466220140457153,
+            "p90_rel_residual": 0.9707890748977661,
+            "max_rel_residual": 1.0164530277252197,
+            "rms_rel_residual": 0.9368597269058228
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.8922700881958008,
+            "median_rel_residual": 0.9059143662452698,
+            "p90_rel_residual": 0.9368939399719238,
+            "max_rel_residual": 0.9737643599510193,
+            "rms_rel_residual": 0.893909215927124
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.8237116932868958,
+            "median_rel_residual": 0.8365560173988342,
+            "p90_rel_residual": 0.8783986568450928,
+            "max_rel_residual": 0.9163645505905151,
+            "rms_rel_residual": 0.8256531953811646
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.7169016599655151,
+            "median_rel_residual": 0.7301729321479797,
+            "p90_rel_residual": 0.7742408514022827,
+            "max_rel_residual": 0.8035440444946289,
+            "rms_rel_residual": 0.7191281914710999
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "mean_rel_residual": 0.9488506317138672,
+            "median_rel_residual": 0.9595937132835388,
+            "p90_rel_residual": 0.9797577261924744
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "mean_rel_residual": 0.9173145890235901,
+            "median_rel_residual": 0.9271947145462036,
+            "p90_rel_residual": 0.9593394994735718
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "mean_rel_residual": 0.856953501701355,
+            "median_rel_residual": 0.8666696548461914,
+            "p90_rel_residual": 0.9118468761444092
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "mean_rel_residual": 0.7671750783920288,
+            "median_rel_residual": 0.7766002416610718,
+            "p90_rel_residual": 0.8330017924308777
+          }
+        },
+        "router_top1_accuracy": 0.44140625
+      },
+      "contiguous_E64": {
+        "expert_sizes": {
+          "min": 56,
+          "max": 56,
+          "mean": 56.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.015625
+        },
+        "concentration": {
+          "n_experts": 64,
+          "participation_ratio": 37.651615142822266,
+          "top1_energy_share": 0.10455553978681564,
+          "entropy_normalised": 0.9518386721611023
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 64,
+            "active_fraction": 0.015625,
+            "mean_rel_residual": 0.9517760872840881,
+            "median_rel_residual": 0.9625544548034668,
+            "p90_rel_residual": 0.9829938411712646,
+            "max_rel_residual": 1.0388273000717163,
+            "rms_rel_residual": 0.9527732133865356
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 64,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.9226481914520264,
+            "median_rel_residual": 0.9382408261299133,
+            "p90_rel_residual": 0.9631832838058472,
+            "max_rel_residual": 0.9828550219535828,
+            "rms_rel_residual": 0.924094557762146
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 64,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.8791170120239258,
+            "median_rel_residual": 0.8974663019180298,
+            "p90_rel_residual": 0.9272599816322327,
+            "max_rel_residual": 0.9529737234115601,
+            "rms_rel_residual": 0.8809009194374084
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 64,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.8112789392471313,
+            "median_rel_residual": 0.8284120559692383,
+            "p90_rel_residual": 0.8598588705062866,
+            "max_rel_residual": 0.8974596261978149,
+            "rms_rel_residual": 0.8132564425468445
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9696213006973267,
+            "median_rel_residual": 0.9791821241378784,
+            "p90_rel_residual": 0.993037760257721
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9480138421058655,
+            "median_rel_residual": 0.9601243138313293,
+            "p90_rel_residual": 0.979981541633606
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9118838310241699,
+            "median_rel_residual": 0.9232783317565918,
+            "p90_rel_residual": 0.9540988206863403
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 64,
+            "mean_rel_residual": 0.8564892411231995,
+            "median_rel_residual": 0.8668926954269409,
+            "p90_rel_residual": 0.911526083946228
+          }
+        },
+        "router_top1_accuracy": 0.25390625
+      },
+      "interleaved_E8": {
+        "expert_sizes": {
+          "min": 448,
+          "max": 448,
+          "mean": 448.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.125
+        },
+        "concentration": {
+          "n_experts": 8,
+          "participation_ratio": 7.912558555603027,
+          "top1_energy_share": 0.1571994572877884,
+          "entropy_normalised": 0.9974721074104309
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.8986188173294067,
+            "median_rel_residual": 0.9110673666000366,
+            "p90_rel_residual": 0.935247540473938,
+            "max_rel_residual": 0.9544535279273987,
+            "rms_rel_residual": 0.8999191522598267
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.8190308213233948,
+            "median_rel_residual": 0.8314337730407715,
+            "p90_rel_residual": 0.8618872165679932,
+            "max_rel_residual": 0.8861083984375,
+            "rms_rel_residual": 0.8204774856567383
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "active_fraction": 0.5,
+            "mean_rel_residual": 0.6494537591934204,
+            "median_rel_residual": 0.658657431602478,
+            "p90_rel_residual": 0.6942189931869507,
+            "max_rel_residual": 0.7391256093978882,
+            "rms_rel_residual": 0.650910496711731
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "active_fraction": 1.0,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0,
+            "max_rel_residual": 0.0,
+            "rms_rel_residual": 0.0
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "mean_rel_residual": 0.9214927554130554,
+            "median_rel_residual": 0.9364235401153564,
+            "p90_rel_residual": 0.9559186100959778
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "mean_rel_residual": 0.8534284830093384,
+            "median_rel_residual": 0.8657206892967224,
+            "p90_rel_residual": 0.8972575068473816
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "mean_rel_residual": 0.6963201761245728,
+            "median_rel_residual": 0.702744722366333,
+            "p90_rel_residual": 0.7488646507263184
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0
+          }
+        },
+        "router_top1_accuracy": 0.25390625
+      },
+      "interleaved_E32": {
+        "expert_sizes": {
+          "min": 112,
+          "max": 112,
+          "mean": 112.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.03125
+        },
+        "concentration": {
+          "n_experts": 32,
+          "participation_ratio": 28.7082462310791,
+          "top1_energy_share": 0.08640486747026443,
+          "entropy_normalised": 0.9880062341690063
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.9522477388381958,
+            "median_rel_residual": 0.9653705954551697,
+            "p90_rel_residual": 0.9840129613876343,
+            "max_rel_residual": 1.0213719606399536,
+            "rms_rel_residual": 0.9532221555709839
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.9218773245811462,
+            "median_rel_residual": 0.936623752117157,
+            "p90_rel_residual": 0.9606670141220093,
+            "max_rel_residual": 0.9822385907173157,
+            "rms_rel_residual": 0.9232348799705505
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.87441086769104,
+            "median_rel_residual": 0.8884647488594055,
+            "p90_rel_residual": 0.9219794273376465,
+            "max_rel_residual": 0.9474612474441528,
+            "rms_rel_residual": 0.8760058283805847
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.7862710952758789,
+            "median_rel_residual": 0.7994676828384399,
+            "p90_rel_residual": 0.8368549942970276,
+            "max_rel_residual": 0.8647955656051636,
+            "rms_rel_residual": 0.7879287004470825
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "mean_rel_residual": 0.9715933799743652,
+            "median_rel_residual": 0.9840478897094727,
+            "p90_rel_residual": 0.9931050539016724
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "mean_rel_residual": 0.9571913480758667,
+            "median_rel_residual": 0.9677078127861023,
+            "p90_rel_residual": 0.9839143753051758
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "mean_rel_residual": 0.9259803295135498,
+            "median_rel_residual": 0.9354936480522156,
+            "p90_rel_residual": 0.9582661390304565
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "mean_rel_residual": 0.8586254119873047,
+            "median_rel_residual": 0.8684723377227783,
+            "p90_rel_residual": 0.8986095786094666
+          }
+        },
+        "router_top1_accuracy": 0.19921875
+      },
+      "interleaved_E64": {
+        "expert_sizes": {
+          "min": 56,
+          "max": 56,
+          "mean": 56.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.015625
+        },
+        "concentration": {
+          "n_experts": 64,
+          "participation_ratio": 52.79376220703125,
+          "top1_energy_share": 0.06955556571483612,
+          "entropy_normalised": 0.9848811030387878
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 64,
+            "active_fraction": 0.015625,
+            "mean_rel_residual": 0.9609657526016235,
+            "median_rel_residual": 0.9751360416412354,
+            "p90_rel_residual": 0.989345133304596,
+            "max_rel_residual": 1.0263327360153198,
+            "rms_rel_residual": 0.9619428515434265
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 64,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.938995361328125,
+            "median_rel_residual": 0.9545627236366272,
+            "p90_rel_residual": 0.9768884181976318,
+            "max_rel_residual": 1.005313754081726,
+            "rms_rel_residual": 0.9403058290481567
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 64,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.907345175743103,
+            "median_rel_residual": 0.9218408465385437,
+            "p90_rel_residual": 0.9524669647216797,
+            "max_rel_residual": 0.9974420666694641,
+            "rms_rel_residual": 0.9088572859764099
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 64,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.8555681705474854,
+            "median_rel_residual": 0.8687207102775574,
+            "p90_rel_residual": 0.9068406820297241,
+            "max_rel_residual": 0.9468064904212952,
+            "rms_rel_residual": 0.8571845293045044
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9796489477157593,
+            "median_rel_residual": 0.991824209690094,
+            "p90_rel_residual": 0.9992111325263977
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9711673855781555,
+            "median_rel_residual": 0.9821358919143677,
+            "p90_rel_residual": 0.9956337213516235
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9531282782554626,
+            "median_rel_residual": 0.9637947678565979,
+            "p90_rel_residual": 0.9823694229125977
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9192706346511841,
+            "median_rel_residual": 0.9315016865730286,
+            "p90_rel_residual": 0.953769326210022
+          }
+        },
+        "router_top1_accuracy": 0.1796875
+      },
+      "random_E8": {
+        "expert_sizes": {
+          "min": 448,
+          "max": 448,
+          "mean": 448.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.125
+        },
+        "concentration": {
+          "n_experts": 8,
+          "participation_ratio": 7.8154683113098145,
+          "top1_energy_share": 0.1745075136423111,
+          "entropy_normalised": 0.9948157668113708
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.907406747341156,
+            "median_rel_residual": 0.9179876446723938,
+            "p90_rel_residual": 0.9393699169158936,
+            "max_rel_residual": 0.9972078204154968,
+            "rms_rel_residual": 0.9084292054176331
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.8239552974700928,
+            "median_rel_residual": 0.8340438604354858,
+            "p90_rel_residual": 0.8650532960891724,
+            "max_rel_residual": 0.8909183740615845,
+            "rms_rel_residual": 0.8253245949745178
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "active_fraction": 0.5,
+            "mean_rel_residual": 0.6527336835861206,
+            "median_rel_residual": 0.6627059578895569,
+            "p90_rel_residual": 0.6902707815170288,
+            "max_rel_residual": 0.7175823450088501,
+            "rms_rel_residual": 0.6541362404823303
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "active_fraction": 1.0,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0,
+            "max_rel_residual": 0.0,
+            "rms_rel_residual": 0.0
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "mean_rel_residual": 0.9237168431282043,
+            "median_rel_residual": 0.9327012896537781,
+            "p90_rel_residual": 0.953162431716919
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "mean_rel_residual": 0.8542921543121338,
+            "median_rel_residual": 0.862727165222168,
+            "p90_rel_residual": 0.8889445662498474
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "mean_rel_residual": 0.6989437341690063,
+            "median_rel_residual": 0.701137363910675,
+            "p90_rel_residual": 0.7488884925842285
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0
+          }
+        },
+        "router_top1_accuracy": 0.26171875
+      },
+      "random_E32": {
+        "expert_sizes": {
+          "min": 112,
+          "max": 112,
+          "mean": 112.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.03125
+        },
+        "concentration": {
+          "n_experts": 32,
+          "participation_ratio": 28.982385635375977,
+          "top1_energy_share": 0.08394067734479904,
+          "entropy_normalised": 0.9889611005783081
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.9541096687316895,
+            "median_rel_residual": 0.9646768569946289,
+            "p90_rel_residual": 0.9834625124931335,
+            "max_rel_residual": 1.023146390914917,
+            "rms_rel_residual": 0.9550276398658752
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.9230477809906006,
+            "median_rel_residual": 0.9363000392913818,
+            "p90_rel_residual": 0.9598487019538879,
+            "max_rel_residual": 0.9779881834983826,
+            "rms_rel_residual": 0.9242657423019409
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.8745556473731995,
+            "median_rel_residual": 0.8867430686950684,
+            "p90_rel_residual": 0.9153937101364136,
+            "max_rel_residual": 0.9525828957557678,
+            "rms_rel_residual": 0.8759431838989258
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.7864290475845337,
+            "median_rel_residual": 0.795387864112854,
+            "p90_rel_residual": 0.8357417583465576,
+            "max_rel_residual": 0.8813673853874207,
+            "rms_rel_residual": 0.7881174087524414
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "mean_rel_residual": 0.9729635715484619,
+            "median_rel_residual": 0.9843515157699585,
+            "p90_rel_residual": 0.9949270486831665
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "mean_rel_residual": 0.955784797668457,
+            "median_rel_residual": 0.965928316116333,
+            "p90_rel_residual": 0.9805809855461121
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "mean_rel_residual": 0.9220832586288452,
+            "median_rel_residual": 0.9312648773193359,
+            "p90_rel_residual": 0.9532142877578735
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "mean_rel_residual": 0.8522804975509644,
+            "median_rel_residual": 0.860891580581665,
+            "p90_rel_residual": 0.8919281959533691
+          }
+        },
+        "router_top1_accuracy": 0.16015625
+      },
+      "random_E64": {
+        "expert_sizes": {
+          "min": 56,
+          "max": 56,
+          "mean": 56.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.015625
+        },
+        "concentration": {
+          "n_experts": 64,
+          "participation_ratio": 52.41061019897461,
+          "top1_energy_share": 0.07042591273784637,
+          "entropy_normalised": 0.9841856360435486
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 64,
+            "active_fraction": 0.015625,
+            "mean_rel_residual": 0.9607240557670593,
+            "median_rel_residual": 0.9736664891242981,
+            "p90_rel_residual": 0.9898340702056885,
+            "max_rel_residual": 1.0276927947998047,
+            "rms_rel_residual": 0.9616863131523132
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 64,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.938689112663269,
+            "median_rel_residual": 0.9560143351554871,
+            "p90_rel_residual": 0.9753196835517883,
+            "max_rel_residual": 0.9931651949882507,
+            "rms_rel_residual": 0.9400153160095215
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 64,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.9070637226104736,
+            "median_rel_residual": 0.9246380925178528,
+            "p90_rel_residual": 0.9528534412384033,
+            "max_rel_residual": 0.9714908003807068,
+            "rms_rel_residual": 0.9086753726005554
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 64,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.8545126914978027,
+            "median_rel_residual": 0.8696244955062866,
+            "p90_rel_residual": 0.9033247828483582,
+            "max_rel_residual": 0.9340746998786926,
+            "rms_rel_residual": 0.8562629818916321
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9783679842948914,
+            "median_rel_residual": 0.9899085760116577,
+            "p90_rel_residual": 0.9983326196670532
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9684900641441345,
+            "median_rel_residual": 0.9801782965660095,
+            "p90_rel_residual": 0.9925507307052612
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9506481289863586,
+            "median_rel_residual": 0.9610829949378967,
+            "p90_rel_residual": 0.9801133871078491
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9161518216133118,
+            "median_rel_residual": 0.923047661781311,
+            "p90_rel_residual": 0.9532890319824219
+          }
+        },
+        "router_top1_accuracy": 0.19140625
+      },
+      "clustered_E8": {
+        "expert_sizes": {
+          "min": 1,
+          "max": 2575,
+          "mean": 448.0,
+          "max_over_mean": 5.747767925262451,
+          "largest_share": 0.7184709906578064
+        },
+        "concentration": {
+          "n_experts": 8,
+          "participation_ratio": 2.222405195236206,
+          "top1_energy_share": 0.575634777545929,
+          "entropy_normalised": 0.4482347071170807
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.6685294508934021,
+            "median_rel_residual": 0.6733502745628357,
+            "p90_rel_residual": 0.7217774391174316,
+            "max_rel_residual": 0.8174936771392822,
+            "rms_rel_residual": 0.6701526045799255
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.30003052949905396,
+            "median_rel_residual": 0.2911076247692108,
+            "p90_rel_residual": 0.35445111989974976,
+            "max_rel_residual": 0.49798253178596497,
+            "rms_rel_residual": 0.3045896589756012
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "active_fraction": 0.5,
+            "mean_rel_residual": 0.041504114866256714,
+            "median_rel_residual": 0.04206579551100731,
+            "p90_rel_residual": 0.0566115602850914,
+            "max_rel_residual": 0.06838877499103546,
+            "rms_rel_residual": 0.043210718780756
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "active_fraction": 1.0,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0,
+            "max_rel_residual": 0.0,
+            "rms_rel_residual": 0.0
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "mean_rel_residual": 0.6773906946182251,
+            "median_rel_residual": 0.6766395568847656,
+            "p90_rel_residual": 0.7395696043968201
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "mean_rel_residual": 0.30421972274780273,
+            "median_rel_residual": 0.2915650010108948,
+            "p90_rel_residual": 0.3611854910850525
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "mean_rel_residual": 0.08095668256282806,
+            "median_rel_residual": 0.06936436891555786,
+            "p90_rel_residual": 0.09219598770141602
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0
+          }
+        },
+        "router_top1_accuracy": 0.9140625
+      },
+      "clustered_E32": {
+        "expert_sizes": {
+          "min": 1,
+          "max": 3490,
+          "mean": 112.0,
+          "max_over_mean": 31.160715103149414,
+          "largest_share": 0.9737723469734192
+        },
+        "concentration": {
+          "n_experts": 32,
+          "participation_ratio": 1.052513837814331,
+          "top1_energy_share": 0.9746777415275574,
+          "entropy_normalised": 0.051843516528606415
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.16000574827194214,
+            "median_rel_residual": 0.15800157189369202,
+            "p90_rel_residual": 0.1939018815755844,
+            "max_rel_residual": 0.2520494759082794,
+            "rms_rel_residual": 0.16204257309436798
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.1213531345129013,
+            "median_rel_residual": 0.11983489990234375,
+            "p90_rel_residual": 0.14933589100837708,
+            "max_rel_residual": 0.19146515429019928,
+            "rms_rel_residual": 0.12342618405818939
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.08608978986740112,
+            "median_rel_residual": 0.08531595766544342,
+            "p90_rel_residual": 0.10420307517051697,
+            "max_rel_residual": 0.13807688653469086,
+            "rms_rel_residual": 0.08745590597391129
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.054356157779693604,
+            "median_rel_residual": 0.054050564765930176,
+            "p90_rel_residual": 0.06758978962898254,
+            "max_rel_residual": 0.10248123109340668,
+            "rms_rel_residual": 0.055473972111940384
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "mean_rel_residual": 0.16000574827194214,
+            "median_rel_residual": 0.15800157189369202,
+            "p90_rel_residual": 0.1939018815755844
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "mean_rel_residual": 0.15278851985931396,
+            "median_rel_residual": 0.14765125513076782,
+            "p90_rel_residual": 0.1860300898551941
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "mean_rel_residual": 0.14982326328754425,
+            "median_rel_residual": 0.14591416716575623,
+            "p90_rel_residual": 0.18385571241378784
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "mean_rel_residual": 0.14830277860164642,
+            "median_rel_residual": 0.14353011548519135,
+            "p90_rel_residual": 0.18272261321544647
+          }
+        },
+        "router_top1_accuracy": 1.0
+      }
+    },
+    "23": {
+      "geometry": {
+        "hidden": 1024,
+        "intermediate": 3584
+      },
+      "n_tokens": 512,
+      "n_train": 256,
+      "exactness_rel_error": 3.0066331646594335e-07,
+      "contiguous_E8": {
+        "expert_sizes": {
+          "min": 448,
+          "max": 448,
+          "mean": 448.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.125
+        },
+        "concentration": {
+          "n_experts": 8,
+          "participation_ratio": 1.4776036739349365,
+          "top1_energy_share": 0.8190751671791077,
+          "entropy_normalised": 0.38642627000808716
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.4309607148170471,
+            "median_rel_residual": 0.40428614616394043,
+            "p90_rel_residual": 0.5669815540313721,
+            "max_rel_residual": 0.8391637802124023,
+            "rms_rel_residual": 0.4443104565143585
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.33926820755004883,
+            "median_rel_residual": 0.3188180923461914,
+            "p90_rel_residual": 0.45625075697898865,
+            "max_rel_residual": 0.6926932334899902,
+            "rms_rel_residual": 0.35076773166656494
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "active_fraction": 0.5,
+            "mean_rel_residual": 0.22026674449443817,
+            "median_rel_residual": 0.2056911140680313,
+            "p90_rel_residual": 0.311125785112381,
+            "max_rel_residual": 0.5151005983352661,
+            "rms_rel_residual": 0.22846610844135284
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "active_fraction": 1.0,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0,
+            "max_rel_residual": 0.0,
+            "rms_rel_residual": 0.0
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "mean_rel_residual": 0.4310606122016907,
+            "median_rel_residual": 0.40428614616394043,
+            "p90_rel_residual": 0.5669815540313721
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "mean_rel_residual": 0.34422603249549866,
+            "median_rel_residual": 0.32003211975097656,
+            "p90_rel_residual": 0.4584904909133911
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "mean_rel_residual": 0.23288895189762115,
+            "median_rel_residual": 0.2121683806180954,
+            "p90_rel_residual": 0.32841163873672485
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0
+          }
+        },
+        "router_top1_accuracy": 0.9921875
+      },
+      "contiguous_E32": {
+        "expert_sizes": {
+          "min": 112,
+          "max": 112,
+          "mean": 112.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.03125
+        },
+        "concentration": {
+          "n_experts": 32,
+          "participation_ratio": 2.695988655090332,
+          "top1_energy_share": 0.5961267948150635,
+          "entropy_normalised": 0.5321890711784363
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.6284276247024536,
+            "median_rel_residual": 0.6220136284828186,
+            "p90_rel_residual": 0.7565704584121704,
+            "max_rel_residual": 0.8830758929252625,
+            "rms_rel_residual": 0.6340038180351257
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.5256956815719604,
+            "median_rel_residual": 0.5146904587745667,
+            "p90_rel_residual": 0.6485413312911987,
+            "max_rel_residual": 0.8409734964370728,
+            "rms_rel_residual": 0.533373236656189
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.42174482345581055,
+            "median_rel_residual": 0.40274691581726074,
+            "p90_rel_residual": 0.5473505258560181,
+            "max_rel_residual": 0.7638758420944214,
+            "rms_rel_residual": 0.43228015303611755
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.3259827792644501,
+            "median_rel_residual": 0.3089006543159485,
+            "p90_rel_residual": 0.42463812232017517,
+            "max_rel_residual": 0.6575940251350403,
+            "rms_rel_residual": 0.33570557832717896
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "mean_rel_residual": 0.6279922723770142,
+            "median_rel_residual": 0.6220136284828186,
+            "p90_rel_residual": 0.7522399425506592
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "mean_rel_residual": 0.6214191317558289,
+            "median_rel_residual": 0.6147975325584412,
+            "p90_rel_residual": 0.7457443475723267
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "mean_rel_residual": 0.46307599544525146,
+            "median_rel_residual": 0.44131579995155334,
+            "p90_rel_residual": 0.5924050211906433
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "mean_rel_residual": 0.3556376099586487,
+            "median_rel_residual": 0.326041579246521,
+            "p90_rel_residual": 0.4711259603500366
+          }
+        },
+        "router_top1_accuracy": 0.984375
+      },
+      "contiguous_E64": {
+        "expert_sizes": {
+          "min": 56,
+          "max": 56,
+          "mean": 56.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.015625
+        },
+        "concentration": {
+          "n_experts": 64,
+          "participation_ratio": 5.995875835418701,
+          "top1_energy_share": 0.3356192409992218,
+          "entropy_normalised": 0.6465008854866028
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 64,
+            "active_fraction": 0.015625,
+            "mean_rel_residual": 0.7759518623352051,
+            "median_rel_residual": 0.7721086740493774,
+            "p90_rel_residual": 0.853664755821228,
+            "max_rel_residual": 0.9488731026649475,
+            "rms_rel_residual": 0.778127133846283
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 64,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.6258888840675354,
+            "median_rel_residual": 0.6191293001174927,
+            "p90_rel_residual": 0.7483712434768677,
+            "max_rel_residual": 0.8679110407829285,
+            "rms_rel_residual": 0.6312159895896912
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 64,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.522228479385376,
+            "median_rel_residual": 0.5111013054847717,
+            "p90_rel_residual": 0.6400063037872314,
+            "max_rel_residual": 0.7989302277565002,
+            "rms_rel_residual": 0.529508113861084
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 64,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.41725611686706543,
+            "median_rel_residual": 0.40128040313720703,
+            "p90_rel_residual": 0.5344380140304565,
+            "max_rel_residual": 0.7202545404434204,
+            "rms_rel_residual": 0.42708712816238403
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 64,
+            "mean_rel_residual": 0.7833250164985657,
+            "median_rel_residual": 0.7788360714912415,
+            "p90_rel_residual": 0.855697751045227
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 64,
+            "mean_rel_residual": 0.6281764507293701,
+            "median_rel_residual": 0.6220136284828186,
+            "p90_rel_residual": 0.7522400617599487
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 64,
+            "mean_rel_residual": 0.5591791868209839,
+            "median_rel_residual": 0.5454242825508118,
+            "p90_rel_residual": 0.6960784196853638
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 64,
+            "mean_rel_residual": 0.44892454147338867,
+            "median_rel_residual": 0.4255492389202118,
+            "p90_rel_residual": 0.5780217051506042
+          }
+        },
+        "router_top1_accuracy": 0.80859375
+      },
+      "interleaved_E8": {
+        "expert_sizes": {
+          "min": 448,
+          "max": 448,
+          "mean": 448.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.125
+        },
+        "concentration": {
+          "n_experts": 8,
+          "participation_ratio": 7.861627578735352,
+          "top1_energy_share": 0.15033967792987823,
+          "entropy_normalised": 0.9957742691040039
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.8474112749099731,
+            "median_rel_residual": 0.8471730351448059,
+            "p90_rel_residual": 0.8934007287025452,
+            "max_rel_residual": 0.991707980632782,
+            "rms_rel_residual": 0.8484600186347961
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.7182115912437439,
+            "median_rel_residual": 0.7180419564247131,
+            "p90_rel_residual": 0.7889171838760376,
+            "max_rel_residual": 0.8917168378829956,
+            "rms_rel_residual": 0.7202492952346802
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "active_fraction": 0.5,
+            "mean_rel_residual": 0.49603909254074097,
+            "median_rel_residual": 0.4921964108943939,
+            "p90_rel_residual": 0.5704847574234009,
+            "max_rel_residual": 0.6940657496452332,
+            "rms_rel_residual": 0.4991338551044464
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "active_fraction": 1.0,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0,
+            "max_rel_residual": 0.0,
+            "rms_rel_residual": 0.0
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "mean_rel_residual": 0.8664242029190063,
+            "median_rel_residual": 0.8636019229888916,
+            "p90_rel_residual": 0.9265433549880981
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "mean_rel_residual": 0.7511630654335022,
+            "median_rel_residual": 0.7472108602523804,
+            "p90_rel_residual": 0.8348450660705566
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "mean_rel_residual": 0.5412835478782654,
+            "median_rel_residual": 0.5286784768104553,
+            "p90_rel_residual": 0.6606894731521606
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0
+          }
+        },
+        "router_top1_accuracy": 0.37109375
+      },
+      "interleaved_E32": {
+        "expert_sizes": {
+          "min": 112,
+          "max": 112,
+          "mean": 112.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.03125
+        },
+        "concentration": {
+          "n_experts": 32,
+          "participation_ratio": 28.614255905151367,
+          "top1_energy_share": 0.06177256628870964,
+          "entropy_normalised": 0.9834945201873779
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.9282153844833374,
+            "median_rel_residual": 0.9285277128219604,
+            "p90_rel_residual": 0.9739401340484619,
+            "max_rel_residual": 1.0284271240234375,
+            "rms_rel_residual": 0.9289653897285461
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.8716322183609009,
+            "median_rel_residual": 0.8720898628234863,
+            "p90_rel_residual": 0.9295477867126465,
+            "max_rel_residual": 0.9875145554542542,
+            "rms_rel_residual": 0.8729259371757507
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.7747422456741333,
+            "median_rel_residual": 0.7791389226913452,
+            "p90_rel_residual": 0.8370361328125,
+            "max_rel_residual": 0.9466363787651062,
+            "rms_rel_residual": 0.7768407464027405
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.6267847418785095,
+            "median_rel_residual": 0.6246508359909058,
+            "p90_rel_residual": 0.6974524259567261,
+            "max_rel_residual": 0.8042058348655701,
+            "rms_rel_residual": 0.629317581653595
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "mean_rel_residual": 0.9489390850067139,
+            "median_rel_residual": 0.9474993348121643,
+            "p90_rel_residual": 0.9899815320968628
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "mean_rel_residual": 0.9044937491416931,
+            "median_rel_residual": 0.905897855758667,
+            "p90_rel_residual": 0.9634225368499756
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "mean_rel_residual": 0.8384131193161011,
+            "median_rel_residual": 0.8394845128059387,
+            "p90_rel_residual": 0.9098373651504517
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "mean_rel_residual": 0.7257843017578125,
+            "median_rel_residual": 0.7228134870529175,
+            "p90_rel_residual": 0.8169077634811401
+          }
+        },
+        "router_top1_accuracy": 0.296875
+      },
+      "interleaved_E64": {
+        "expert_sizes": {
+          "min": 56,
+          "max": 56,
+          "mean": 56.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.015625
+        },
+        "concentration": {
+          "n_experts": 64,
+          "participation_ratio": 49.4987907409668,
+          "top1_energy_share": 0.04435417056083679,
+          "entropy_normalised": 0.9688548445701599
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 64,
+            "active_fraction": 0.015625,
+            "mean_rel_residual": 0.9379509687423706,
+            "median_rel_residual": 0.9342929124832153,
+            "p90_rel_residual": 0.9895046353340149,
+            "max_rel_residual": 1.0239670276641846,
+            "rms_rel_residual": 0.9387312531471252
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 64,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.8912073373794556,
+            "median_rel_residual": 0.8939356803894043,
+            "p90_rel_residual": 0.9519647359848022,
+            "max_rel_residual": 1.0097928047180176,
+            "rms_rel_residual": 0.8925655484199524
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 64,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.8169659376144409,
+            "median_rel_residual": 0.8179647326469421,
+            "p90_rel_residual": 0.8876554369926453,
+            "max_rel_residual": 0.9659430384635925,
+            "rms_rel_residual": 0.8190832734107971
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 64,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.7095123529434204,
+            "median_rel_residual": 0.714344322681427,
+            "p90_rel_residual": 0.7841252088546753,
+            "max_rel_residual": 0.8866758942604065,
+            "rms_rel_residual": 0.7122067809104919
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9623724222183228,
+            "median_rel_residual": 0.9661970138549805,
+            "p90_rel_residual": 0.9977660179138184
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9364949464797974,
+            "median_rel_residual": 0.9403090476989746,
+            "p90_rel_residual": 0.9845011234283447
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 64,
+            "mean_rel_residual": 0.8884894847869873,
+            "median_rel_residual": 0.8903154730796814,
+            "p90_rel_residual": 0.9476029872894287
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 64,
+            "mean_rel_residual": 0.8129966259002686,
+            "median_rel_residual": 0.816237211227417,
+            "p90_rel_residual": 0.8831712603569031
+          }
+        },
+        "router_top1_accuracy": 0.26171875
+      },
+      "random_E8": {
+        "expert_sizes": {
+          "min": 448,
+          "max": 448,
+          "mean": 448.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.125
+        },
+        "concentration": {
+          "n_experts": 8,
+          "participation_ratio": 7.775680065155029,
+          "top1_energy_share": 0.17208820581436157,
+          "entropy_normalised": 0.9934238791465759
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.8459839224815369,
+            "median_rel_residual": 0.844763994216919,
+            "p90_rel_residual": 0.8954004049301147,
+            "max_rel_residual": 0.9750614166259766,
+            "rms_rel_residual": 0.8469370603561401
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.7126684188842773,
+            "median_rel_residual": 0.7096209526062012,
+            "p90_rel_residual": 0.7679175138473511,
+            "max_rel_residual": 0.8760402798652649,
+            "rms_rel_residual": 0.7142857313156128
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "active_fraction": 0.5,
+            "mean_rel_residual": 0.4855743646621704,
+            "median_rel_residual": 0.4781420826911926,
+            "p90_rel_residual": 0.5613320469856262,
+            "max_rel_residual": 0.6817298531532288,
+            "rms_rel_residual": 0.4888458847999573
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "active_fraction": 1.0,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0,
+            "max_rel_residual": 0.0,
+            "rms_rel_residual": 0.0
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "mean_rel_residual": 0.8701443672180176,
+            "median_rel_residual": 0.8668007850646973,
+            "p90_rel_residual": 0.9348611831665039
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "mean_rel_residual": 0.7594488859176636,
+            "median_rel_residual": 0.7552265524864197,
+            "p90_rel_residual": 0.839006781578064
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "mean_rel_residual": 0.5448211431503296,
+            "median_rel_residual": 0.5320291519165039,
+            "p90_rel_residual": 0.6647295951843262
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0
+          }
+        },
+        "router_top1_accuracy": 0.375
+      },
+      "random_E32": {
+        "expert_sizes": {
+          "min": 112,
+          "max": 112,
+          "mean": 112.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.03125
+        },
+        "concentration": {
+          "n_experts": 32,
+          "participation_ratio": 26.656253814697266,
+          "top1_energy_share": 0.05997002124786377,
+          "entropy_normalised": 0.971196711063385
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.9170714616775513,
+            "median_rel_residual": 0.9151959419250488,
+            "p90_rel_residual": 0.972434401512146,
+            "max_rel_residual": 1.0193655490875244,
+            "rms_rel_residual": 0.9180459380149841
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.8536539077758789,
+            "median_rel_residual": 0.855790913105011,
+            "p90_rel_residual": 0.9150232076644897,
+            "max_rel_residual": 1.0340741872787476,
+            "rms_rel_residual": 0.8553450107574463
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.7506844997406006,
+            "median_rel_residual": 0.7557309865951538,
+            "p90_rel_residual": 0.8248324394226074,
+            "max_rel_residual": 0.929797351360321,
+            "rms_rel_residual": 0.7534590363502502
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.6004219055175781,
+            "median_rel_residual": 0.5951274633407593,
+            "p90_rel_residual": 0.6835168600082397,
+            "max_rel_residual": 0.8108345866203308,
+            "rms_rel_residual": 0.6038116812705994
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "mean_rel_residual": 0.9325257539749146,
+            "median_rel_residual": 0.9366452097892761,
+            "p90_rel_residual": 0.9809392690658569
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "mean_rel_residual": 0.8880743980407715,
+            "median_rel_residual": 0.8906522989273071,
+            "p90_rel_residual": 0.9552164077758789
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "mean_rel_residual": 0.817362368106842,
+            "median_rel_residual": 0.8119468688964844,
+            "p90_rel_residual": 0.9163209795951843
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "mean_rel_residual": 0.6867284774780273,
+            "median_rel_residual": 0.6737971901893616,
+            "p90_rel_residual": 0.8066507577896118
+          }
+        },
+        "router_top1_accuracy": 0.3125
+      },
+      "random_E64": {
+        "expert_sizes": {
+          "min": 56,
+          "max": 56,
+          "mean": 56.0,
+          "max_over_mean": 1.0,
+          "largest_share": 0.015625
+        },
+        "concentration": {
+          "n_experts": 64,
+          "participation_ratio": 43.83900833129883,
+          "top1_energy_share": 0.05106353014707565,
+          "entropy_normalised": 0.9543529748916626
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 64,
+            "active_fraction": 0.015625,
+            "mean_rel_residual": 0.9259897470474243,
+            "median_rel_residual": 0.9249037504196167,
+            "p90_rel_residual": 0.978487491607666,
+            "max_rel_residual": 1.0375560522079468,
+            "rms_rel_residual": 0.9269574284553528
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 64,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.8753899335861206,
+            "median_rel_residual": 0.8833170533180237,
+            "p90_rel_residual": 0.9327303171157837,
+            "max_rel_residual": 1.032684326171875,
+            "rms_rel_residual": 0.8770247101783752
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 64,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.797256350517273,
+            "median_rel_residual": 0.8062992691993713,
+            "p90_rel_residual": 0.8748998641967773,
+            "max_rel_residual": 0.9976257085800171,
+            "rms_rel_residual": 0.8000221848487854
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 64,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.6887983083724976,
+            "median_rel_residual": 0.6944857835769653,
+            "p90_rel_residual": 0.7655022144317627,
+            "max_rel_residual": 0.8985202312469482,
+            "rms_rel_residual": 0.6918227076530457
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9396512508392334,
+            "median_rel_residual": 0.9431363940238953,
+            "p90_rel_residual": 0.9822884202003479
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 64,
+            "mean_rel_residual": 0.9017500281333923,
+            "median_rel_residual": 0.9032825231552124,
+            "p90_rel_residual": 0.9659221768379211
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 64,
+            "mean_rel_residual": 0.8455662727355957,
+            "median_rel_residual": 0.8458337783813477,
+            "p90_rel_residual": 0.9252487421035767
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 64,
+            "mean_rel_residual": 0.7733391523361206,
+            "median_rel_residual": 0.7694909572601318,
+            "p90_rel_residual": 0.8725006580352783
+          }
+        },
+        "router_top1_accuracy": 0.34375
+      },
+      "clustered_E8": {
+        "expert_sizes": {
+          "min": 1,
+          "max": 1610,
+          "mean": 448.0,
+          "max_over_mean": 3.59375,
+          "largest_share": 0.44921875
+        },
+        "concentration": {
+          "n_experts": 8,
+          "participation_ratio": 1.4174600839614868,
+          "top1_energy_share": 0.8283460140228271,
+          "entropy_normalised": 0.26459893584251404
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.38522011041641235,
+            "median_rel_residual": 0.365803062915802,
+            "p90_rel_residual": 0.5030421018600464,
+            "max_rel_residual": 0.7860061526298523,
+            "rms_rel_residual": 0.39857006072998047
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.1519739329814911,
+            "median_rel_residual": 0.13159510493278503,
+            "p90_rel_residual": 0.2576519846916199,
+            "max_rel_residual": 0.5406270027160645,
+            "rms_rel_residual": 0.16671472787857056
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "active_fraction": 0.5,
+            "mean_rel_residual": 0.0070082866586744785,
+            "median_rel_residual": 0.0064522563479840755,
+            "p90_rel_residual": 0.011005803942680359,
+            "max_rel_residual": 0.021694984287023544,
+            "rms_rel_residual": 0.007674369495362043
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "active_fraction": 1.0,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0,
+            "max_rel_residual": 0.0,
+            "rms_rel_residual": 0.0
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 8,
+            "mean_rel_residual": 0.3855133652687073,
+            "median_rel_residual": 0.365803062915802,
+            "p90_rel_residual": 0.5030421018600464
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 8,
+            "mean_rel_residual": 0.3851982653141022,
+            "median_rel_residual": 0.3656788170337677,
+            "p90_rel_residual": 0.5028032064437866
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 8,
+            "mean_rel_residual": 0.15719707310199738,
+            "median_rel_residual": 0.13147251307964325,
+            "p90_rel_residual": 0.2604239583015442
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 8,
+            "mean_rel_residual": 0.0,
+            "median_rel_residual": 0.0,
+            "p90_rel_residual": 0.0
+          }
+        },
+        "router_top1_accuracy": 0.9921875
+      },
+      "clustered_E32": {
+        "expert_sizes": {
+          "min": 1,
+          "max": 1132,
+          "mean": 112.0,
+          "max_over_mean": 10.107142448425293,
+          "largest_share": 0.3158482015132904
+        },
+        "concentration": {
+          "n_experts": 32,
+          "participation_ratio": 3.379937171936035,
+          "top1_energy_share": 0.43276095390319824,
+          "entropy_normalised": 0.41401687264442444
+        },
+        "oracle": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "active_fraction": 0.03125,
+            "mean_rel_residual": 0.6859709620475769,
+            "median_rel_residual": 0.6899549961090088,
+            "p90_rel_residual": 0.7493929862976074,
+            "max_rel_residual": 0.8786191344261169,
+            "rms_rel_residual": 0.6882423758506775
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "active_fraction": 0.0625,
+            "mean_rel_residual": 0.47104790806770325,
+            "median_rel_residual": 0.4694376587867737,
+            "p90_rel_residual": 0.5631316900253296,
+            "max_rel_residual": 0.7607861161231995,
+            "rms_rel_residual": 0.4770543873310089
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "active_fraction": 0.125,
+            "mean_rel_residual": 0.1777549833059311,
+            "median_rel_residual": 0.16279761493206024,
+            "p90_rel_residual": 0.26399171352386475,
+            "max_rel_residual": 0.49685972929000854,
+            "rms_rel_residual": 0.1878649741411209
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "active_fraction": 0.25,
+            "mean_rel_residual": 0.022161390632390976,
+            "median_rel_residual": 0.021434305235743523,
+            "p90_rel_residual": 0.030326751992106438,
+            "max_rel_residual": 0.05518080294132233,
+            "rms_rel_residual": 0.023247750476002693
+          }
+        },
+        "learned_router": {
+          "1": {
+            "k": 1,
+            "n_experts": 32,
+            "mean_rel_residual": 0.7096550464630127,
+            "median_rel_residual": 0.703967809677124,
+            "p90_rel_residual": 0.8027903437614441
+          },
+          "2": {
+            "k": 2,
+            "n_experts": 32,
+            "mean_rel_residual": 0.47439974546432495,
+            "median_rel_residual": 0.4694376587867737,
+            "p90_rel_residual": 0.5662508010864258
+          },
+          "4": {
+            "k": 4,
+            "n_experts": 32,
+            "mean_rel_residual": 0.41030144691467285,
+            "median_rel_residual": 0.40741613507270813,
+            "p90_rel_residual": 0.5022666454315186
+          },
+          "8": {
+            "k": 8,
+            "n_experts": 32,
+            "mean_rel_residual": 0.2823938727378845,
+            "median_rel_residual": 0.2828008234500885,
+            "p90_rel_residual": 0.3423629701137543
+          }
+        },
+        "router_top1_accuracy": 0.7265625
+      }
+    }
+  },
+  "calibration_chars": 32182
+}

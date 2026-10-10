@@ -1,0 +1,17 @@
+# environment
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# downloaded model tensors (re-fetchable via tools/hf_tensor.py)
+.cache/
+models/
+
+# large benchmark temp files (scripts clean up after themselves, but just in case)
+*.safetensors
+*.gguf
+
+# results ARE committed: they are the evidence this project produces.
+# Only scratch/tmp outputs are ignored.
+results/*.tmp

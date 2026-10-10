@@ -1,0 +1,46 @@
+{
+  "_comment": "Memory-tier constants measured on the target machine. Every value here was produced by tools/bench_hardware.py and tools/bench_inference.py, not copied from a datasheet. Regenerate with `make doctor` / `make bench-inference`.",
+  "machine": {
+    "hostname": "cleanerbox-Stealth-15",
+    "os": "Ubuntu 24.04.4 LTS",
+    "cpu": "13th Gen Intel(R) Core(TM) i7-13620H (10c/16t)",
+    "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "storage": "Micron_3400_MTFDKBA1T0TFH 1TB NVMe (PCIe)",
+    "ram_bytes": 16451735552,
+    "vram_mib": 8188
+  },
+  "measured_bandwidth_bps": {
+    "gpu_memory": 246800000000,
+    "gpu_copy": 219900000000,
+    "ram_copy": 40700000000,
+    "ram_read_single_thread": 24400000000,
+    "nvme_sequential_read_4M_direct": 1470000000,
+    "nvme_sequential_read_1M_direct": 820000000,
+    "nvme_sequential_read_buffered": 1720000000,
+    "nvme_random_1M": 820000000,
+    "nvme_random_4K_iops": 11419,
+    "nvme_mmap_cold_1M": 760000000
+  },
+  "measured_latency": {
+    "nvme_random_4K_us": 88,
+    "nvme_random_1M_us": 1282,
+    "nvme_mmap_cold_1M_us": 1378
+  },
+  "effective_capacity": {
+    "_comment": "What a runtime actually obtains, measured rather than assumed. The desktop holds ~2.9 GiB of VRAM; ~15.4 GiB of RAM is present but only ~10.2 GiB is usable for model weights without swapping (swap was already ~3.2/4.0 GiB in use at measurement time).",
+    "vram_usable_gib": 3.6,
+    "ram_usable_gib": 10.2,
+    "note": "Set vram_usable_gib to 0 to model a headless/display-free run."
+  },
+  "calibration": {
+    "_comment": "Decode rates measured end-to-end with ollama on this machine, used to check predicted_decode_tok_s.",
+    "qwen3:4b": {"gguf_bytes": 2500000000, "bits_per_param": 4.9, "measured_tok_s": 60.668, "peak_vram_mib": 6798},
+    "ornith-1.5:9b": {"gguf_bytes": 6600000000, "bits_per_param": 4.9, "measured_tok_s": 24.629, "peak_vram_mib": 6884},
+    "qwen3.8:latest": {"gguf_bytes": 17000000000, "bits_per_param": 4.9, "measured_tok_s": 0.561, "peak_vram_mib": 6884, "prefill_tok_s": 1.609, "load_s": 46.8}
+  },
+  "known_limitations": [
+    "NVMe throughput measures 0.8-1.9 GB/s against a ~6.6 GB/s datasheet figure for the Micron 3400. Cause not established (thermals, ASPM/APST power state, PCIe link width, or sustained-state fallback). A healthy drive would materially change the streaming budget; worth checking before designing around this number.",
+    "The RAM tier bandwidth is a memcpy figure (40.7 GB/s). Real quantised CPU GEMV kernels differ: a naive torch bf16 GEMV reached only 19.3 GB/s here, while llama.cpp int4 kernels evidently exceed 40 GB/s (ornith-1.5:9b ran at 24.6 tok/s with ~2.7 GB on CPU).",
+    "Vulkan/ROCm were not tested; only CUDA."
+  ]
+}
