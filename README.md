@@ -17,8 +17,8 @@ are committed under `results/` so the claims can be checked against raw data.
    matter how good the router is. This is an executable test, not an opinion.
 2. **Post-hoc FFN sparsification has no usable operating point.** At 12.5%
    active compute, a *perfect oracle* router still loses **42–81%** of the layer
-   output. The router is not the bottleneck (oracle-vs-learned gap ≤ 0.033), so
-   better routing cannot fix it.
+   output. The router is not the bottleneck (it trails that oracle by ≤ 0.138,
+   and by ≤ 0.033 with the coarsest partition), so better routing cannot fix it.
 3. **The target model runs at 0.561 tok/s today** (Q4_K_M), and prefill at
    1.6 tok/s. Independently predicted from hardware constants at 0.48 tok/s.
 4. **The bottleneck is storage streaming, not compute.** The SSD measures

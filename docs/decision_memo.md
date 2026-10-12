@@ -26,7 +26,7 @@ That is one download and one afternoon.
 | 27B backbone (non-FFN) is already larger than the 9B-active target | 9,783,238,144 params | `docs/source_validation.md`, executable test |
 | FFN share of the model | 61.6% (17,112,760,320) | safetensors headers |
 | Post-hoc sparsification operating point | oracle residual 0.42–0.81 at 12.5% active | `results/pilot_curve.txt` |
-| Is the router the bottleneck? No | oracle vs learned gap <= 0.033 | same |
+| Is the router the bottleneck? No | oracle vs learned gap 0.0001–0.033 (E=8, k=1) and 0.032–0.126 on the finer E=64, k=8 rows; at most 0.138 anywhere sparse | same |
 | Does **training** the MoE reach the ceiling? No | at E=64/k=1 the residual *rises*: 0.9277 frozen → 0.9549 trained | `results/kaggle_upcycle_poc.json` (E15) |
 | ...and it is not seed noise | seed 1 gives 0.9551 / router 0.9802 | `results/kaggle_upcycle_poc_seed1.json` |
 | Trained MoE at the target ratio is 10.4x dense ppl | 202.5 vs 19.6 | same |
@@ -69,7 +69,8 @@ prerequisite, not a nice-to-have.
    9.78B active params. Reaching it means retraining attention, Gated DeltaNet
    and the embedding/head — i.e. a new model, not a conversion.
 2. **Quality:** the oracle ceiling for post-hoc FFN top-k is bad, and the
-   router is *not* the limiting factor (gap <= 0.033), so training a better
+   router is *not* the limiting factor (it trails the oracle by 0.0001–0.033 at
+   the coarse end and by at most 0.138 anywhere sparse), so training a better
    router cannot rescue it.
    Additionally, the one plan that looked promising (k-means weight clustering)
    is degenerate: for E=128 one cluster absorbs 52% of the units.

@@ -109,7 +109,9 @@ layer output; 0 is exact, 1 is as bad as predicting zero)
 Three sub-findings, each independently important:
 
 1. **The partition sets the ceiling, not the router.** Oracle vs learned-router
-   gap is only 0.0001–0.033. Training a better router cannot fix this — the
+   gap is 0.0001–0.033 at 12.5% active with the coarsest partition (E=8, k=1)
+   and 0.032–0.126 on the finer E=64, k=8 rows, i.e. at most 0.138 across every
+   sparse configuration the pilot ran. Training a better router cannot fix this — the
    ceiling is what a top-k selection can capture from a post-hoc split, and it
    is bad. This directly answers the handoff's "evaluate oracle selection …
    before spending training compute": the answer is *don't spend it*.

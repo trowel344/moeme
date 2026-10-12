@@ -149,14 +149,25 @@ obtainable VRAM).
 **Outcome — the decisive result.** At 12.5% active compute, best oracle residual
 per layer, excluding the degenerate clustered plan:
 
-| Layer | Best oracle residual @ 12.5% active | Learned router |
+The best oracle at this active fraction is always the *finest* partition, i.e.
+`contiguous` at E=64 with k=8:
+
+| Layer | Best oracle residual @ 12.5% active (E=64, k=8) | Learned router |
 |---|---:|---:|
 | 0 | 0.681 | 0.807 |
 | 3 | 0.802 | 0.872 |
 | 8 | 0.811 | 0.857 |
 | 23 | 0.417 | 0.449 |
 
-Oracle-vs-learned gap: **0.0001–0.033**.
+**Oracle-vs-learned gap on those four rows: 0.032–0.126** — not the
+0.0001–0.033 this log quoted before, which came from a *different* slice at the
+same active fraction (`contiguous`, E=8, k=1: gaps +0.0332 / +0.0257 / +0.0044 /
++0.0001, the four rows `results/pilot_curve.txt` prints). The E was not stated,
+so the summary appeared to contradict the table directly above it. Across every
+sparse non-clustered configuration in the pilot (132 rows) the router trails the
+oracle by at most **0.138**. The conclusion is unchanged either way: the oracle
+itself still loses 0.42–0.81 of the layer output at this active fraction, so the
+router is not what limits it.
 → `results/pilot_sparsity.json`, `results/pilot_curve.txt`
 
 **Findings:**
