@@ -2,7 +2,8 @@
 
 **Date:** 2026-10-10 · **Hardware:** RTX 4060 Laptop 8 GB / i7-13620H / 15.4 GiB /
 Micron 3400 1 TB NVMe, Ubuntu 24.04.4
-**Spend to date:** £0.00 · **Compute used:** the target laptop only; no cloud.
+**Spend to date:** £0.00 · **Compute used:** the target laptop, plus one 3.25 h
+session of free Kaggle T4 GPU for the trained-MoE experiment (E15).
 
 ---
 
@@ -26,9 +27,12 @@ That is one download and one afternoon.
 | FFN share of the model | 61.6% (17,112,760,320) | safetensors headers |
 | Post-hoc sparsification operating point | oracle residual 0.42–0.81 at 12.5% active | `results/pilot_curve.txt` |
 | Is the router the bottleneck? No | oracle vs learned gap <= 0.033 | same |
+| Does **training** the MoE reach the ceiling? No | at E=64/k=1 the residual *rises*: 0.9277 frozen → 0.9549 trained | `results/kaggle_upcycle_poc.json` (E15) |
+| ...and it is not seed noise | seed 1 gives 0.9551 / router 0.9802 | `results/kaggle_upcycle_poc_seed1.json` |
+| Trained MoE at the target ratio is 10.4x dense ppl | 202.5 vs 19.6 | same |
 | Does latent expert structure exist? No | participation ratio ≈ E (127 of 128) | `results/real_ffn.json` |
 | Partitioning is exact on real weights | worst rel. L2 error 5.1e-07 | `results/real_ffn.json` |
-| Partitioning is *free* however? No | 2.42x (E=32) to 3.89x (E=128) slower at batch 1 | same |
+| Partitioning is *free* however? No | 2.1-2.4x (E=32) to 2.9-3.9x (E=128) slower at batch 1 across two runs; top-2 of 32 costs the same as all-32 | `results/real_ffn_rerun.json` |
 | Target model today | **0.561 tok/s**, prefill 1.6 tok/s | `results/inference_27b.json` |
 | Usable fast memory | 3.8 GiB VRAM + 10.2 GB RAM = 14.3 GB | `configs/tiers.json` |
 | ...predicted independently from hardware constants | 0.48 tok/s | `tools/residency_table.py` |
@@ -69,9 +73,33 @@ prerequisite, not a nice-to-have.
    router cannot rescue it.
    Additionally, the one plan that looked promising (k-means weight clustering)
    is degenerate: for E=128 one cluster absorbs 52% of the units.
+3. **And training does not create the missing structure** — this was the open
+   objection to blocker 2, and it is now measured rather than assumed. On real
+   Qwen3.5-0.8B over all 24 layers (E15, free Kaggle T4s), training the experts
+   and router beat the frozen partition only at the mildest ratio tested (E=8,
+   12.5% active, by 0.006) and **made the reconstruction worse** at the ratios a
+   conversion needs: E=32 (3.1% active) 0.9188 → 0.9355, E=64 (1.6%) 0.9277 →
+   0.9549. The deficit grows with E, and a second seed reproduces it. Training
+   re-purposes experts away from the split they were partitioned from — the
+   residual against the original dense FFN actually rises while perplexity falls
+   three orders of magnitude. The learned router loses to the oracle at every
+   ratio, so better routing is not the fix either.
+
+   *Scope, after a literature review (`docs/prior_work.md`):* E15 trained **614k
+tokens**; LLaMA-MoE, partitioning the FFN the same way, used **200B on 112 A100s**
+   and states 15-20B are needed just to compare partition methods. E15 also omitted
+   the output rescaling both LLaMA-MoE (N/k) and NVIDIA (∛(E·G²/T)) call essential,
+   and partitioned by weights where CMoE shows the axis should be the activation
+   pattern with a shared expert. So the blocker is **budget, not feasibility**:
+   upcycling demonstrably works at ~50% of original pretraining compute (Sparse
+   Upcycling, +10-60%), which is 10⁴-10⁵ GPU-hours — four orders of magnitude beyond
+   a free tier. The arithmetic in blocker 1 is unaffected by any of this.
 
 *This is exactly the checkpoint the handoff asked for:* "Stop or adjust
-architecture if aggressive sparsity fails oracle recovery." It failed. Stopping.
+architecture if aggressive sparsity fails oracle recovery." It failed — in both
+forms. The frozen partition has no operating point (§4 of the report), and the
+trained partition is worse than the frozen one where it matters (E14/E15).
+Stopping.
 
 ### Path C — train a small MoE from scratch (**blocked on compute; not now**)
 
@@ -111,15 +139,20 @@ how you get the best available assistant on this machine in the meantime.
 |---|---|---|
 | 1 | Feasibility report | **Done** — `docs/feasibility_report.md` |
 | 2 | Project repository | **Done** — this repo, README, tests, config, results; git-committed locally. Not pushed to GitHub (no authorisation requested) |
-| 3 | Dense-equivalent FFN partitioning + verification | **Done and verified** — real 27B weights, 5.1e-07 worst error, 87 tests pass |
+| 3 | Dense-equivalent FFN partitioning + verification | **Done and verified** — real 27B weights, 5.1e-07 worst error, 243 tests pass |
 | 4 | Pilot sparsity study | **Done** — `results/pilot_sparsity.json`; quality-vs-active-compute curve with oracle and learned routers |
+| 4b | Trained-MoE PoC (the "does training change the answer?" gate) | **Done** — `results/upcycle_poc.json` (E14, local), `results/kaggle_upcycle_poc.json` + `_seed1.json` (E15, 24 layers on free Kaggle T4s). Answer: no; worse than frozen at E=32/64 |
 | 5 | Edge runtime experiment | **Partly done** — hardware characterised and three quantised baselines measured end-to-end on the target machine; residency table computed. **Not done:** llama.cpp/GGUF build, `io_uring` vs mmap comparison, prefetch policy, pinned buffers, speculative decoding / native MTP experiments |
 | 6 | Decision memo | **Done** — this document |
+| 4c | Branching vs slicing (E16): are experts complete modules or slices? | **Done** — `results/branch_poc_08b.json`. Answer: complete modules *are* lossless (ppl 15.49 vs dense 15.48) but cost 4.00x the FFN; width, not tiling, sets the deficit; domain-specialised experts help only where a division of labour exists |
 
 **Executed:** all hardware measurements; three end-to-end inference baselines;
 exact parameter accounting from real weight headers; FFN partitioning verified
-against real 27B weights; sparsity pilot on real activations; a validated
-memory-tier throughput model; 87 passing unit tests.
+against real 27B weights; sparsity pilot on real activations; the trained-MoE
+PoC at the target ratio over all 24 layers on free Kaggle GPUs, with a second
+seed; a branching-vs-slicing experiment separating "slicing hurts" from "reading
+less hurts", with independent per-domain expert training; a validated memory-tier
+throughput model; 243 passing unit tests.
 
 **Designed but not executed:** the evaluation harness (30/30/20/20 task sets
 with executable checks); the quantisation quality ladder; all of workstream B's
@@ -130,7 +163,8 @@ qwen3_5 Gated DeltaNet path (the installed `causal_conv1d` is CUDA-only, which
 is a fixable environment issue and worth fixing before CPU-offload design).
 
 **Not attempted, by choice:** SSH or any access to machines other than the one
-this session runs on; no paid resources; no irreversible changes.
+this session runs on; no paid resources; no irreversible changes. Free Kaggle GPU
+compute *was* used for E15 and is not a paid resource.
 
 ## 6. Next three actions
 

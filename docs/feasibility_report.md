@@ -127,13 +127,51 @@ Three sub-findings, each independently important:
 viable. Any model at 9B active with near-27B quality must have its experts
 *trained*, which is a pretraining-scale effort — far beyond free tiers.
 
+### 4.1 And training the split does not fix it (E14/E15)
+
+§4 bounds the *frozen* partition. The obvious objection is that a real conversion
+trains, so `experiments/upcycle_poc.py` trains one: it upcycles the 0.8B's FFN
+into a genuine top-k MoE, trains experts and router, then repeats the same
+oracle-residual measurement on the trained weights. E14 ran E=8 on 4 layers
+locally; E15 ran E=8/32/64 over **all 24 layers** on free Kaggle T4s, plus a
+second seed. Residuals are relative L2 against the true dense FFN output.
+
+| E | active | frozen pilot oracle | oracle **trained** | router **trained** | beats frozen | trained ppl (dense 19.6) |
+|---|---:|---:|---:|---:|:--:|---:|
+| 8 | 12.5% | 0.8624 | **0.8560** | 0.8951 | yes, by 0.006 | 109.5 |
+| 32 | 3.13% | 0.9188 | **0.9355** | 0.9653 | **no** (+0.017) | 159.3 |
+| 64 | 1.56% | 0.9277 | **0.9549** | 0.9806 | **no** (+0.027) | 202.5 |
+
+Training helps only at the mildest sparsity and **actively hurts at the ratios a
+conversion needs**, with the deficit growing as E grows. The learned router is
+worse than the oracle everywhere, so improving routing is not the fix either. A
+second seed reproduces the E=64 inversion to three decimals (0.9551/0.9802).
+The mechanism is visible in the data: `vs_original_dense` — the residual against
+the dense FFN the experts were partitioned from — **rises** under training at every
+E (0.9919 → 0.9974 at E=64) while perplexity falls three orders of magnitude.
+Training re-purposes the experts away from the split they were initialised to be;
+that is what buys the perplexity and what costs the oracle ceiling. E14's "~0.96 at
+1.6% active" was an extrapolation across k; E15 measured **0.9549** there.
+
+**Scope, and an honest correction to the conclusion above.** This does *not* show
+that training cannot reach the ceiling — it shows that 614k tokens of training on a
+weight-partitioned split with an unrescaled sum does not. The published work trains
+far longer and differently: LLaMA-MoE partitioned the FFN the same way and used
+**200B tokens on 112 A100-80G** (stating that 15-20B are needed just to *compare*
+partition methods), NVIDIA beat continued dense training at 1T tokens, and Sparse
+Upcycling's cost is ~50% of the original pretraining compute. Both rescale expert
+outputs — the fix §5 of the design doc named and E14/E15 never implemented. See
+`docs/prior_work.md` for the full review. The **9B-active arithmetic in §3 is
+unaffected**: it is a statement about the backbone, not about conversion quality.
+
 ## 5. What else is proven, and what is not
 
 | Claim | Status | Evidence |
 |---|---|---|
-| Dense FFN partitioning is exactly dense-equivalent | **Proven** | worst rel. L2 error **5.1e-07** on real Qwen3.8-27B layer-1 weights, 4 plans x E in {8,32,128} x 2 input distributions; 87 unit tests pass |
-| Partitioning is free | **Disproven** | 2.42x slower at E=32, 3.89x at E=128 vs dense, batch-1 GPU (small-GEMM overhead) |
+| Dense FFN partitioning is exactly dense-equivalent | **Proven** | worst rel. L2 error **5.1e-07** on real Qwen3.8-27B layer-1 weights across 4 plans x 2 input distributions (11 plan/experts combos: contiguous, interleaved and random at E in {8,32,128}, clustered at E in {8,32} only); 205 unit tests pass |
+| Partitioning is free | **Disproven** | batch-1 GPU, small-GEMM overhead: 2.1-2.4x (E=32) and 2.9-3.9x (E=128) vs dense across two runs; top-2 of 32 costs the same as all-32, so sparsity recovers none of it |
 | Post-hoc FFN sparsification can work | **Disproven** | §4 |
+| Training a post-hoc MoE recovers the ceiling | **Disproven at the target ratio** | §4.1; E15: frozen 0.9277 → trained 0.9549 at E=64/k=1, seed-reproduced |
 | 9B active reachable from this backbone | **Disproven** | §3 |
 | 27B Q4_K_M runs at ~0.56 tok/s here | **Proven (measured)** | and the first-principles tier model independently predicted 0.57 |
 | Memory-tier model is predictive | **Proven within ~2x** | 3/3 measured configs; 2% error on the 27B case |
