@@ -142,20 +142,42 @@ in the survey.**
 
 The released checkpoint **ships a multi-token-prediction head**: 424,699,392
 parameters, measured and accounted for in `src/moeme/accounting.py`, and the atlas
-labels it "draft". llama.cpp supports **NextN MTP speculative decoding** for this
-model family as *self*-speculation, so it needs no separate draft model competing
-for the 3.8 GiB of VRAM — which is what usually kills speculative decoding on
-small machines. Reported effect: **2–3x decode** at matched output
-([llama.cpp MTP guide](https://mer.vin/2026/05/run-qwen-3-6-mtp-in-llama-cpp-faster-local-inference-with-built-in-speculative-decoding/),
-[NVIDIA/community write-ups](https://www.reddit.com/r/LocalLLaMA/comments/1t65vl8/running_qwen35_qwen36_with_nextn_mtp_multitoken/)).
+labels it "draft". Speculative decoding is the right tool for a *bandwidth-bound*
+decode for a structural reason: verifying k drafted tokens takes a single forward
+pass over the weights, so the bytes-per-token of §1 buy k tokens instead of one.
+Drafting from the model's own MTP head avoids what usually kills speculation on a
+small machine — a second model competing for the 3.8 GiB of VRAM.
 
-Note how it composes: MTP multiplies whatever rate you already has, so it is
-nearly worthless on the streaming Q4 model (0.561 → ~1.4 tok/s, still unusable)
-and decisive on a resident one (4.85 tok/s **PREDICTED** → ~12 tok/s, an
-inference from the published 2-3x multiplier rather than a number the tier model
-can produce — that model has no term for speculation). A4 is only interesting
-*after* A1, and together they are the whole "usable resident 27B" story. This is
-the largest untried idea in the repo.
+Support state, **checked rather than assumed**:
+
+- llama.cpp has MTP implemented behind `--spec-type draft-mtp`, with the
+draft/verify loop living in `common/speculative.cpp`
+([issue #27469](https://github.com/ggml-org/llama.cpp/issues/27469), Aug 2026 —
+opened precisely *because* the feature is reachable from the CLI but not from the
+exported C API that bindings use).
+- Reported speedups cluster at **~1.5-2.9x**, not one number: ~2.9x on the
+Qwen3.5/3.6 family (community report), ~1.5-2x for Qwen3.5-9B-MTP (unsloth model
+card), +30-50% throughput (NVIDIA developer forum), and 67→120 tok/s on a 27B
+combining MTP with n-gram speculation.
+- There is a llama.cpp discussion about **this exact model** (#27164), whose
+finding is a caveat worth having before spending an evening: the base
+Qwen3.8-27B was *already* broken on CUDA there before MTP was involved.
+
+Two practical caveats. (1) **Every speed number in this repo goes through
+ollama**, and MTP lives in llama.cpp's `common/` layer; the open question is not
+"does llama.cpp support MTP" (it does) but "can this repo's runtime turn it on"
+— check that first, because it decides whether the experiment is an afternoon or
+a port. (2) The draft need not be the MTP head: issue #20039 notes that
+Qwen3.5-0.8B is "a strong draft model that can greatly accelerate
+Qwen3.5-27B", and this repo already has that model and its artifacts.
+
+Note how it composes: MTP multiplies whatever rate you already have, so it is
+nearly worthless on the streaming Q4 model (0.561 → ~1 tok/s, still unusable) and
+decisive on a resident one (4.85 tok/s **PREDICTED** → order 7-14 tok/s). That
+combination is an *inference*, not a prediction — the tier model has no term for
+speculation — and it needs measuring. A4 is only interesting *after* A1, and
+together they are the whole "usable resident 27B" story. This is the largest
+untried idea in the repo.
 
 ### A5. Free parameter removal and KV budget
 
@@ -358,7 +380,7 @@ it is the only training family with a plausible path to completion at this budge
 | # | experiment | cost | decides |
 |---|---|---|---|
 | 1 | **Quant-quality ladder on the real 27B**: Q3_K_M / IQ3 / Q2_K vs Q4_K_M, perplexity on identical tokens *and* the 19-task gate | one download | whether "resident 27B" exists at all (§2 A1) |
-| 2 | **MTP self-speculative decode** on the resident model | build flag | 2-3x on top of #1 — the largest untried win (§2 A4) |
+| 2 | **MTP self-speculative decode** on the resident model | check the runtime can enable it, then one bench | 1.5-2.9x on top of #1 — largest untried win; support state now verified (§2 A4) |
 | 3 | **Explicit placement sweep** (`-ngl`/`-ncmoe`) on the dense 27B | one bench | how much of 0.561 tok/s was the runtime's fault (§2 A6) |
 | 4 | **Expert-usage histogram → selectivity-weighted quant** for the 35B-A3B | one eval pass + a quant | Q4-class quality under 14.28 GB (§3 B2) |
 | 5 | **Sensitivity map → mixed-quant recipe** (build the predicted 75/15/10) | one quant + eval | whether the 3.4-4.4 bpw hole can be split (§2 A2) |
@@ -379,7 +401,8 @@ a *parameter count* (§1).
 * **Provenance is mixed.** Everything marked MEASURED is an artifact in this repo;
   everything under PUBLISHED is someone else's number and none of it is
   replicated here — the dynamic-expert-quantisation 30-50% figure is a vendor
-  blog, and the MTP 2-3x figure is a community guide, not a paper.
+  blog, and the MTP 1.5-2.9x range is community reports and a developer forum,
+  not papers.
 * **The FFN oracle curve is from 0.8B tile runs** (4 layers), not the 27B. The
   repo flags that its *structure* transfers while the magnitudes may not. C1's
   closure is solid in direction; the exact 0.71 at 12.5% could move with scale.
