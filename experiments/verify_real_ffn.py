@@ -152,7 +152,13 @@ def run(args) -> dict:
         print(f"  {kind:10s} worst relative L2 error = {worst:.3e}")
         assert worst < 1e-5, f"exactness violated for {kind}: {worst}"
     out["exactness_worst_rel_error"] = exactness
-    print("  ALL EXACT within 1e-5  (checked: 4 plans x E in {8,128} x 2 input dists)")
+    # Derived from PLANS, not hardcoded: `clustered` deliberately skips E=128
+    # (k-means over 17,408 points is the expensive plan), so a fixed string here
+    # drifts out of step with what actually ran.
+    checked = "; ".join(f"{p} E={list(es)}" for p, (_, es) in PLANS.items())
+    n_combos = sum(len(es) for _, es in PLANS.values())
+    print(f"  ALL EXACT within 1e-5  (checked: {n_combos} plan/experts combos "
+          f"x 2 input dists -- {checked})")
 
     # ---------------- structure / oracle ----------------
     print("\n== contribution structure (does a top-k router have anything to find?) ==")

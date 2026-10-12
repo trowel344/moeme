@@ -36,12 +36,94 @@
     "_comment": "Decode rates measured end-to-end with ollama on this machine, used to check predicted_decode_tok_s.",
     "qwen3:4b": {"gguf_bytes": 2500000000, "bits_per_param": 4.9, "measured_tok_s": 60.668, "peak_vram_mib": 6798},
     "ornith-1.5:9b": {"gguf_bytes": 6600000000, "bits_per_param": 4.9, "measured_tok_s": 24.629, "peak_vram_mib": 6884},
-    "qwen3.8:latest": {"gguf_bytes": 17000000000, "bits_per_param": 4.9, "measured_tok_s": 0.561, "peak_vram_mib": 6884, "prefill_tok_s": 1.609, "load_s": 46.8}
+    "qwen3.8:latest": {"gguf_bytes": 17000000000, "bits_per_param": 4.9, "measured_tok_s": 0.561, "peak_vram_mib": 6884, "prefill_tok_s": 1.609, "load_s": 46.8},
+    "_moe_comment": "The next two are the SAME qwen35moe architecture (256 experts, top-8, expert FFN 512, shared FFN 512) at two quantisations. They isolate the two effects behind decode rate here: sparsity (a token reads 8 of 256 experts, so ~1-2 GB instead of the whole file) and residency (13.0 GB fits the 14.3 GB of usable fast memory; 22.0 GB does not). Both are dense-model-exceeding results: the 35.5B MoE at Q4_K_M is 11.5x faster than the 27.8B DENSE model at the same quant. See docs/expert_offloading.md.",
+    "ornith-1.5-35b-a3b:q2_k": {"arch": "qwen35moe", "total_params": 35505251456, "active_params": 3000000000, "gguf_bytes": 13000000000, "bits_per_param": 2.8, "measured_tok_s": 19.356, "peak_vram_mib": 6730, "prefill_tok_s": 11.64, "load_s": 18.3, "min_ram_available_bytes": 9290000000, "resident": true},
+    "ornith-1.5:35b": {"arch": "qwen35moe", "total_params": 35505251456, "active_params": 3000000000, "gguf_bytes": 22000000000, "bits_per_param": 4.9, "measured_tok_s": 6.450, "peak_vram_mib": 6932, "prefill_tok_s": 3.82, "load_s": 33.6, "min_ram_available_bytes": 8860000000, "resident": false},
+    "_warm_decode_comment": "The 32-token figures above are near-cold-start and understate a warm run. Over the 30-task evaluation (results/eval_ornith-1.5-35b-a3b-q2_k.json) the same MoE tag decoded at mean 35.306 / median 36.704 tok/s (min 14.402, max 51.387), and the dense 27B answered short questions at 0.35-0.39 tok/s rather than 0.561. Use these warm numbers when reasoning about a whole session; use the 32-token numbers only for comparability with the rest of this block.",
+    "ornith-1.5-35b-a3b:q2_k_warm": {"decode_tok_s_mean_over_30_tasks": 35.306, "decode_tok_s_median": 36.704, "decode_tok_s_min": 14.402, "decode_tok_s_max": 51.387, "source": "results/eval_ornith-1.5-35b-a3b-q2_k.json"},
+    "qwen3.8:latest_warm": {"decode_tok_s_observed": 0.35, "note": "short answers during the evaluation gate, not the 32-token baseline above"}
+  },
+  "expert_placement": {
+    "_comment": "Measured on the SAME weights as the ornith-1.5-35b-a3b:q2_k ollama tag, with llama-bench on the upstream build (-p 128 -n 64 -r 2, -t 14, -fa on, q8_0 KV). This is the tier split the runtime does NOT choose by itself: -ncmoe puts expert tensors of N layers on the CPU while every layer keeps its attention and dense weights on the GPU. See docs/quality_vs_speed.md and results/moe_placement.json.",
+    "best_measured": {"flags": "-ngl 42 -ncmoe 24", "prompt_tok_s": 121.482, "decode_tok_s": 50.057, "source": "surplus planner candidate"},
+    "alternatives": [
+      {"flags": "-ngl 99 -ncmoe 48", "prompt_tok_s": 80.144, "decode_tok_s": 36.498},
+      {"flags": "-ngl 99 -ncmoe 56", "prompt_tok_s": 49.729, "decode_tok_s": 33.092}
+    ],
+    "runtime_default": {"flags": "num_gpu = -1", "prompt_tok_s": 11.636, "decode_tok_s": 19.356, "warm_decode_tok_s": 35.306, "same_task_set_decode_tok_s": 43.1, "same_task_set_prompt_tok_s": 83.4},
+    "best_measured_same_task_set": {"flags": "-ngl 42 -ncmoe 24", "prompt_tok_s": 101.2, "decode_tok_s": 48.4, "wall_s_for_19_tasks": 36, "source": "results/eval_llama_ngl42_ncmoe24.json", "quality": "17/19, identical to the ollama tag"},
+    "gains_vs_runtime_default": {
+      "_comment": "Use the same_task_set numbers. Both engines were measured warm on the same 19 tasks at the same 768-token cap with f16 KV; the cold_32token multiples below are what a fresh llama-bench process versus ollama's 32-token benchmark produces, and they overstate prefill by ~10x. See docs/quality_vs_speed.md 5.2.",
+      "decode_x_same_task_set": 1.12,
+      "prompt_x_same_task_set": 1.21,
+      "wall_x_same_task_set": 1.75,
+      "decode_x_vs_cold_32token_baseline": 2.59,
+      "prompt_x_vs_cold_32token_baseline": 10.4
+    },
+    "surplus_note": "The placement above is surplus's planner pick (predicted 61.52 tok/s at ctx 8192, i.e. ~23% optimistic; the same plan predicts 57.17, 14% optimistic, at the planner's default 2048 context). `surplus bench` cannot report it: the engine it pins (llama.cpp-moe-cache) segfaults on any -ncmoe, exit 139 at -ncmoe 24 and OOM-killed at -ncmoe 40; upstream llama.cpp runs the same flags to completion."
+  },
+  "quality_gate": {
+    "_comment": "Is the fast MoE actually as good as the slow dense one? Measured on the repo's own 30-task set (experiments/eval_gate.py), temperature 0, fixed seed, think off, checkpointed, identical prompts and caps. See docs/quality_vs_speed.md.",
+    "moe_ornith-1.5-35b-a3b_q2_k_30_tasks_num_predict_384": {"overall": "26/30", "coding": "10/10", "format": "6/6", "instruction": "4/6", "reasoning": "6/8"},
+    "short19_num_predict_192": {
+      "moe": {"overall": "15/19", "capped_rows": 2, "excluding_capped": "15/17", "wall_s": 55},
+      "dense_qwen3.8_latest": {"overall": "13/19", "capped_rows": 4, "excluding_capped": "13/15", "wall_s": 3958}
+    },
+    "reasoning_only_num_predict_768": {
+      "moe": {"score": "4/4", "wall_s": 41, "decode_tok_s": 43.4},
+      "dense_qwen3.8_latest": {"score": "4/4", "wall_s": 3517, "decode_tok_s": 0.339},
+      "_conclusion": "The dense model's 0/4 at the 192 cap was truncation, not capability: at 768 both models answer 0.05, 3, 47, 42. No quality gap is measurable on this set; the wall-time ratio is ~86x in the MoE's favour."
+    },
+    "equal_quantisation_both_q4_k_m": {
+      "_comment": "Architecture isolated from bits per weight: ornith-1.5:35b is the same qwen35moe architecture as the Q2_K MoE at Q4_K_M, so against the dense 27B at Q4_K_M it differs in architecture only. Same runtime, same engine, same 19 tasks, think off.",
+      "moe_ornith-1.5_35b_22gb": {"overall": "16/19", "coding": "3/3", "format": "5/6", "instruction": "4/6", "reasoning": "4/4", "decode_tok_s": 6.14, "wall_s": 464},
+      "dense_qwen3.8_latest_17gb": {"non_reasoning_15_rows_at_192": "13/15", "reasoning_at_768": "4/4", "decode_tok_s": 0.32},
+      "_verdict": "Sparsity costs nothing measurable (reasoning ties 4/4; the non-reasoning half differs by one brittle task) and buys ~19x decode at equal bits. The reason to run Q2_K on an 8 GB card is memory, not quality: at equal bits the 22 GB MoE is 7x slower than the 13 GB one because it does not fit the fast tiers either.",
+      "_noise_note": "Failures move inside the same small set of exact-match constraints between models (i_no_letter_e fails everywhere; i_five_words / i_lowercase_start / f_json_array each fail for one model and pass for another). At 6 tasks per category and one run each, a one-task gap is noise."
+    },
+    "same_task_set_engine_check": {"engine": "llama.cpp at surplus's -ngl 42 -ncmoe 24", "score": "17/19", "agrees_with_ollama_tag": true, "_note": "A placement/engine change did not move the score. A raw /completion request that left the chat template's thinking on scored 13/19 -- a request-setting difference, not the engine."},
+    "quantisation_cost": {
+      "_comment": "The question the pass/fail gate above cannot answer: does the SMALLER quantisation cost quality? Both things a user actually faces are measured here -- the same architecture at two quantisations (the gate), and one model at two quantisations on identical tokens (perplexity). E19, docs/quality_vs_speed.md 4.1.",
+      "same_architecture_two_quants_same_19_tasks_768_cap": {
+        "_profile": "identical task set, identical 768 cap, identical runtime, think off, 0 truncated rows on either side. Median decode over the 19 tasks, from those runs' own per-task decode_tok_s. Both use ollama's offload-what-fits policy, so this is partly a residency difference, not only a bits-per-weight one.",
+        "moe_ornith-1.5-35b-a3b_q2_k_13gb": {"overall": "17/19", "rate": 0.895, "coding": "3/3", "format": "6/6", "instruction": "4/6", "reasoning": "4/4", "wall_s": 62.7, "decode_tok_s_median": 43.13, "decode_tok_s_mean": 42.80, "source": "results/eval_ornith-1.5-35b-a3b-q2_k_short19_768.json"},
+        "moe_ornith-1.5_35b_q4_k_m_22gb": {"overall": "16/19", "rate": 0.842, "coding": "3/3", "format": "5/6", "instruction": "4/6", "reasoning": "4/4", "wall_s": 463.5, "decode_tok_s_median": 6.14, "decode_tok_s_mean": 5.94, "source": "results/eval_ornith-1.5-35b_short19_768.json"},
+        "_wall_x": 7.39,
+        "_responses": "13 of 19 responses DIFFER between the two runs (6 byte-identical; median first divergence at character 1; 9 of 13 part within 5 characters); 3 tasks flip verdict, 2 in Q2_K's favour. A pass/fail gate reports a tie for two models that are not producing the same text."
+      },
+      "perplexity_matched_pair_identical_tokens": {
+        "_comment": "experiments/quant_perplexity.py, one GGUF per run, everything else fixed (-c 512 --chunks 8 -t 6), one corpus built from this repo's own prose and code.",
+        "ornith-1.5-9b_q4_k_m_ppl": 7.0029,
+        "ornith-1.5-9b_q4_k_m_stderr": 0.409,
+        "ornith-1.5-9b_q2_k_ppl": 7.7128,
+        "ornith-1.5-9b_q2_k_stderr": 0.468,
+        "q2_k_penalty_ppl": 0.7099,
+        "q2_k_penalty_pct": 10.1,
+        "_sigma": "~1.1 against the two printed standard errors. Paired over identical tokens this is tighter than treating the runs as independent, and the direction is the only sensible one, but read it as a consistent one-directional cost rather than a settled magnitude.",
+        "_provenance": "Measured in-session; the raw logs were in a temp dir that was cleared between sessions, so this pair is NOT backed by a committed results/ artifact. What is committed is the 35B's own run: ornith-1.5-35b-a3b_q2_k at PPL 12.7113 +/- 0.809 in results/quant_perplexity_35b.json.",
+        "_scored_window_tokens": 4096,
+        "_window_note": "llama-perplexity scores chunks*n_ctx tokens and prints that window itself: here 4096, roughly the first 4% of a ~100k-token corpus. Two runs are comparable only when BOTH the scored window and the corpus sha256 match -- the corpus grew 389996 -> 397855 bytes mid-session and the estimate did not move, because every added byte fell past the end of the window."
+      },
+      "unmeasurable_here": {
+        "35b_moe_q2_k_vs_q4_k_m_perplexity_pair": "The 21 GB Q4_K_M artifact cannot be scored on this 15 GiB host at any setting tried. With every expert on the CPU (-cmoe) it was OOM-killed during load: RSS 11.32 GiB as MemAvailable fell 11.45 -> 0.76 GiB. With a partial offload (-ngl 12) the batched pass over an 8-of-256 MoE drove MemAvailable to 0.14 GiB, and on a repeat 0.11 GiB, within a minute, at which point tools/mem_watchdog.py terminated it before the kernel chose its own victim. The run is kept in the report as NO estimate plus an explicit exit code, never as a score. The Q2_K 35B scores fine the same way: the committed run took 173 s with a 9.47 GiB RAM floor (a first run of the same command: 185 s, 8.27 GiB)."
+      },
+      "_practical": "Q4_K_M is the closer model in log-likelihood and the pass/fail gate cannot show it. Q2_K is recommended on this machine for MEMORY reasons -- 7.4x less wall time over the same 19 tasks, ~7x the decode rate -- and not because the two quants are equivalent."
+    },
+    "scorer_defects_found_and_fixed": ["r_bat_ball expected 0.10 (correct 0.05), failing a correct answer", "r_modular expected 1 (correct 3), passing a wrong answer", "truncation was labelled only for EMPTY answers, so a capped run that narrated recorded a bare wrong-answer verdict -- this mis-scored 3 of 4 dense reasoning rows"],
+    "memory_safety_sample": {"window": "59 min of dense generation", "samples": 181, "min_ram_available_gib": 5.79, "peak_vram_mib": 6811, "vram_total_mib": 8188, "oom_kills": 0, "source": "logs/mem_watch_dense768.log"}
   },
   "known_limitations": [
     "NVMe throughput measures 0.8-1.9 GB/s against a ~6.6 GB/s datasheet figure for the Micron 3400. Cause not established (thermals, ASPM/APST power state, PCIe link width, or sustained-state fallback). A healthy drive would materially change the streaming budget; worth checking before designing around this number.",
     "The RAM tier bandwidth is a memcpy figure (40.7 GB/s). Real quantised CPU GEMV kernels differ: a naive torch bf16 GEMV reached only 19.3 GB/s here, while llama.cpp int4 kernels evidently exceed 40 GB/s (ornith-1.5:9b ran at 24.6 tok/s with ~2.7 GB on CPU).",
     "Tier capacities are effective, not physical: the tier model ignores that real runtimes overlap CPU and GPU work, so it over-predicts some configurations by up to ~1.7x. It is a ceiling estimator validated within ~2x on three measured points, not a forecast.",
-    "Vulkan/ROCm were not tested; only CUDA."
+    "Vulkan/ROCm were not tested; only CUDA.",
+    "The inference baselines all use num_gpu = -1 (the runtime's own offload-what-fits policy), so the VRAM/RAM/disk split is chosen by ollama, not controlled per run. That measures the configuration a user actually gets, but it means the tier split is not an independent variable in results/inference_moe*.json. See docs/expert_offloading.md.",
+    "Decode rates are near-cold-start (num_predict = 32, one prompt). A longer generation warms the page cache and is somewhat faster, so these figures are conservative. Prefill (3.8-11.6 tok/s on the MoE rows) is a separate and much worse problem that none of these measurements address.",
+    "The runtime default is not the best available placement. ollama's num_gpu = -1 offloads by WHOLE LAYER, so a layer is either all-GPU or all-CPU. -ncmoe splits at expert granularity and keeps every layer's attention/dense weights on the GPU, which measured 1.42x faster decode and ~10x faster prompt processing on the same weights (results/moe_placement.json). Any conclusion of the form 'this machine cannot run X faster' has to be checked against an explicit placement first.",
+    "Quality scores are budget-sensitive. The evaluation gate at num_predict=192 truncated reasoning mid-working and the extractor then read an intermediate value; the same tasks scored 3/4 at 384 and 1/4 at 192 for one model. Rows the cap cut off are now labelled (a `truncated` flag plus a count and an excluding-capped score in every report), and the reasoning category was re-measured at 768 for both models -- where the dense 27B scores 4/4, i.e. the small-cap figure was a harness limit, not capability. Compare models only at an identical cap, and never read a capped row as a wrong answer.",
+    "The faster placement's quality is now measured, at f16 KV: the same 19 tasks through llama.cpp at -ngl 42 -ncmoe 24 scored 17/19, identical to the ollama tag, so the placement is output-equivalent here. Not measured: any placement change under the q8_0 KV surplus's plan specifies (surplus's own README calls that a precision tradeoff), token-exact agreement between engines, and this model at any other placement than the one tested.",
+    "Quantisation damage is invisible to the pass/fail gate and only partly measured here. Scoring Q2_K against Q4_K_M of the same 35B MoE gave 17/19 vs 16/19 -- a tie the gate should not be trusted to interpret, because 13 of the 19 responses differ between the two runs. Perplexity on an identical token stream puts the Q2_K penalty near +10% (matched 9B pair, ~1.1 sigma, and that pair is not yet backed by a committed results/ artifact). Two limits: the probe scores only chunks*n_ctx = 4096 tokens, about the first 4% of the corpus, so a larger --chunks is needed to tighten the margin; and the 35B's own Q4_K_M half cannot be scored on this host at all (see quantisation_cost.unmeasurable_here). Use the gate for capability and the probe for fidelity, and quote a PPL number only with its corpus sha256 and scored window.",
+    "The wall-time ratio between the two 35B quantisations (7.4x) comes from runs under ollama's offload-what-fits policy, so it mixes two effects: fewer bits per weight, and 13 GB partly offloaded against 22 GB mostly host-side. It measures the choice a user is actually making, not the pure effect of quantisation on speed."
   ]
 }

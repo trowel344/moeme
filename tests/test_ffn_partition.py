@@ -243,6 +243,24 @@ def test_oracle_single_expert_of_many_is_poor():
     assert r["mean_rel_residual"] > 0.3, r
 
 
+@pytest.mark.parametrize("dtype", [torch.bfloat16, torch.float16])
+def test_oracle_and_router_diagnostics_accept_half_precision(dtype):
+    """The diagnostics must work on bf16/fp16 activations.
+
+    `Tensor.quantile` rejects half precision, so a bf16 self-test used to crash
+    here. Residuals are now computed in float32 internally.
+    """
+    p, outs = _oracle_setup(8, n_tokens=32)
+    outs = outs.to(dtype)
+    r = oracle_topk_residual(outs, k=2)
+    assert 0.0 <= r["mean_rel_residual"] <= 1.5
+    scores = torch.rand(32, 8, generator=torch.Generator().manual_seed(0))
+    rr = router_topk_residual(outs, scores, k=2)
+    assert 0.0 <= rr["mean_rel_residual"] <= 1.5
+    c = contribution_concentration(outs)
+    assert 1.0 <= c["participation_ratio"] <= 8.0 + 1e-4
+
+
 def test_contribution_concentration_bounds():
     p, outs = _oracle_setup(8, n_tokens=32)
     c = contribution_concentration(outs)

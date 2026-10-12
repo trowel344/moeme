@@ -1,0 +1,15 @@
+{
+ "id": "trowel3444/moeme-upcycling-poc",
+ "title": "MoEMe upcycling PoC",
+ "code_file": "upcycle_poc.ipynb",
+ "language": "python",
+ "kernel_type": "notebook",
+ "is_private": true,
+ "enable_gpu": true,
+ "enable_internet": true,
+ "dataset_sources": [
+  "trowel3444/moeme-upcycle-poc-src"
+ ],
+ "competition_sources": [],
+ "kernel_sources": []
+}

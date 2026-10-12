@@ -1,0 +1,689 @@
+{
+  "model": "Qwen/Qwen3.5-0.8B",
+  "device": "cuda",
+  "amp_dtype": "torch.bfloat16",
+  "dense_val_ppl": 21.735902484499046,
+  "seq_len": 512,
+  "train_blocks": 1638,
+  "val_blocks": 86,
+  "runs": [
+    {
+      "config": {
+        "n_experts": 8,
+        "top_k": 1,
+        "combine": "sum",
+        "plan": "random",
+        "aux_loss_coef": 0.01,
+        "router_hidden": null,
+        "expert_noise": 0.0
+      },
+      "layers": [
+        0,
+        3,
+        8,
+        23
+      ],
+      "trainable_params": 44072992,
+      "steps": 300,
+      "dense_val_ppl": 21.735902484499046,
+      "dense_limit_val_ppl": 21.739627108877485,
+      "untrained_val_ppl": 112.02759575644252,
+      "trained_val_ppl": 33.77706918647853,
+      "metrics_untrained": {
+        "vs_original_dense_mean": 0.9230479747056961,
+        "oracle_topk_mean": 0.8583844304084778,
+        "router_topk_mean": 0.9225276857614517
+      },
+      "metrics_trained": {
+        "vs_original_dense_mean": 1.0089083462953568,
+        "oracle_topk_mean": 0.8500503599643707,
+        "router_topk_mean": 0.8863984197378159
+      },
+      "metrics_per_layer": {
+        "untrained": {
+          "0": {
+            "vs_original_dense": 0.9154555797576904,
+            "oracle_topk": 0.8185000419616699,
+            "router_topk": 0.9153609275817871
+          },
+          "3": {
+            "vs_original_dense": 0.9293329119682312,
+            "oracle_topk": 0.8822505474090576,
+            "router_topk": 0.9288598299026489
+          },
+          "8": {
+            "vs_original_dense": 0.9355506300926208,
+            "oracle_topk": 0.9061009287834167,
+            "router_topk": 0.9351967573165894
+          },
+          "23": {
+            "vs_original_dense": 0.9118527770042419,
+            "oracle_topk": 0.8266862034797668,
+            "router_topk": 0.9106932282447815
+          }
+        },
+        "trained": {
+          "0": {
+            "vs_original_dense": 0.9374939799308777,
+            "oracle_topk": 0.821699857711792,
+            "router_topk": 0.8836252689361572
+          },
+          "3": {
+            "vs_original_dense": 0.9733643531799316,
+            "oracle_topk": 0.8625916242599487,
+            "router_topk": 0.8988558053970337
+          },
+          "8": {
+            "vs_original_dense": 1.0665748119354248,
+            "oracle_topk": 0.8621045351028442,
+            "router_topk": 0.8904106616973877
+          },
+          "23": {
+            "vs_original_dense": 1.0582002401351929,
+            "oracle_topk": 0.853805422782898,
+            "router_topk": 0.8727019429206848
+          }
+        }
+      },
+      "routing": {
+        "per_layer": {
+          "0": {
+            "usage_fraction": [
+              0.12109375,
+              0.146484375,
+              0.0859375,
+              0.13671875,
+              0.14453125,
+              0.09765625,
+              0.142578125,
+              0.125
+            ],
+            "effective_experts": 7.777369022369385,
+            "load_max_over_mean": 1.171875,
+            "usage_entropy_normalised": 0.9927500486373901,
+            "router_entropy_mean": 0.966066837310791,
+            "n_tokens": 512
+          },
+          "3": {
+            "usage_fraction": [
+              0.111328125,
+              0.169921875,
+              0.134765625,
+              0.10546875,
+              0.13671875,
+              0.0625,
+              0.15625,
+              0.123046875
+            ],
+            "effective_experts": 7.5354719161987305,
+            "load_max_over_mean": 1.359375,
+            "usage_entropy_normalised": 0.9839611649513245,
+            "router_entropy_mean": 0.9476094245910645,
+            "n_tokens": 512
+          },
+          "8": {
+            "usage_fraction": [
+              0.060546875,
+              0.134765625,
+              0.126953125,
+              0.19921875,
+              0.146484375,
+              0.07421875,
+              0.138671875,
+              0.119140625
+            ],
+            "effective_experts": 7.245149612426758,
+            "load_max_over_mean": 1.59375,
+            "usage_entropy_normalised": 0.9738937020301819,
+            "router_entropy_mean": 0.9599016904830933,
+            "n_tokens": 512
+          },
+          "23": {
+            "usage_fraction": [
+              0.09375,
+              0.05078125,
+              0.185546875,
+              0.09375,
+              0.181640625,
+              0.1171875,
+              0.185546875,
+              0.091796875
+            ],
+            "effective_experts": 6.93649435043335,
+            "load_max_over_mean": 1.484375,
+            "usage_entropy_normalised": 0.9620694518089294,
+            "router_entropy_mean": 0.9383352994918823,
+            "n_tokens": 512
+          }
+        },
+        "effective_experts_mean": 7.373621225357056,
+        "load_max_over_mean": 1.40234375,
+        "usage_entropy_mean": 0.9781685918569565
+      },
+      "loss_curve": [
+        {
+          "step": 0,
+          "loss": 3.4713807702064514
+        },
+        {
+          "step": 30,
+          "loss": 3.8048428893089294
+        },
+        {
+          "step": 60,
+          "loss": 3.1782760620117188
+        },
+        {
+          "step": 90,
+          "loss": 3.2541205286979675
+        },
+        {
+          "step": 120,
+          "loss": 3.1662725806236267
+        },
+        {
+          "step": 150,
+          "loss": 3.2232484221458435
+        },
+        {
+          "step": 180,
+          "loss": 3.479356825351715
+        },
+        {
+          "step": 210,
+          "loss": 3.1067797541618347
+        },
+        {
+          "step": 240,
+          "loss": 2.908021867275238
+        },
+        {
+          "step": 270,
+          "loss": 2.835490345954895
+        },
+        {
+          "step": 299,
+          "loss": 3.3547892570495605
+        }
+      ],
+      "wall_seconds": 176.6830858340254,
+      "frozen_oracle_reference": {
+        "model": "Qwen/Qwen3.5-0.8B",
+        "per_layer": {
+          "0": {
+            "mean_rel_residual": 0.8193405866622925,
+            "plan_key": "random_E8"
+          },
+          "3": {
+            "mean_rel_residual": 0.8766739368438721,
+            "plan_key": "random_E8"
+          },
+          "8": {
+            "mean_rel_residual": 0.907406747341156,
+            "plan_key": "random_E8"
+          },
+          "23": {
+            "mean_rel_residual": 0.8459839224815369,
+            "plan_key": "random_E8"
+          }
+        }
+      },
+      "beats_frozen_oracle": true,
+      "frozen_oracle_mean_on_common_layers": 0.8623512983322144,
+      "trained_oracle_mean_on_common_layers": 0.8500503599643707,
+      "trained_router_mean_on_common_layers": 0.8863984197378159
+    },
+    {
+      "config": {
+        "n_experts": 8,
+        "top_k": 2,
+        "combine": "sum",
+        "plan": "random",
+        "aux_loss_coef": 0.01,
+        "router_hidden": null,
+        "expert_noise": 0.0
+      },
+      "layers": [
+        0,
+        3,
+        8,
+        23
+      ],
+      "trainable_params": 44072992,
+      "steps": 300,
+      "dense_val_ppl": 21.735902484499046,
+      "dense_limit_val_ppl": 21.739627108877485,
+      "untrained_val_ppl": 73.17312452461273,
+      "trained_val_ppl": 30.611425682190276,
+      "metrics_untrained": {
+        "vs_original_dense_mean": 0.8375381976366043,
+        "oracle_topk_mean": 0.7519853264093399,
+        "router_topk_mean": 0.8338436037302017
+      },
+      "metrics_trained": {
+        "vs_original_dense_mean": 0.9391361325979233,
+        "oracle_topk_mean": 0.7383216023445129,
+        "router_topk_mean": 0.7932140976190567
+      },
+      "metrics_per_layer": {
+        "untrained": {
+          "0": {
+            "vs_original_dense": 0.8436612486839294,
+            "oracle_topk": 0.7065858244895935,
+            "router_topk": 0.8331817388534546
+          },
+          "3": {
+            "vs_original_dense": 0.8662521243095398,
+            "oracle_topk": 0.7908477187156677,
+            "router_topk": 0.8651509881019592
+          },
+          "8": {
+            "vs_original_dense": 0.8722769021987915,
+            "oracle_topk": 0.8248169422149658,
+            "router_topk": 0.8717696666717529
+          },
+          "23": {
+            "vs_original_dense": 0.7679625153541565,
+            "oracle_topk": 0.6856908202171326,
+            "router_topk": 0.7652720212936401
+          }
+        },
+        "trained": {
+          "0": {
+            "vs_original_dense": 0.8732991218566895,
+            "oracle_topk": 0.7041943073272705,
+            "router_topk": 0.7937269806861877
+          },
+          "3": {
+            "vs_original_dense": 0.9175185561180115,
+            "oracle_topk": 0.7581180334091187,
+            "router_topk": 0.8156610727310181
+          },
+          "8": {
+            "vs_original_dense": 0.9953359961509705,
+            "oracle_topk": 0.7739577293395996,
+            "router_topk": 0.8103097677230835
+          },
+          "23": {
+            "vs_original_dense": 0.9703908562660217,
+            "oracle_topk": 0.717016339302063,
+            "router_topk": 0.7531585693359375
+          }
+        }
+      },
+      "routing": {
+        "per_layer": {
+          "0": {
+            "usage_fraction": [
+              0.119140625,
+              0.1328125,
+              0.11328125,
+              0.1337890625,
+              0.1220703125,
+              0.1318359375,
+              0.115234375,
+              0.1318359375
+            ],
+            "effective_experts": 7.967660427093506,
+            "load_max_over_mean": 1.0703125,
+            "usage_entropy_normalised": 0.999018132686615,
+            "router_entropy_mean": 0.9640059471130371,
+            "n_tokens": 512
+          },
+          "3": {
+            "usage_fraction": [
+              0.140625,
+              0.12890625,
+              0.087890625,
+              0.146484375,
+              0.142578125,
+              0.1142578125,
+              0.1259765625,
+              0.11328125
+            ],
+            "effective_experts": 7.833261013031006,
+            "load_max_over_mean": 1.171875,
+            "usage_entropy_normalised": 0.9946484565734863,
+            "router_entropy_mean": 0.9481275677680969,
+            "n_tokens": 512
+          },
+          "8": {
+            "usage_fraction": [
+              0.1220703125,
+              0.197265625,
+              0.1181640625,
+              0.0654296875,
+              0.126953125,
+              0.1328125,
+              0.099609375,
+              0.1376953125
+            ],
+            "effective_experts": 7.424072265625,
+            "load_max_over_mean": 1.578125,
+            "usage_entropy_normalised": 0.9813284277915955,
+            "router_entropy_mean": 0.9586248397827148,
+            "n_tokens": 512
+          },
+          "23": {
+            "usage_fraction": [
+              0.12109375,
+              0.1103515625,
+              0.0791015625,
+              0.111328125,
+              0.189453125,
+              0.1318359375,
+              0.103515625,
+              0.1533203125
+            ],
+            "effective_experts": 7.519476890563965,
+            "load_max_over_mean": 1.515625,
+            "usage_entropy_normalised": 0.9851412773132324,
+            "router_entropy_mean": 0.946455717086792,
+            "n_tokens": 512
+          }
+        },
+        "effective_experts_mean": 7.686117649078369,
+        "load_max_over_mean": 1.333984375,
+        "usage_entropy_mean": 0.9900340735912323
+      },
+      "loss_curve": [
+        {
+          "step": 0,
+          "loss": 3.3845252990722656
+        },
+        {
+          "step": 30,
+          "loss": 3.6291735768318176
+        },
+        {
+          "step": 60,
+          "loss": 3.025485336780548
+        },
+        {
+          "step": 90,
+          "loss": 3.063817858695984
+        },
+        {
+          "step": 120,
+          "loss": 3.035048484802246
+        },
+        {
+          "step": 150,
+          "loss": 3.095720946788788
+        },
+        {
+          "step": 180,
+          "loss": 3.374156951904297
+        },
+        {
+          "step": 210,
+          "loss": 2.959778904914856
+        },
+        {
+          "step": 240,
+          "loss": 2.7348992824554443
+        },
+        {
+          "step": 270,
+          "loss": 2.6912516951560974
+        },
+        {
+          "step": 299,
+          "loss": 3.259251296520233
+        }
+      ],
+      "wall_seconds": 179.36410469689872,
+      "frozen_oracle_reference": {
+        "model": "Qwen/Qwen3.5-0.8B",
+        "per_layer": {
+          "0": {
+            "mean_rel_residual": 0.7075440883636475,
+            "plan_key": "random_E8"
+          },
+          "3": {
+            "mean_rel_residual": 0.7868540287017822,
+            "plan_key": "random_E8"
+          },
+          "8": {
+            "mean_rel_residual": 0.8239552974700928,
+            "plan_key": "random_E8"
+          },
+          "23": {
+            "mean_rel_residual": 0.7126684188842773,
+            "plan_key": "random_E8"
+          }
+        }
+      },
+      "beats_frozen_oracle": true,
+      "frozen_oracle_mean_on_common_layers": 0.75775545835495,
+      "trained_oracle_mean_on_common_layers": 0.7383216023445129,
+      "trained_router_mean_on_common_layers": 0.7932140976190567
+    },
+    {
+      "config": {
+        "n_experts": 8,
+        "top_k": 4,
+        "combine": "sum",
+        "plan": "random",
+        "aux_loss_coef": 0.01,
+        "router_hidden": null,
+        "expert_noise": 0.0
+      },
+      "layers": [
+        0,
+        3,
+        8,
+        23
+      ],
+      "trainable_params": 44072992,
+      "steps": 300,
+      "dense_val_ppl": 21.735902484499046,
+      "dense_limit_val_ppl": 21.739627108877485,
+      "untrained_val_ppl": 48.909167761350034,
+      "trained_val_ppl": 28.39955958615868,
+      "metrics_untrained": {
+        "vs_original_dense_mean": 0.6747296005487442,
+        "oracle_topk_mean": 0.5638471692800522,
+        "router_topk_mean": 0.6710705459117889
+      },
+      "metrics_trained": {
+        "vs_original_dense_mean": 0.824402779340744,
+        "oracle_topk_mean": 0.5368322134017944,
+        "router_topk_mean": 0.6093229353427887
+      },
+      "metrics_per_layer": {
+        "untrained": {
+          "0": {
+            "vs_original_dense": 0.6763140559196472,
+            "oracle_topk": 0.5300233364105225,
+            "router_topk": 0.6624183654785156
+          },
+          "3": {
+            "vs_original_dense": 0.6959581971168518,
+            "oracle_topk": 0.6155964136123657,
+            "router_topk": 0.6977194547653198
+          },
+          "8": {
+            "vs_original_dense": 0.7109998464584351,
+            "oracle_topk": 0.6538045406341553,
+            "router_topk": 0.7092248201370239
+          },
+          "23": {
+            "vs_original_dense": 0.6156463027000427,
+            "oracle_topk": 0.4559643864631653,
+            "router_topk": 0.6149195432662964
+          }
+        },
+        "trained": {
+          "0": {
+            "vs_original_dense": 0.7555855512619019,
+            "oracle_topk": 0.5134904384613037,
+            "router_topk": 0.6204774379730225
+          },
+          "3": {
+            "vs_original_dense": 0.8047811388969421,
+            "oracle_topk": 0.5763332843780518,
+            "router_topk": 0.6411547660827637
+          },
+          "8": {
+            "vs_original_dense": 0.9071072936058044,
+            "oracle_topk": 0.6000511050224304,
+            "router_topk": 0.6466063857078552
+          },
+          "23": {
+            "vs_original_dense": 0.8301371335983276,
+            "oracle_topk": 0.45745402574539185,
+            "router_topk": 0.5290531516075134
+          }
+        }
+      },
+      "routing": {
+        "per_layer": {
+          "0": {
+            "usage_fraction": [
+              0.1240234375,
+              0.1142578125,
+              0.12109375,
+              0.1259765625,
+              0.13330078125,
+              0.11572265625,
+              0.13427734375,
+              0.13134765625
+            ],
+            "effective_experts": 7.973598003387451,
+            "load_max_over_mean": 1.07421875,
+            "usage_entropy_normalised": 0.9992007613182068,
+            "router_entropy_mean": 0.9655506014823914,
+            "n_tokens": 512
+          },
+          "3": {
+            "usage_fraction": [
+              0.10546875,
+              0.12451171875,
+              0.1181640625,
+              0.12451171875,
+              0.13916015625,
+              0.125,
+              0.12841796875,
+              0.134765625
+            ],
+            "effective_experts": 7.9531569480896,
+            "load_max_over_mean": 1.11328125,
+            "usage_entropy_normalised": 0.9985591173171997,
+            "router_entropy_mean": 0.9476234912872314,
+            "n_tokens": 512
+          },
+          "8": {
+            "usage_fraction": [
+              0.11572265625,
+              0.0966796875,
+              0.123046875,
+              0.1337890625,
+              0.14306640625,
+              0.14111328125,
+              0.1259765625,
+              0.12060546875
+            ],
+            "effective_experts": 7.900424957275391,
+            "load_max_over_mean": 1.14453125,
+            "usage_entropy_normalised": 0.9968845844268799,
+            "router_entropy_mean": 0.9589552879333496,
+            "n_tokens": 512
+          },
+          "23": {
+            "usage_fraction": [
+              0.08837890625,
+              0.1181640625,
+              0.140625,
+              0.15380859375,
+              0.1162109375,
+              0.12890625,
+              0.15673828125,
+              0.09716796875
+            ],
+            "effective_experts": 7.731778144836426,
+            "load_max_over_mean": 1.25390625,
+            "usage_entropy_normalised": 0.9915063381195068,
+            "router_entropy_mean": 0.9438549280166626,
+            "n_tokens": 512
+          }
+        },
+        "effective_experts_mean": 7.889739513397217,
+        "load_max_over_mean": 1.146484375,
+        "usage_entropy_mean": 0.9965377002954483
+      },
+      "loss_curve": [
+        {
+          "step": 0,
+          "loss": 2.963141232728958
+        },
+        {
+          "step": 30,
+          "loss": 3.4159363508224487
+        },
+        {
+          "step": 60,
+          "loss": 2.87625253200531
+        },
+        {
+          "step": 90,
+          "loss": 2.892463505268097
+        },
+        {
+          "step": 120,
+          "loss": 2.8893883228302
+        },
+        {
+          "step": 150,
+          "loss": 3.01001900434494
+        },
+        {
+          "step": 180,
+          "loss": 3.3100050687789917
+        },
+        {
+          "step": 210,
+          "loss": 2.806445598602295
+        },
+        {
+          "step": 240,
+          "loss": 2.5387051701545715
+        },
+        {
+          "step": 270,
+          "loss": 2.5302940607070923
+        },
+        {
+          "step": 299,
+          "loss": 3.154368221759796
+        }
+      ],
+      "wall_seconds": 189.84466771106236,
+      "frozen_oracle_reference": {
+        "model": "Qwen/Qwen3.5-0.8B",
+        "per_layer": {
+          "0": {
+            "mean_rel_residual": 0.5334572792053223,
+            "plan_key": "random_E8"
+          },
+          "3": {
+            "mean_rel_residual": 0.6124120950698853,
+            "plan_key": "random_E8"
+          },
+          "8": {
+            "mean_rel_residual": 0.6527336835861206,
+            "plan_key": "random_E8"
+          },
+          "23": {
+            "mean_rel_residual": 0.4855743646621704,
+            "plan_key": "random_E8"
+          }
+        }
+      },
+      "beats_frozen_oracle": true,
+      "frozen_oracle_mean_on_common_layers": 0.5710443556308746,
+      "trained_oracle_mean_on_common_layers": 0.5368322134017944,
+      "trained_router_mean_on_common_layers": 0.6093229353427887
+    }
+  ]
+}

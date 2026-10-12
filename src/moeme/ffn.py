@@ -302,12 +302,16 @@ def oracle_topk_residual(expert_outputs: Tensor, k: int) -> dict:
     E, T, H = expert_outputs.shape
     if not 1 <= k <= E:
         raise ValueError(f"k={k} out of range for {E} experts")
-    total = expert_outputs.sum(dim=0)                       # (T, hidden)
-    norms = expert_outputs.norm(dim=2)                      # (E, T)
+    # diagnostics run in float32 regardless of the activation dtype: bf16/fp16
+    # residuals would both lose precision and break `quantile` (which requires
+    # float or double)
+    eo = expert_outputs.float()
+    total = eo.sum(dim=0)                                   # (T, hidden)
+    norms = eo.norm(dim=2)                                  # (E, T)
     topk = torch.topk(norms, k, dim=0).indices              # (k, T)
     mask = torch.zeros_like(norms, dtype=torch.bool)
     mask.scatter_(0, topk, True)
-    kept = (expert_outputs * mask.unsqueeze(-1)).sum(dim=0)
+    kept = (eo * mask.unsqueeze(-1)).sum(dim=0)
     resid = (total - kept).norm(dim=1) / total.norm(dim=1).clamp_min(1e-12)
     return {
         "k": k,
@@ -329,7 +333,7 @@ def contribution_concentration(expert_outputs: Tensor) -> dict:
     the participation ratio (1 / sum p_i^2), the effective expert count, and the
     share held by the single largest contributor.
     """
-    energy = expert_outputs.pow(2).sum(dim=(1, 2))          # (E,)
+    energy = expert_outputs.float().pow(2).sum(dim=(1, 2))  # (E,)
     p = energy / energy.sum().clamp_min(1e-30)
     pr = 1.0 / p.pow(2).sum().clamp_min(1e-30)
     return {
@@ -376,13 +380,14 @@ def router_topk_residual(expert_outputs: Tensor, router_scores: Tensor,
     router_scores : (T, E) scores computed without seeing expert outputs.
     """
     E, T, H = expert_outputs.shape
-    total = expert_outputs.sum(dim=0)
+    eo = expert_outputs.float()                             # float32 diagnostics
+    total = eo.sum(dim=0)
     if router_scores.shape != (T, E):
         raise ValueError(f"router_scores must be (T,{E}), got {tuple(router_scores.shape)}")
     topk = torch.topk(router_scores, k, dim=1).indices       # (T, k)
-    mask = torch.zeros(T, E, dtype=torch.bool, device=expert_outputs.device)
+    mask = torch.zeros(T, E, dtype=torch.bool, device=eo.device)
     mask.scatter_(1, topk, True)
-    kept = (expert_outputs * mask.t().unsqueeze(-1)).sum(dim=0)
+    kept = (eo * mask.t().unsqueeze(-1)).sum(dim=0)
     resid = (total - kept).norm(dim=1) / total.norm(dim=1).clamp_min(1e-12)
     return {
         "k": k,
