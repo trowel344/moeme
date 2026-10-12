@@ -168,6 +168,54 @@ def test_quality_block_keeps_the_unbacked_pair_labelled(data):
 
 
 # ---------------------------------------------------------------------------
+# both sheets are readable -- a dark theme's failure mode is text you cannot see
+# ---------------------------------------------------------------------------
+
+def test_both_themes_meet_their_contrast_minimums():
+    """Every meaningful pair (text on the sheet, text on a block, chrome) has to
+    clear its WCAG minimum in *both* themes.
+
+    This is the check the first dark version of this page would have failed: it
+    was dark, but the text sat at whatever brightness the palette happened to
+    have. Asserted from the palette, so it needs no browser.
+    """
+    report = model_atlas.contrast_report()
+    assert set(report) == {"light", "dark"}
+    for theme, rows in report.items():
+        assert rows, f"no contrast requirements checked for {theme}"
+        bad = [r for r in rows if not r["ok"]]
+        assert not bad, f"{theme} theme fails contrast: {bad}"
+    # and the requirement list has to be asking for something real
+    assert any(r["min"] >= 7.0 for r in report["dark"])
+    assert any(r["min"] >= 7.0 for r in report["light"])
+
+
+def test_the_two_palettes_define_the_same_keys():
+    """A colour present in one theme and missing from the other would render as
+    undefined (invisible or black) on exactly one sheet."""
+    light, dark = model_atlas.PALETTES["light"], model_atlas.PALETTES["dark"]
+    assert set(light) == set(dark)
+    for key, _var in model_atlas.CSS_VARS:
+        assert key in light, f"CSS variable source {key} missing from light"
+        assert key in dark, f"CSS variable source {key} missing from dark"
+    for theme, pal in model_atlas.PALETTES.items():
+        for key, value in pal.items():
+            assert re.match(r"^(#[0-9a-f]{6}|rgba\([\d., ]+\))$", value), \
+                f"{theme}.{key} is not a plain colour: {value}"
+
+
+def test_page_ships_both_themes_and_a_switch(data):
+    html = model_atlas.render(data)
+    assert 'data-theme="dark"' in html                 # opens dark
+    assert 'html[data-theme="dark"]' in html           # dark overrides generated
+    assert ":root{" in html                             # light stays the base
+    assert 'id="theme-btn"' in html and "setTheme" in html
+    # the palette must reach the canvas too, not only the CSS
+    assert '"palette"' in html
+    assert "contrastRatio" in html and "CONTRAST_PAIRS" in html
+
+
+# ---------------------------------------------------------------------------
 # the page itself
 # ---------------------------------------------------------------------------
 
@@ -199,6 +247,7 @@ def test_every_tab_declares_a_fit_box_and_the_layout_checks(data):
     assert tabs <= boxes, f"views with no fit box: {sorted(tabs - boxes)}"
     assert "drawing is inside the frame" in tmpl
     assert "no two labels overlap" in tmpl
+    assert "theme contrast" in tmpl
     assert "__atlasSelfTest" in tmpl and "measureInk" in tmpl
 
 

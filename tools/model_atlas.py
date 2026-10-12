@@ -316,6 +316,7 @@ def derive() -> dict:
     }
 
     return {
+        "palette": PALETTES,
         "geometry": geometry,
         "section": section,
         "targets": targets,
@@ -339,19 +340,148 @@ def derive() -> dict:
 # the page
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# the palette: one source of truth for the sheet, the canvas and the CSS
+#
+# Both themes come from here, and the CSS variables are generated from the same
+# dict the canvas reads, so a colour cannot be changed in one place and silently
+# left behind in the other. Contrast is asserted in tests, because the failure
+# mode for a dark theme is text you cannot read.
+# ---------------------------------------------------------------------------
+
+PALETTES = {
+    "light": {
+        "paper": "#f6f4ee", "panel": "#fffdf8",
+        "grid": "#e4e0d4", "grid2": "#d6d1c2",
+        "ink": "#161d26", "ink2": "#5c6672",
+        "blue": "#1d4ed8", "red": "#b91c1c",
+        "green": "#15703a", "amber": "#9a5c06",   # 4.85:1 on the light sheet
+        # blocks
+        "attnFill": "#cbb9ff", "gdnFill": "#a7d9de",
+        "ffnFill": "#dce6fd", "ffnStroke": "#8fa8e8",
+        "plate": "#efece2", "hatch": "#b9b3a4",
+        "badFill": "#f7d5d5", "barFill": "#f1e6d0",
+        "floorWash": "rgba(185,28,28,0.07)",
+        "ceilWash": "rgba(21,128,61,0.06)",
+        # read band gradient, green (no loss) -> red (heavy loss)
+        "lossGreen": "#15703a", "lossAmber": "#9a5c06", "lossRed": "#b91c1c",
+        # chrome
+        "tipBg": "#fffdf8", "tipText": "#161d26", "tipBorder": "#161d26",
+        "shadow": "rgba(22,29,38,.12)", "btnFg": "#ffffff",
+        "badgeMbg": "#dcfce7", "badgeMfg": "#14532d",
+        "badgePbg": "#fef3c7", "badgePfg": "#713f12",
+    },
+    "dark": {
+        "paper": "#0e1117", "panel": "#161a23",
+        "grid": "#1b2029", "grid2": "#262c38",
+        "ink": "#eef3fa", "ink2": "#a3b3c9",
+        "blue": "#86b0ff", "red": "#ff8b80",
+        "green": "#66d98f", "amber": "#edbb63",
+        "attnFill": "#2d2757", "gdnFill": "#123a45",
+        "ffnFill": "#1b2b4e", "ffnStroke": "#7aa2f7",
+        "plate": "#141821", "hatch": "#4a5570",
+        "badFill": "#3d2124", "barFill": "#332d1d",
+        "floorWash": "rgba(255,139,128,0.10)",
+        "ceilWash": "rgba(102,217,143,0.10)",
+        "lossGreen": "#3ec26f", "lossAmber": "#d6a437", "lossRed": "#e4574f",
+        "tipBg": "#1b212c", "tipText": "#eef3fa", "tipBorder": "#47526b",
+        "shadow": "rgba(0,0,0,.55)", "btnFg": "#0e1117",
+        "badgeMbg": "#12351f", "badgeMfg": "#7ce8a3",
+        "badgePbg": "#3b2f15", "badgePfg": "#f2ca6f",
+    },
+}
+
+# palette key -> CSS variable name. The CSS block is generated from this, so the
+# two themes cannot disagree about which variables exist.
+CSS_VARS = (
+    ("paper", "paper"), ("panel", "panel"), ("grid", "grid"),
+    ("grid2", "grid2"), ("ink", "ink"), ("ink2", "dim"),
+    ("blue", "blue"), ("red", "red"), ("green", "green"),
+    ("amber", "amber"), ("tipBg", "tipBg"), ("tipText", "tipText"),
+    ("tipBorder", "tipBorder"), ("shadow", "shadow"),
+    ("btnFg", "btnFg"), ("badgeMbg", "badgeMbg"), ("badgeMfg", "badgeMfg"),
+    ("badgePbg", "badgePbg"), ("badgePfg", "badgePfg"),
+)
+
+
+# ---------------------------------------------------------------------------
+# contrast, so "can I read it" is a number rather than an opinion
+# ---------------------------------------------------------------------------
+
+def _rgb(colour: str) -> tuple:
+    c = colour.lstrip("#")
+    if len(c) == 3:
+        c = "".join(ch * 2 for ch in c)
+    return tuple(int(c[i:i + 2], 16) for i in (0, 2, 4))
+
+
+def _linearise(v: float) -> float:
+    v = v / 255.0
+    return v / 12.92 if v <= 0.04045 else ((v + 0.055) / 1.055) ** 2.4
+
+
+def relative_luminance(colour: str) -> float:
+    """WCAG relative luminance of a hex colour."""
+    r, g, b = (_linearise(v) for v in _rgb(colour))
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+
+def contrast_ratio(a: str, b: str) -> float:
+    """WCAG contrast ratio between two hex colours (1.0 to 21.0)."""
+    la, lb = relative_luminance(a), relative_luminance(b)
+    hi, lo = max(la, lb), min(la, lb)
+    return (hi + 0.05) / (lo + 0.05)
+
+
+# what has to hold in *both* themes: (foreground, background, minimum ratio)
+CONTRAST_REQUIREMENTS = (
+    ("ink", "paper", 7.0),          # body text: AAA
+    ("ink2", "paper", 4.5),         # secondary text
+    ("blue", "paper", 4.5),
+    ("red", "paper", 4.5),
+    ("green", "paper", 4.5),
+    ("amber", "paper", 4.5),
+    ("tipText", "tipBg", 7.0),
+    ("ink", "ffnFill", 4.5),        # labels that sit on a block
+    ("badgeMfg", "badgeMbg", 4.5),
+    ("badgePfg", "badgePbg", 4.5),
+    ("btnFg", "blue", 4.5),         # text on the pressed toggle
+)
+
+
+def contrast_report() -> dict:
+    """Every required pair, per theme, with the ratio it actually achieves."""
+    out = {}
+    for theme, pal in PALETTES.items():
+        rows = []
+        for fg, bg, minimum in CONTRAST_REQUIREMENTS:
+            if fg not in pal:
+                continue
+            rows.append({"pair": f"{fg}/{bg}", "ratio": round(contrast_ratio(pal[fg], pal[bg]), 2),
+                         "min": minimum,
+                         "ok": contrast_ratio(pal[fg], pal[bg]) >= minimum})
+        out[theme] = rows
+    return out
+
+
+def theme_css() -> str:
+    """The CSS variable blocks, generated from PALETTES."""
+    blocks = []
+    for theme, pal in PALETTES.items():
+        sel = ':root' if theme == "light" else f'html[data-theme="{theme}"]'
+        body = " ".join(f"--{var}:{pal[key]};" for key, var in CSS_VARS)
+        blocks.append(f"  {sel}{{{body}}}")
+    return "\n".join(blocks)
+
+
 TEMPLATE = r"""<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Qwen3.8-27B — blueprint</title>
 <style>
-  :root{
-    --paper:#f6f4ee; --panel:#fffdf8; --grid:#e4e0d4; --grid2:#d6d1c2;
-    --ink:#161d26; --dim:#5c6672; --blue:#1d4ed8; --blue2:#93b0f5;
-    --red:#b91c1c; --green:#15803d; --amber:#a16207;
-    --attn:#7c4dff; --gdn:#00838f; --ffn:#1d4ed8; --read:#15803d;
-  }
+__THEME_CSS__
   *{box-sizing:border-box}
   html,body{height:100%}
   body{margin:0;background:var(--paper);color:var(--ink);
@@ -370,10 +500,10 @@ TEMPLATE = r"""<!DOCTYPE html>
   #stage{position:relative;overflow:hidden;background:var(--paper)}
   canvas{display:block;width:100%;height:100%;cursor:grab}
   canvas:active{cursor:grabbing}
-  #tip{position:absolute;pointer-events:none;background:#fffdf8f2;border:1.5px solid
-    var(--ink);border-radius:4px;padding:8px 10px;font-size:13px;max-width:320px;
-    display:none;z-index:5;white-space:pre-line;
-    box-shadow:3px 3px 0 rgba(22,29,38,.12)}
+  #tip{position:absolute;pointer-events:none;background:var(--tipBg);color:var(--tipText);
+    border:1.5px solid var(--tipBorder);border-radius:4px;padding:8px 10px;
+    font-size:13px;max-width:320px;display:none;z-index:5;white-space:pre-line;
+    box-shadow:3px 3px 0 var(--shadow)}
   #side{border-left:2px solid var(--ink);background:var(--panel);padding:14px 16px;
         overflow:auto;font-size:12.5px}
   #side h2{font-size:12px;text-transform:uppercase;letter-spacing:.08em;
@@ -386,7 +516,8 @@ TEMPLATE = r"""<!DOCTYPE html>
   #side p{color:var(--dim);margin:0 0 12px}
   .badge{display:inline-block;padding:1px 6px;border-radius:3px;font-size:11px;
     font-weight:700;letter-spacing:.03em}
-  .m{background:#dcfce7;color:#14532d} .p{background:#fef3c7;color:#713f12}
+  .m{background:var(--badgeMbg);color:var(--badgeMfg)}
+  .p{background:var(--badgePbg);color:var(--badgePfg)}
   #controls{grid-column:1/3;display:flex;gap:26px;flex-wrap:wrap;align-items:center;
     padding:11px 18px;border-top:2px solid var(--ink);background:var(--panel)}
   .ctl{display:flex;flex-direction:column;gap:2px}
@@ -396,7 +527,8 @@ TEMPLATE = r"""<!DOCTYPE html>
   input[type=range]{width:210px;accent-color:var(--blue)}
   .btn{background:var(--panel);border:1.5px solid var(--ink);border-radius:4px;
     padding:5px 11px;cursor:pointer;font:inherit;font-weight:600}
-  .btn[aria-pressed="true"]{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .btn[aria-pressed="true"]{background:var(--blue);color:var(--btnFg);
+    border-color:var(--blue)}
   #cards{display:flex;gap:12px;flex-wrap:wrap;margin-left:auto}
   .card{border:1.5px solid var(--ink);border-radius:4px;padding:5px 10px;
     background:var(--paper);min-width:118px}
@@ -416,6 +548,9 @@ TEMPLATE = r"""<!DOCTYPE html>
     <h1>Qwen3.8-27B — blueprint</h1>
     <span class="sub">Drawn to scale from the measured tensor geometry. Drag to
       rotate, wheel to zoom, hover any block.</span>
+    <button class="btn" id="theme-btn" type="button"
+      style="margin-left:auto" title="Switch between the dark and light sheet"
+      >Light</button>
   </header>
 
   <div id="tabs" role="tablist">
@@ -468,12 +603,44 @@ const cv = document.getElementById("c"), ctx = cv.getContext("2d");
 const tip = document.getElementById("tip"), side = document.getElementById("side");
 const cards = document.getElementById("cards"), prov = document.getElementById("prov");
 
-const C = {
-  ink:"#161d26", ink2:"#5c6672", grid:"#e4e0d4", grid2:"#d6d1c2",
-  blue:"#1d4ed8", blue2:"#93b0f5", red:"#b91c1c", green:"#15803d",
-  amber:"#a16207", attn:"#7c4dff", gdn:"#00838f", read:"#15803d",
-  paper:"#f6f4ee", panel:"#fffdf8", dim:"#5c6672", white:"#ffffff"
-};
+/* ---------- theme ----------
+   The palette is injected by the tool rather than written here, so the sheet,
+   the CSS and the canvas cannot drift apart, and tests can assert the contrast
+   of both themes without a browser. Resolution order: ?theme= parameter, then a
+   stored choice, then the dark sheet this page is written to open on. */
+const THEME_KEY = "atlas-theme";
+function rgbTriple(hex){
+  const c = String(hex).replace("#", "");
+  return [parseInt(c.slice(0,2),16), parseInt(c.slice(2,4),16),
+          parseInt(c.slice(4,6),16)];
+}
+function paramTheme(){
+  try {
+    const t = new URLSearchParams(location.search).get("theme");
+    return (t === "light" || t === "dark") ? t : null;
+  } catch(e){ return null; }
+}
+function storedTheme(){
+  try {
+    const t = localStorage.getItem(THEME_KEY);
+    return (t === "light" || t === "dark") ? t : null;
+  } catch(e){ return null; }
+}
+let theme = paramTheme() || storedTheme() ||
+            (document.documentElement.dataset.theme === "light" ? "light" : "dark");
+let C = D.palette[theme];
+let LOSS = [];                    // [red, amber, green] as numeric triples
+function setTheme(name, persist){
+  theme = (name === "light") ? "light" : "dark";
+  C = D.palette[theme];
+  LOSS = [rgbTriple(C.lossRed), rgbTriple(C.lossAmber), rgbTriple(C.lossGreen)];
+  document.documentElement.dataset.theme = theme;
+  const b = document.getElementById("theme-btn");
+  if (b) b.textContent = (theme === "dark") ? "Light" : "Dark";
+  if (persist){ try { localStorage.setItem(THEME_KEY, theme); } catch(e){} }
+  needsFit = true;
+  draw();
+}
 
 /* ---------- drafting projector: orthographic, fitted to the sheet --------
    A drawing that runs off the paper cannot be read, so the sheet is laid out
@@ -555,7 +722,7 @@ function hatchTop(cx,cy,cz,sx,sy,sz){
   for (let i=1;i<n;i++){
     const t = i/n;
     seg([cx-sx/2, cy+sy/2, cz-sz/2 + t*sz],
-        [cx+sx/2, cy+sy/2, cz-sz/2 + t*sz], "#b9b3a4", 1);
+        [cx+sx/2, cy+sy/2, cz-sz/2 + t*sz], C.hatch, 1);
   }
 }
 function screenText(x, y, text, color, size, align, weight){
@@ -631,7 +798,7 @@ function oracleAt(frac){
 }
 function lossColour(loss){          // 0 loss = green, 0.71 loss = red
   const t = Math.max(0, Math.min(1, 1 - loss/0.75));
-  const c = [[185,28,28],[161,98,7],[21,128,61]];
+  const c = LOSS.length ? LOSS : [[185,28,28],[161,98,7],[21,128,61]];
   const x = t*(c.length-1), i = Math.min(c.length-2, Math.floor(x)), f = x-i;
   const mix = j => Math.round(c[i][j] + (c[i+1][j]-c[i][j])*f);
   return `rgb(${mix(0)},${mix(1)},${mix(2)})`;
@@ -670,16 +837,16 @@ function buildStack(){
   // footprint plate
   poly([[x0-0.06,0,-dz/2-0.06],[x1+0.06,0,-dz/2-0.06],
         [x1+0.06,0,dz/2+0.06],[x0-0.06,0,dz/2+0.06]],
-       "#efece2", C.grid2, 1, 1);
+       C.plate, C.grid2, 1, 1);
 
   for (let i=0;i<G.layers;i++){
     const cx = x0 + i*stride + dx/2;
     const isFA = (i % every) === every-1;
     // backbone: read on every token, routable: no
     box(cx, yBB/2, 0, dx, yBB, dz,
-        isFA ? "#cbb9ff" : "#a7d9de", C.ink, 0.9, 1, true);
+        isFA ? C.attnFill : C.gdnFill, C.ink, 0.9, 1, true);
     // FFN: the part routing can slice, sitting on top of the backbone
-    box(cx, yBB + ffnH/2, 0, dx, ffnH, dz, "#dce6fd", "#8fa8e8", 0.7, 1);
+    box(cx, yBB + ffnH/2, 0, dx, ffnH, dz, C.ffnFill, C.ffnStroke, 0.7, 1);
     // the slice actually read this token, coloured by its measured loss
     const rh = ffnH*readFrac;
     box(cx, yBB + rh/2, 0, dx*1.03, rh, dz*1.03,
@@ -711,15 +878,17 @@ function buildStack(){
   callout([x0-0.06, 0, -dz/2], 34, 78,
     `embedding ${(G.embedding/1e6).toFixed(0)}M\n` +
     `${G.vocab.toLocaleString()} x ${H.toLocaleString()} — a gather`, C.ink2);
-  // legend, as sheet furniture rather than a leader into a crowded corner
-  const h = cv.clientHeight;
-  screenText(20, h-46,
+  /* Legend, as sheet furniture rather than a leader into a crowded corner. It
+     sits bottom-right, because the bottom-left is where the embedding callout
+     lands and this view is re-fitted whenever the header height changes. */
+  const w = cv.clientWidth, h = cv.clientHeight;
+  screenText(w-20, h-46,
     "One column = one layer.  Teal = Gated DeltaNet (48 layers), violet = " +
-    "full attention (16 layers, every 4th).", C.ink2, 11.5);
-  screenText(20, h-28,
+    "full attention (16 layers, every 4th).", C.ink2, 11.5, "right");
+  screenText(w-20, h-28,
     `The coloured band is the slice of the FFN actually read: ` +
     `${(readFrac*100).toFixed(1)}% now, measured oracle loss ` +
-    `${oracleAt(readFrac).oracle_loss.toFixed(4)}.`, C.ink2, 11.5);
+    `${oracleAt(readFrac).oracle_loss.toFixed(4)}.`, C.ink2, 11.5, "right");
 
   screenText(20, 26, "ELEVATION A — the whole model, heights to scale",
              C.ink, 13.5, "left", "700");
@@ -792,7 +961,7 @@ function buildLayer(){
   for (const p of blk.parts){
     const prm = p.rows*p.cols*p.n, hh = (prm/totalParts) * 1.5;
     box(xBB, y0+hh/2, 0, wBB, hh, 0.8,
-        layerType==="gdn" ? "#a7d9de" : "#c9b8ff", C.ink, 1.1, 1, true);
+        layerType==="gdn" ? C.gdnFill : C.attnFill, C.ink, 1.1, 1, true);
     if (hh > 0.075 || blk.parts.indexOf(p) < 4)
       label([xBB - wBB/2 - 0.06, y0+hh/2, 0.42],
             `${p.name}  ${p.rows.toLocaleString()}x${p.cols.toLocaleString()}` +
@@ -802,7 +971,7 @@ function buildLayer(){
   }
   label([xBB, 1.62, 0], `${blk.title} — ${(blk.params/1e6).toFixed(2)}M`,
         C.ink, 13.5, "center", "700");
-  label([xBB, 1.50, 0], blk.subtitle, C.dim, 12, "center");
+  label([xBB, 1.50, 0], blk.subtitle, C.ink2, 12, "center");
 
   // RIGHT: the FFN, three projections with real shapes
   const xF = 0.30, wF = 0.62;
@@ -811,7 +980,7 @@ function buildLayer(){
                 ["down_proj",0.68,1.00]];
   for (const [nm,a,b] of segs){
     const hh = (b-a)*1.5;
-    box(xF, a*1.5+hh/2, 0, wF, hh, 0.8, "#dce6fd", "#8fa8e8", 1, 1);
+    box(xF, a*1.5+hh/2, 0, wF, hh, 0.8, C.ffnFill, C.ffnStroke, 1, 1);
     const shp = ffnParts.find(p => p.name === nm);
     label([xF + wF/2 + 0.06, a*1.5+hh/2, 0.42],
           `${nm}  ${shp.rows.toLocaleString()}x${shp.cols.toLocaleString()}`,
@@ -819,7 +988,7 @@ function buildLayer(){
   }
   label([xF, 1.62, 0], `swiGLU FFN — ${(D.section.ffn.params/1e6).toFixed(2)}M`,
         C.blue, 13.5, "center", "700");
-  label([xF, 1.50, 0], D.section.ffn.subtitle, C.dim, 12, "center");
+  label([xF, 1.50, 0], D.section.ffn.subtitle, C.ink2, 12, "center");
 
   // the read band on the FFN, same language as view A
   const rh = 1.5*readFrac;
@@ -888,7 +1057,7 @@ function buildTarget(){
   const G = D.geometry, s = 1/3.0e9;
   const floorH = G.floor*s;
   poly([[-2.8,floorH,-2.4],[2.8,floorH,-2.4],[2.8,floorH,2.4],[-2.8,floorH,2.4]],
-       "rgba(185,28,28,0.07)", C.red, 1.6);
+       C.floorWash, C.red, 1.6);
   callout([2.8, floorH, 2.4], 10, -18,
     `FLOOR ${(G.floor/1e9).toFixed(2)}B — embeddings, LM head, DeltaNet, ` +
     `attention, norms.\nRead on every token. No router touches it.`, C.red);
@@ -896,14 +1065,14 @@ function buildTarget(){
   D.targets.forEach((t,i) => {
     const x = (i-(n-1)/2)*1.1, fh = (G.floor/1e9)*s;
     if (!t.possible){
-      box(x, fh/2, 0, 0.55, fh, 0.55, "#f7d5d5", C.red, 1.6, 1);
+      box(x, fh/2, 0, 0.55, fh, 0.55, C.badFill, C.red, 1.6, 1);
       callout([x, fh+0.1, 0], -30, -30,
         `${t.target_b}B active needs ${t.ffn_active_b.toFixed(2)}B of FFN — ` +
         `a negative amount.\nImpossible by routing.`, C.red);
       label([x, fh+0.16, 0], `${t.target_b}B`, C.red, 14, "center", "700");
       return;
     }
-    box(x, fh/2, 0, 0.55, fh, 0.55, "#f1e6d0", C.ink, 1.4, 1, true);
+    box(x, fh/2, 0, 0.55, fh, 0.55, C.barFill, C.ink, 1.4, 1, true);
     const nh = t.ffn_active_b*s;
     const c = lossColour(oracleAt(t.ffn_fraction_pct/100).oracle_loss);
     box(x, fh+nh/2, 0, 0.58, nh, 0.58, c, null, 0, 0.93);
@@ -959,7 +1128,7 @@ function buildEnvelope(){
 
   // the ceiling: everything under this fits the fast tier
   poly([[X(0),Y(1.5),Z(0)],[X(xMax),Y(1.5),Z(0)],[X(xMax),Y(1.5),Z(zMax)],
-        [X(0),Y(1.5),Z(zMax)]], "rgba(21,128,61,0.06)", C.green, 1.4);
+        [X(0),Y(1.5),Z(zMax)]], C.ceilWash, C.green, 1.4);
   callout([X(0), Y(1.5), Z(zMax)], -10, -26,
     `the ${T.resident_gb.toFixed(2)} GB fast tier — anything under this plane ` +
     `is RESIDENT`, C.green);
@@ -1003,7 +1172,7 @@ function buildEnvelope(){
       `${p.tok.toFixed(2)} tok/s ` +
       (p.kind==="measured" ? "(MEASURED)" : "(predicted)"));
   }
-  label([X(30),Y(2.0),Z(0)], "27.78B dense", C.ink2, 12);
+  label([X(27.78),Y(1.72),Z(0)], "27.78B dense", C.ink2, 12);
   label([X(38),Y(6.4),Z(13)], "35.5B / 3B active MoE", C.ink2, 12);
   screenText(18, 26, "ISOMETRIC D — what fits, at what precision", C.ink, 13,
              "left", "700");
@@ -1169,6 +1338,9 @@ function setLayerType(t){
   draw();
 }
 window.addEventListener("resize", () => { needsFit = true; draw(); });
+const themeBtn = document.getElementById("theme-btn");
+if (themeBtn) themeBtn.addEventListener("click", () =>
+  setTheme(theme === "dark" ? "light" : "dark", true));
 
 const PROV = {
   stack: "ELEVATION A — parameter geometry. Shapes and totals from "
@@ -1186,18 +1358,26 @@ const PROV = {
 };
 
 /* ---------- did the drawing land inside the frame? ----------
-   Blueprints are read off the paper, so clipped labels are a real defect, not a
-   cosmetic one. Ink = pixels dark enough to be a line or glyph (block fills and
-   the paper grid are deliberately excluded). */
+   Blueprints are read off the sheet, so clipped labels are a real defect, not a
+   cosmetic one. Ink is defined against the *current* palette -- anything that is
+   neither the sheet nor the grid -- so the same measurement works on the light
+   and the dark theme. (A fixed darkness threshold would have counted nothing at
+   all once the ink turned light.) */
 function measureInk(){
   const w = cv.clientWidth, h = cv.clientHeight;
   const d = ctx.getImageData(0,0,cv.width,cv.height).data;
   const sx = cv.width/w, sy = cv.height/h;
+  const paper = rgbTriple(C.paper);
+  // both grid colours: the major lines are a different colour from the minor
+  // ones, and either would span the canvas and fake a clipped edge
+  const grids = [rgbTriple(C.grid), rgbTriple(C.grid2)];
+  const away = (i,c,tol) => Math.abs(d[i]-c[0]) + Math.abs(d[i+1]-c[1])
+                           + Math.abs(d[i+2]-c[2]) > tol;
   let x0=1e9, y0=1e9, x1=-1, y1=-1, n=0;
   for (let y=0;y<cv.height;y+=2){
     for (let x=0;x<cv.width;x+=2){
       const i=(y*cv.width+x)*4;
-      if (d[i]+d[i+1]+d[i+2] < 480){
+      if (away(i, paper, 40) && grids.every(g => away(i, g, 40))){
         n++;
         const px=x/sx, py=y/sy;
         if (px<x0) x0=px; if (px>x1) x1=px;
@@ -1238,6 +1418,32 @@ function measureLabels(){
            sample:names };
 }
 
+/* ---------- contrast: the dark sheet has to be readable, not just dark ----- */
+function lumOf(hex){
+  const c = rgbTriple(hex).map(v => v/255).map(v => v <= 0.04045
+      ? v/12.92 : Math.pow((v + 0.055)/1.055, 2.4));
+  return 0.2126*c[0] + 0.7152*c[1] + 0.0722*c[2];
+}
+function contrastRatio(a, b){
+  const la = lumOf(a), lb = lumOf(b);
+  const hi = Math.max(la,lb), lo = Math.min(la,lb);
+  return (hi + 0.05)/(lo + 0.05);
+}
+/* every pair that carries meaning: text on the sheet, text on a block, chrome */
+const CONTRAST_PAIRS = [
+  ["ink","paper",7.0], ["ink2","paper",4.5], ["blue","paper",4.5],
+  ["red","paper",4.5], ["green","paper",4.5], ["amber","paper",4.5],
+  ["tipText","tipBg",7.0], ["ink","ffnFill",4.5],
+  ["badgeMfg","badgeMbg",4.5], ["badgePfg","badgePbg",4.5],
+  ["btnFg","blue",4.5],
+];
+function contrastFailures(){
+  return CONTRAST_PAIRS
+    .map(([f,b,m]) => ({ pair:`${f}/${b}`, ratio:+contrastRatio(C[f], C[b]).toFixed(2), min:m }))
+    .map(r => (r.ratio < r.min ? r : null))
+    .filter(Boolean);
+}
+
 /* ---------- self-test: what headless verification reads ---------- */
 window.__atlasSelfTest = function(){
   const out = [];
@@ -1269,7 +1475,13 @@ window.__atlasSelfTest = function(){
   ok("drawing is inside the frame", !ink.touches);
   // how big is the drawing actually painted? "it fits" is not "you can see it"
   const G2 = D.geometry;
+  const badContrast = contrastFailures();
   const metrics = {
+    theme: theme,
+    paper: C.paper, grid: C.grid,
+    contrast_min: +Math.min(...CONTRAST_PAIRS.map(
+      ([f,b]) => contrastRatio(C[f], C[b]))).toFixed(2),
+    contrast_failures: badContrast,
     scale: sheet ? +sheet.scale.toFixed(2) : null,
     ffn_block_px: sheet ? +(1.5*G2.hidden/G2.intermediate*sheet.scale).toFixed(1) : null,
     column_px: (currentView === "stack" && sheet) ? +(0.155*sheet.scale).toFixed(1) : null,
@@ -1278,6 +1490,8 @@ window.__atlasSelfTest = function(){
   ok("scale is sane", !!sheet && sheet.scale > 4);
   const labels = measureLabels();
   ok("no two labels overlap", labels.overlaps === 0);
+  ok(`${theme} theme contrast (${CONTRAST_PAIRS.length} pairs)`,
+     badContrast.length === 0);
   window.__atlasInk = ink;
   window.__atlasMetrics = metrics;
   window.__atlasLabels = labels;
@@ -1291,6 +1505,7 @@ window.__atlasSelfTest = function(){
   return out;
 };
 
+setTheme(theme, false);
 setView((location.hash || "#stack").slice(1));
 window.__atlasSelfTest();
 </script>
@@ -1300,7 +1515,9 @@ window.__atlasSelfTest();
 
 
 def render(data: dict) -> str:
-    return TEMPLATE.replace("__DATA__", json.dumps(data, separators=(",", ":")))
+    return (TEMPLATE
+            .replace("__THEME_CSS__", theme_css())
+            .replace("__DATA__", json.dumps(data, separators=(",", ":"))))
 
 
 def main() -> int:

@@ -1,16 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Qwen3.8-27B — blueprint</title>
 <style>
-  :root{
-    --paper:#f6f4ee; --panel:#fffdf8; --grid:#e4e0d4; --grid2:#d6d1c2;
-    --ink:#161d26; --dim:#5c6672; --blue:#1d4ed8; --blue2:#93b0f5;
-    --red:#b91c1c; --green:#15803d; --amber:#a16207;
-    --attn:#7c4dff; --gdn:#00838f; --ffn:#1d4ed8; --read:#15803d;
-  }
+  :root{--paper:#f6f4ee; --panel:#fffdf8; --grid:#e4e0d4; --grid2:#d6d1c2; --ink:#161d26; --dim:#5c6672; --blue:#1d4ed8; --red:#b91c1c; --green:#15703a; --amber:#9a5c06; --tipBg:#fffdf8; --tipText:#161d26; --tipBorder:#161d26; --shadow:rgba(22,29,38,.12); --btnFg:#ffffff; --badgeMbg:#dcfce7; --badgeMfg:#14532d; --badgePbg:#fef3c7; --badgePfg:#713f12;}
+  html[data-theme="dark"]{--paper:#0e1117; --panel:#161a23; --grid:#1b2029; --grid2:#262c38; --ink:#eef3fa; --dim:#a3b3c9; --blue:#86b0ff; --red:#ff8b80; --green:#66d98f; --amber:#edbb63; --tipBg:#1b212c; --tipText:#eef3fa; --tipBorder:#47526b; --shadow:rgba(0,0,0,.55); --btnFg:#0e1117; --badgeMbg:#12351f; --badgeMfg:#7ce8a3; --badgePbg:#3b2f15; --badgePfg:#f2ca6f;}
   *{box-sizing:border-box}
   html,body{height:100%}
   body{margin:0;background:var(--paper);color:var(--ink);
@@ -29,10 +25,10 @@
   #stage{position:relative;overflow:hidden;background:var(--paper)}
   canvas{display:block;width:100%;height:100%;cursor:grab}
   canvas:active{cursor:grabbing}
-  #tip{position:absolute;pointer-events:none;background:#fffdf8f2;border:1.5px solid
-    var(--ink);border-radius:4px;padding:8px 10px;font-size:13px;max-width:320px;
-    display:none;z-index:5;white-space:pre-line;
-    box-shadow:3px 3px 0 rgba(22,29,38,.12)}
+  #tip{position:absolute;pointer-events:none;background:var(--tipBg);color:var(--tipText);
+    border:1.5px solid var(--tipBorder);border-radius:4px;padding:8px 10px;
+    font-size:13px;max-width:320px;display:none;z-index:5;white-space:pre-line;
+    box-shadow:3px 3px 0 var(--shadow)}
   #side{border-left:2px solid var(--ink);background:var(--panel);padding:14px 16px;
         overflow:auto;font-size:12.5px}
   #side h2{font-size:12px;text-transform:uppercase;letter-spacing:.08em;
@@ -45,7 +41,8 @@
   #side p{color:var(--dim);margin:0 0 12px}
   .badge{display:inline-block;padding:1px 6px;border-radius:3px;font-size:11px;
     font-weight:700;letter-spacing:.03em}
-  .m{background:#dcfce7;color:#14532d} .p{background:#fef3c7;color:#713f12}
+  .m{background:var(--badgeMbg);color:var(--badgeMfg)}
+  .p{background:var(--badgePbg);color:var(--badgePfg)}
   #controls{grid-column:1/3;display:flex;gap:26px;flex-wrap:wrap;align-items:center;
     padding:11px 18px;border-top:2px solid var(--ink);background:var(--panel)}
   .ctl{display:flex;flex-direction:column;gap:2px}
@@ -55,7 +52,8 @@
   input[type=range]{width:210px;accent-color:var(--blue)}
   .btn{background:var(--panel);border:1.5px solid var(--ink);border-radius:4px;
     padding:5px 11px;cursor:pointer;font:inherit;font-weight:600}
-  .btn[aria-pressed="true"]{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .btn[aria-pressed="true"]{background:var(--blue);color:var(--btnFg);
+    border-color:var(--blue)}
   #cards{display:flex;gap:12px;flex-wrap:wrap;margin-left:auto}
   .card{border:1.5px solid var(--ink);border-radius:4px;padding:5px 10px;
     background:var(--paper);min-width:118px}
@@ -75,6 +73,9 @@
     <h1>Qwen3.8-27B — blueprint</h1>
     <span class="sub">Drawn to scale from the measured tensor geometry. Drag to
       rotate, wheel to zoom, hover any block.</span>
+    <button class="btn" id="theme-btn" type="button"
+      style="margin-left:auto" title="Switch between the dark and light sheet"
+      >Light</button>
   </header>
 
   <div id="tabs" role="tablist">
@@ -114,7 +115,7 @@
 </div>
 <div id="selftest">SELFTEST: pending</div>
 
-<script id="atlas-data" type="application/json">{"geometry":{"params":27781427952,"ffn":17112760320,"ffn_per_layer":267386880,"layers":64,"hidden":5120,"intermediate":17408,"vocab":248320,"linear_attention":5562044928,"attention":1677721600,"gdn_layers":48,"fa_layers":16,"gdn_layer_params":115875936,"fa_layer_params":104857600,"norm_per_layer":10240,"lm_head":1271398400,"embedding":1271398400,"norms":674816,"vision":460730096,"mtp":424699392,"text_tower":26895998464,"floor":9783238144,"floor_matmul_only":8511839744,"source":"src/moeme/accounting.py, docs/source_validation.md (verified against the safetensors headers)"},"section":{"gdn":{"title":"Gated DeltaNet layer","subtitle":"48 of the 64 layers","params":115875936,"parts":[{"name":"in_proj_qkv","rows":5120,"cols":10240,"n":1},{"name":"in_proj_z","rows":5120,"cols":6144,"n":1},{"name":"out_proj","rows":6144,"cols":5120,"n":1},{"name":"in_proj_a / in_proj_b","rows":5120,"cols":48,"n":2},{"name":"conv1d","rows":10240,"cols":4,"n":1},{"name":"A_log / dt_bias","rows":2,"cols":48,"n":1}],"parts_total":115875936},"attention":{"title":"Full-attention layer","subtitle":"16 of the 64 layers (1 in every 4)","params":104857600,"parts":[{"name":"q_proj + gate (fused)","rows":5120,"cols":12288,"n":1},{"name":"k_proj","rows":5120,"cols":1024,"n":1},{"name":"v_proj","rows":5120,"cols":1024,"n":1},{"name":"o_proj","rows":6144,"cols":5120,"n":1}],"parts_total":104857600},"ffn":{"title":"swiGLU FFN","subtitle":"all 64 layers","params":267386880,"parts":[{"name":"gate_proj","rows":17408,"cols":5120,"n":1},{"name":"up_proj","rows":17408,"cols":5120,"n":1},{"name":"down_proj","rows":5120,"cols":17408,"n":1}],"parts_total":267386880}},"targets":[{"target_b":9,"ffn_active_b":-0.783238144,"ffn_fraction_pct":-4.576924641927083,"need_matmul_b":0.488160256,"ffn_fraction_matmul_pct":2.852609671798407,"possible":false},{"target_b":12,"ffn_active_b":2.216761856,"ffn_fraction_pct":12.953853233187806,"need_matmul_b":3.488160256,"ffn_fraction_matmul_pct":20.383387546913298,"possible":true},{"target_b":15,"ffn_active_b":5.216761856,"ffn_fraction_pct":30.484631108302697,"need_matmul_b":6.488160256,"ffn_fraction_matmul_pct":37.914165422028184,"possible":true},{"target_b":20,"ffn_active_b":10.216761856,"ffn_fraction_pct":59.70259423349418,"need_matmul_b":11.488160256,"ffn_fraction_matmul_pct":67.13212854721966,"possible":true},{"target_b":24,"ffn_active_b":14.216761856,"ffn_fraction_pct":83.07696473364736,"need_matmul_b":15.488160256,"ffn_fraction_matmul_pct":90.50649904737286,"possible":true}],"oracle_curve":[{"active_fraction":0.125,"oracle_loss":0.7103608772158623,"ppl":54.00328643981005},{"active_fraction":0.25,"oracle_loss":0.6339494436979294,"ppl":45.62790073896574},{"active_fraction":0.5,"oracle_loss":0.4974925108253956,"ppl":26.016929440609772},{"active_fraction":1.0,"oracle_loss":0.0,"ppl":15.480310850563608}],"slices":[{"run":"tile_E8_k1_12pct","active_fraction":0.125,"k":1,"experts":8,"best_single":0.7103608772158623,"oracle":0.7103608772158623,"ppl":54.00328643981005},{"run":"tile_E4_k1_25pct","active_fraction":0.25,"k":1,"experts":4,"best_single":0.6339494436979294,"oracle":0.6339494436979294,"ppl":45.62790073896574},{"run":"tile_E2_k1_50pct","active_fraction":0.5,"k":1,"experts":2,"best_single":0.4974925108253956,"oracle":0.4974925108253956,"ppl":26.016929440609772},{"run":"tile_E4_k2_50pct","active_fraction":0.5,"k":2,"experts":4,"best_single":0.6339494436979294,"oracle":0.48196688294410706,"ppl":34.34273248431521},{"run":"tile_E1_k1_100pct","active_fraction":1.0,"k":1,"experts":1,"best_single":0.0,"oracle":0.0,"ppl":15.480310850563608},{"run":"tile_E4_k4_100pct","active_fraction":1.0,"k":4,"experts":4,"best_single":0.6339494436979294,"oracle":0.0050622482085600495,"ppl":15.468005101812574}],"curve_source":"results/branch_poc_08b.json, k=1 tile family (4 layers of Qwen3.5-0.8B, dense val ppl 15.4803)","ladder":[{"name":"Q2_K","bpw":2.8,"size_gb":9.7234997832,"streamed_gb":0.0,"tok_s":6.44379550641811,"resident":true},{"name":"Q3_K_M","bpw":3.4,"size_gb":11.807106879600001,"streamed_gb":0.0,"tok_s":4.845376328499208,"resident":true},{"name":"Q4_K_S","bpw":4.4,"size_gb":15.279785373600001,"streamed_gb":0.9995664424000015,"tok_s":1.0712093134387968,"resident":false},{"name":"Q4_K_M","bpw":4.9,"size_gb":17.0161246206,"streamed_gb":2.7359056894000013,"tok_s":0.47822089542400126,"resident":false},{"name":"Q5_K_M","bpw":5.6,"size_gb":19.4469995664,"streamed_gb":5.166780635199997,"tok_s":0.26942070917391414,"resident":false},{"name":"Q6_K","bpw":6.6,"size_gb":22.9196780604,"streamed_gb":8.639459129199997,"tok_s":0.16592591360802292,"resident":false},{"name":"Q8_0","bpw":8.5,"size_gb":29.517767199,"streamed_gb":15.2375482678,"tok_s":0.09591854823314656,"resident":false},{"name":"bf16","bpw":16.0,"size_gb":55.562855904,"streamed_gb":41.282636972800006,"tok_s":0.03598558525168515,"resident":false}],"mixed":[{"name":"75/15/10 @ 4/3/2b","bpw":3.6500000000000004,"size_gb":12.675276503100001,"streamed_gb":0.0,"tok_s":4.391487644448475,"resident":true},{"name":"60/25/15 @ 4/3/2b","bpw":3.4499999999999997,"size_gb":11.9807408043,"streamed_gb":0.0,"tok_s":4.747244633991842,"resident":true},{"name":"IQ-style 4/2b 70/30","bpw":3.4,"size_gb":11.807106879600001,"streamed_gb":0.0,"tok_s":4.845376328499208,"resident":true}],"measured":[{"tag":"qwen3.8:latest","total_b":27.781,"active_b":null,"bpw":4.9,"size_gb":17.0,"tok_s":0.561,"resident":false},{"tag":"ornith-1.5:9b","total_b":null,"active_b":null,"bpw":4.9,"size_gb":6.6,"tok_s":24.629,"resident":false},{"tag":"ornith-1.5-35b-a3b:q2_k","total_b":35.505251456,"active_b":3.0,"bpw":2.8,"size_gb":13.0,"tok_s":19.356,"resident":true},{"tag":"ornith-1.5:35b","total_b":35.505251456,"active_b":3.0,"bpw":4.9,"size_gb":22.0,"tok_s":6.45,"resident":false}],"thresholds":{"resident_gb":14.2802189312,"vram_gib":3.8,"ram_gb":10.2,"threshold_bpw":4.112162688216884,"bw_gpu":246.8,"bw_ram":40.7,"bw_disk":1.5,"source":"results/hardware.json via tools/residency_table.py constants"},"quality":{"gate":{"moe":{"overall":"15/19","capped_rows":2,"excluding_capped":"15/17","wall_s":55},"dense_qwen3.8_latest":{"overall":"13/19","capped_rows":4,"excluding_capped":"13/15","wall_s":3958}},"same_quants":{"_profile":"identical task set, identical 768 cap, identical runtime, think off, 0 truncated rows on either side. Median decode over the 19 tasks, from those runs' own per-task decode_tok_s. Both use ollama's offload-what-fits policy, so this is partly a residency difference, not only a bits-per-weight one.","moe_ornith-1.5-35b-a3b_q2_k_13gb":{"overall":"17/19","rate":0.895,"coding":"3/3","format":"6/6","instruction":"4/6","reasoning":"4/4","wall_s":62.7,"decode_tok_s_median":43.13,"decode_tok_s_mean":42.8,"source":"results/eval_ornith-1.5-35b-a3b-q2_k_short19_768.json"},"moe_ornith-1.5_35b_q4_k_m_22gb":{"overall":"16/19","rate":0.842,"coding":"3/3","format":"5/6","instruction":"4/6","reasoning":"4/4","wall_s":463.5,"decode_tok_s_median":6.14,"decode_tok_s_mean":5.94,"source":"results/eval_ornith-1.5-35b_short19_768.json"},"_wall_x":7.39,"_responses":"13 of 19 responses DIFFER between the two runs (6 byte-identical; median first divergence at character 1; 9 of 13 part within 5 characters); 3 tasks flip verdict, 2 in Q2_K's favour. A pass/fail gate reports a tie for two models that are not producing the same text."},"ppl_pair":{"_comment":"experiments/quant_perplexity.py, one GGUF per run, everything else fixed (-c 512 --chunks 8 -t 6), one corpus built from this repo's own prose and code.","ornith-1.5-9b_q4_k_m_ppl":7.0029,"ornith-1.5-9b_q4_k_m_stderr":0.409,"ornith-1.5-9b_q2_k_ppl":7.7128,"ornith-1.5-9b_q2_k_stderr":0.468,"q2_k_penalty_ppl":0.7099,"q2_k_penalty_pct":10.1,"_sigma":"~1.1 against the two printed standard errors. Paired over identical tokens this is tighter than treating the runs as independent, and the direction is the only sensible one, but read it as a consistent one-directional cost rather than a settled magnitude.","_provenance":"Measured in-session; the raw logs were in a temp dir that was cleared between sessions, so this pair is NOT backed by a committed results/ artifact. What is committed is the 35B's own run: ornith-1.5-35b-a3b_q2_k at PPL 12.7113 +/- 0.809 in results/quant_perplexity_35b.json.","_scored_window_tokens":4096,"_window_note":"llama-perplexity scores chunks*n_ctx tokens and prints that window itself: here 4096, roughly the first 4% of a ~100k-token corpus. Two runs are comparable only when BOTH the scored window and the corpus sha256 match -- the corpus grew 389996 -> 397855 bytes mid-session and the estimate did not move, because every added byte fell past the end of the window."},"ppl_35b_q2k":12.7113,"ppl_35b_stderr":0.80933,"ppl_35b_quant":"Q2_K","ppl_corpus_bytes":397855,"ppl_corpus_sha256":"47429f081dfd3cdf915f57e974e7e19bfefe1d5d54c1166623b5ac09af20379b","ppl_chunks":8,"ppl_ctx":512,"source":"configs/tiers.json (quality_gate), results/quant_perplexity_35b.json"},"tier_model_note":"The memory-tier model is validated within ~2x on 4 measured runs (2% error on the 27B Q4_K_M case: predicted 0.48 against 0.561 measured). Treat every tok/s here as a ceiling, not a forecast."}</script>
+<script id="atlas-data" type="application/json">{"palette":{"light":{"paper":"#f6f4ee","panel":"#fffdf8","grid":"#e4e0d4","grid2":"#d6d1c2","ink":"#161d26","ink2":"#5c6672","blue":"#1d4ed8","red":"#b91c1c","green":"#15703a","amber":"#9a5c06","attnFill":"#cbb9ff","gdnFill":"#a7d9de","ffnFill":"#dce6fd","ffnStroke":"#8fa8e8","plate":"#efece2","hatch":"#b9b3a4","badFill":"#f7d5d5","barFill":"#f1e6d0","floorWash":"rgba(185,28,28,0.07)","ceilWash":"rgba(21,128,61,0.06)","lossGreen":"#15703a","lossAmber":"#9a5c06","lossRed":"#b91c1c","tipBg":"#fffdf8","tipText":"#161d26","tipBorder":"#161d26","shadow":"rgba(22,29,38,.12)","btnFg":"#ffffff","badgeMbg":"#dcfce7","badgeMfg":"#14532d","badgePbg":"#fef3c7","badgePfg":"#713f12"},"dark":{"paper":"#0e1117","panel":"#161a23","grid":"#1b2029","grid2":"#262c38","ink":"#eef3fa","ink2":"#a3b3c9","blue":"#86b0ff","red":"#ff8b80","green":"#66d98f","amber":"#edbb63","attnFill":"#2d2757","gdnFill":"#123a45","ffnFill":"#1b2b4e","ffnStroke":"#7aa2f7","plate":"#141821","hatch":"#4a5570","badFill":"#3d2124","barFill":"#332d1d","floorWash":"rgba(255,139,128,0.10)","ceilWash":"rgba(102,217,143,0.10)","lossGreen":"#3ec26f","lossAmber":"#d6a437","lossRed":"#e4574f","tipBg":"#1b212c","tipText":"#eef3fa","tipBorder":"#47526b","shadow":"rgba(0,0,0,.55)","btnFg":"#0e1117","badgeMbg":"#12351f","badgeMfg":"#7ce8a3","badgePbg":"#3b2f15","badgePfg":"#f2ca6f"}},"geometry":{"params":27781427952,"ffn":17112760320,"ffn_per_layer":267386880,"layers":64,"hidden":5120,"intermediate":17408,"vocab":248320,"linear_attention":5562044928,"attention":1677721600,"gdn_layers":48,"fa_layers":16,"gdn_layer_params":115875936,"fa_layer_params":104857600,"norm_per_layer":10240,"lm_head":1271398400,"embedding":1271398400,"norms":674816,"vision":460730096,"mtp":424699392,"text_tower":26895998464,"floor":9783238144,"floor_matmul_only":8511839744,"source":"src/moeme/accounting.py, docs/source_validation.md (verified against the safetensors headers)"},"section":{"gdn":{"title":"Gated DeltaNet layer","subtitle":"48 of the 64 layers","params":115875936,"parts":[{"name":"in_proj_qkv","rows":5120,"cols":10240,"n":1},{"name":"in_proj_z","rows":5120,"cols":6144,"n":1},{"name":"out_proj","rows":6144,"cols":5120,"n":1},{"name":"in_proj_a / in_proj_b","rows":5120,"cols":48,"n":2},{"name":"conv1d","rows":10240,"cols":4,"n":1},{"name":"A_log / dt_bias","rows":2,"cols":48,"n":1}],"parts_total":115875936},"attention":{"title":"Full-attention layer","subtitle":"16 of the 64 layers (1 in every 4)","params":104857600,"parts":[{"name":"q_proj + gate (fused)","rows":5120,"cols":12288,"n":1},{"name":"k_proj","rows":5120,"cols":1024,"n":1},{"name":"v_proj","rows":5120,"cols":1024,"n":1},{"name":"o_proj","rows":6144,"cols":5120,"n":1}],"parts_total":104857600},"ffn":{"title":"swiGLU FFN","subtitle":"all 64 layers","params":267386880,"parts":[{"name":"gate_proj","rows":17408,"cols":5120,"n":1},{"name":"up_proj","rows":17408,"cols":5120,"n":1},{"name":"down_proj","rows":5120,"cols":17408,"n":1}],"parts_total":267386880}},"targets":[{"target_b":9,"ffn_active_b":-0.783238144,"ffn_fraction_pct":-4.576924641927083,"need_matmul_b":0.488160256,"ffn_fraction_matmul_pct":2.852609671798407,"possible":false},{"target_b":12,"ffn_active_b":2.216761856,"ffn_fraction_pct":12.953853233187806,"need_matmul_b":3.488160256,"ffn_fraction_matmul_pct":20.383387546913298,"possible":true},{"target_b":15,"ffn_active_b":5.216761856,"ffn_fraction_pct":30.484631108302697,"need_matmul_b":6.488160256,"ffn_fraction_matmul_pct":37.914165422028184,"possible":true},{"target_b":20,"ffn_active_b":10.216761856,"ffn_fraction_pct":59.70259423349418,"need_matmul_b":11.488160256,"ffn_fraction_matmul_pct":67.13212854721966,"possible":true},{"target_b":24,"ffn_active_b":14.216761856,"ffn_fraction_pct":83.07696473364736,"need_matmul_b":15.488160256,"ffn_fraction_matmul_pct":90.50649904737286,"possible":true}],"oracle_curve":[{"active_fraction":0.125,"oracle_loss":0.7103608772158623,"ppl":54.00328643981005},{"active_fraction":0.25,"oracle_loss":0.6339494436979294,"ppl":45.62790073896574},{"active_fraction":0.5,"oracle_loss":0.4974925108253956,"ppl":26.016929440609772},{"active_fraction":1.0,"oracle_loss":0.0,"ppl":15.480310850563608}],"slices":[{"run":"tile_E8_k1_12pct","active_fraction":0.125,"k":1,"experts":8,"best_single":0.7103608772158623,"oracle":0.7103608772158623,"ppl":54.00328643981005},{"run":"tile_E4_k1_25pct","active_fraction":0.25,"k":1,"experts":4,"best_single":0.6339494436979294,"oracle":0.6339494436979294,"ppl":45.62790073896574},{"run":"tile_E2_k1_50pct","active_fraction":0.5,"k":1,"experts":2,"best_single":0.4974925108253956,"oracle":0.4974925108253956,"ppl":26.016929440609772},{"run":"tile_E4_k2_50pct","active_fraction":0.5,"k":2,"experts":4,"best_single":0.6339494436979294,"oracle":0.48196688294410706,"ppl":34.34273248431521},{"run":"tile_E1_k1_100pct","active_fraction":1.0,"k":1,"experts":1,"best_single":0.0,"oracle":0.0,"ppl":15.480310850563608},{"run":"tile_E4_k4_100pct","active_fraction":1.0,"k":4,"experts":4,"best_single":0.6339494436979294,"oracle":0.0050622482085600495,"ppl":15.468005101812574}],"curve_source":"results/branch_poc_08b.json, k=1 tile family (4 layers of Qwen3.5-0.8B, dense val ppl 15.4803)","ladder":[{"name":"Q2_K","bpw":2.8,"size_gb":9.7234997832,"streamed_gb":0.0,"tok_s":6.44379550641811,"resident":true},{"name":"Q3_K_M","bpw":3.4,"size_gb":11.807106879600001,"streamed_gb":0.0,"tok_s":4.845376328499208,"resident":true},{"name":"Q4_K_S","bpw":4.4,"size_gb":15.279785373600001,"streamed_gb":0.9995664424000015,"tok_s":1.0712093134387968,"resident":false},{"name":"Q4_K_M","bpw":4.9,"size_gb":17.0161246206,"streamed_gb":2.7359056894000013,"tok_s":0.47822089542400126,"resident":false},{"name":"Q5_K_M","bpw":5.6,"size_gb":19.4469995664,"streamed_gb":5.166780635199997,"tok_s":0.26942070917391414,"resident":false},{"name":"Q6_K","bpw":6.6,"size_gb":22.9196780604,"streamed_gb":8.639459129199997,"tok_s":0.16592591360802292,"resident":false},{"name":"Q8_0","bpw":8.5,"size_gb":29.517767199,"streamed_gb":15.2375482678,"tok_s":0.09591854823314656,"resident":false},{"name":"bf16","bpw":16.0,"size_gb":55.562855904,"streamed_gb":41.282636972800006,"tok_s":0.03598558525168515,"resident":false}],"mixed":[{"name":"75/15/10 @ 4/3/2b","bpw":3.6500000000000004,"size_gb":12.675276503100001,"streamed_gb":0.0,"tok_s":4.391487644448475,"resident":true},{"name":"60/25/15 @ 4/3/2b","bpw":3.4499999999999997,"size_gb":11.9807408043,"streamed_gb":0.0,"tok_s":4.747244633991842,"resident":true},{"name":"IQ-style 4/2b 70/30","bpw":3.4,"size_gb":11.807106879600001,"streamed_gb":0.0,"tok_s":4.845376328499208,"resident":true}],"measured":[{"tag":"qwen3.8:latest","total_b":27.781,"active_b":null,"bpw":4.9,"size_gb":17.0,"tok_s":0.561,"resident":false},{"tag":"ornith-1.5:9b","total_b":null,"active_b":null,"bpw":4.9,"size_gb":6.6,"tok_s":24.629,"resident":false},{"tag":"ornith-1.5-35b-a3b:q2_k","total_b":35.505251456,"active_b":3.0,"bpw":2.8,"size_gb":13.0,"tok_s":19.356,"resident":true},{"tag":"ornith-1.5:35b","total_b":35.505251456,"active_b":3.0,"bpw":4.9,"size_gb":22.0,"tok_s":6.45,"resident":false}],"thresholds":{"resident_gb":14.2802189312,"vram_gib":3.8,"ram_gb":10.2,"threshold_bpw":4.112162688216884,"bw_gpu":246.8,"bw_ram":40.7,"bw_disk":1.5,"source":"results/hardware.json via tools/residency_table.py constants"},"quality":{"gate":{"moe":{"overall":"15/19","capped_rows":2,"excluding_capped":"15/17","wall_s":55},"dense_qwen3.8_latest":{"overall":"13/19","capped_rows":4,"excluding_capped":"13/15","wall_s":3958}},"same_quants":{"_profile":"identical task set, identical 768 cap, identical runtime, think off, 0 truncated rows on either side. Median decode over the 19 tasks, from those runs' own per-task decode_tok_s. Both use ollama's offload-what-fits policy, so this is partly a residency difference, not only a bits-per-weight one.","moe_ornith-1.5-35b-a3b_q2_k_13gb":{"overall":"17/19","rate":0.895,"coding":"3/3","format":"6/6","instruction":"4/6","reasoning":"4/4","wall_s":62.7,"decode_tok_s_median":43.13,"decode_tok_s_mean":42.8,"source":"results/eval_ornith-1.5-35b-a3b-q2_k_short19_768.json"},"moe_ornith-1.5_35b_q4_k_m_22gb":{"overall":"16/19","rate":0.842,"coding":"3/3","format":"5/6","instruction":"4/6","reasoning":"4/4","wall_s":463.5,"decode_tok_s_median":6.14,"decode_tok_s_mean":5.94,"source":"results/eval_ornith-1.5-35b_short19_768.json"},"_wall_x":7.39,"_responses":"13 of 19 responses DIFFER between the two runs (6 byte-identical; median first divergence at character 1; 9 of 13 part within 5 characters); 3 tasks flip verdict, 2 in Q2_K's favour. A pass/fail gate reports a tie for two models that are not producing the same text."},"ppl_pair":{"_comment":"experiments/quant_perplexity.py, one GGUF per run, everything else fixed (-c 512 --chunks 8 -t 6), one corpus built from this repo's own prose and code.","ornith-1.5-9b_q4_k_m_ppl":7.0029,"ornith-1.5-9b_q4_k_m_stderr":0.409,"ornith-1.5-9b_q2_k_ppl":7.7128,"ornith-1.5-9b_q2_k_stderr":0.468,"q2_k_penalty_ppl":0.7099,"q2_k_penalty_pct":10.1,"_sigma":"~1.1 against the two printed standard errors. Paired over identical tokens this is tighter than treating the runs as independent, and the direction is the only sensible one, but read it as a consistent one-directional cost rather than a settled magnitude.","_provenance":"Measured in-session; the raw logs were in a temp dir that was cleared between sessions, so this pair is NOT backed by a committed results/ artifact. What is committed is the 35B's own run: ornith-1.5-35b-a3b_q2_k at PPL 12.7113 +/- 0.809 in results/quant_perplexity_35b.json.","_scored_window_tokens":4096,"_window_note":"llama-perplexity scores chunks*n_ctx tokens and prints that window itself: here 4096, roughly the first 4% of a ~100k-token corpus. Two runs are comparable only when BOTH the scored window and the corpus sha256 match -- the corpus grew 389996 -> 397855 bytes mid-session and the estimate did not move, because every added byte fell past the end of the window."},"ppl_35b_q2k":12.7113,"ppl_35b_stderr":0.80933,"ppl_35b_quant":"Q2_K","ppl_corpus_bytes":397855,"ppl_corpus_sha256":"47429f081dfd3cdf915f57e974e7e19bfefe1d5d54c1166623b5ac09af20379b","ppl_chunks":8,"ppl_ctx":512,"source":"configs/tiers.json (quality_gate), results/quant_perplexity_35b.json"},"tier_model_note":"The memory-tier model is validated within ~2x on 4 measured runs (2% error on the 27B Q4_K_M case: predicted 0.48 against 0.561 measured). Treat every tok/s here as a ceiling, not a forecast."}</script>
 <script>
 "use strict";
 /* Recorded so headless verification can tell "rendered fine" from "threw". */
@@ -127,12 +128,44 @@ const cv = document.getElementById("c"), ctx = cv.getContext("2d");
 const tip = document.getElementById("tip"), side = document.getElementById("side");
 const cards = document.getElementById("cards"), prov = document.getElementById("prov");
 
-const C = {
-  ink:"#161d26", ink2:"#5c6672", grid:"#e4e0d4", grid2:"#d6d1c2",
-  blue:"#1d4ed8", blue2:"#93b0f5", red:"#b91c1c", green:"#15803d",
-  amber:"#a16207", attn:"#7c4dff", gdn:"#00838f", read:"#15803d",
-  paper:"#f6f4ee", panel:"#fffdf8", dim:"#5c6672", white:"#ffffff"
-};
+/* ---------- theme ----------
+   The palette is injected by the tool rather than written here, so the sheet,
+   the CSS and the canvas cannot drift apart, and tests can assert the contrast
+   of both themes without a browser. Resolution order: ?theme= parameter, then a
+   stored choice, then the dark sheet this page is written to open on. */
+const THEME_KEY = "atlas-theme";
+function rgbTriple(hex){
+  const c = String(hex).replace("#", "");
+  return [parseInt(c.slice(0,2),16), parseInt(c.slice(2,4),16),
+          parseInt(c.slice(4,6),16)];
+}
+function paramTheme(){
+  try {
+    const t = new URLSearchParams(location.search).get("theme");
+    return (t === "light" || t === "dark") ? t : null;
+  } catch(e){ return null; }
+}
+function storedTheme(){
+  try {
+    const t = localStorage.getItem(THEME_KEY);
+    return (t === "light" || t === "dark") ? t : null;
+  } catch(e){ return null; }
+}
+let theme = paramTheme() || storedTheme() ||
+            (document.documentElement.dataset.theme === "light" ? "light" : "dark");
+let C = D.palette[theme];
+let LOSS = [];                    // [red, amber, green] as numeric triples
+function setTheme(name, persist){
+  theme = (name === "light") ? "light" : "dark";
+  C = D.palette[theme];
+  LOSS = [rgbTriple(C.lossRed), rgbTriple(C.lossAmber), rgbTriple(C.lossGreen)];
+  document.documentElement.dataset.theme = theme;
+  const b = document.getElementById("theme-btn");
+  if (b) b.textContent = (theme === "dark") ? "Light" : "Dark";
+  if (persist){ try { localStorage.setItem(THEME_KEY, theme); } catch(e){} }
+  needsFit = true;
+  draw();
+}
 
 /* ---------- drafting projector: orthographic, fitted to the sheet --------
    A drawing that runs off the paper cannot be read, so the sheet is laid out
@@ -214,7 +247,7 @@ function hatchTop(cx,cy,cz,sx,sy,sz){
   for (let i=1;i<n;i++){
     const t = i/n;
     seg([cx-sx/2, cy+sy/2, cz-sz/2 + t*sz],
-        [cx+sx/2, cy+sy/2, cz-sz/2 + t*sz], "#b9b3a4", 1);
+        [cx+sx/2, cy+sy/2, cz-sz/2 + t*sz], C.hatch, 1);
   }
 }
 function screenText(x, y, text, color, size, align, weight){
@@ -290,7 +323,7 @@ function oracleAt(frac){
 }
 function lossColour(loss){          // 0 loss = green, 0.71 loss = red
   const t = Math.max(0, Math.min(1, 1 - loss/0.75));
-  const c = [[185,28,28],[161,98,7],[21,128,61]];
+  const c = LOSS.length ? LOSS : [[185,28,28],[161,98,7],[21,128,61]];
   const x = t*(c.length-1), i = Math.min(c.length-2, Math.floor(x)), f = x-i;
   const mix = j => Math.round(c[i][j] + (c[i+1][j]-c[i][j])*f);
   return `rgb(${mix(0)},${mix(1)},${mix(2)})`;
@@ -329,16 +362,16 @@ function buildStack(){
   // footprint plate
   poly([[x0-0.06,0,-dz/2-0.06],[x1+0.06,0,-dz/2-0.06],
         [x1+0.06,0,dz/2+0.06],[x0-0.06,0,dz/2+0.06]],
-       "#efece2", C.grid2, 1, 1);
+       C.plate, C.grid2, 1, 1);
 
   for (let i=0;i<G.layers;i++){
     const cx = x0 + i*stride + dx/2;
     const isFA = (i % every) === every-1;
     // backbone: read on every token, routable: no
     box(cx, yBB/2, 0, dx, yBB, dz,
-        isFA ? "#cbb9ff" : "#a7d9de", C.ink, 0.9, 1, true);
+        isFA ? C.attnFill : C.gdnFill, C.ink, 0.9, 1, true);
     // FFN: the part routing can slice, sitting on top of the backbone
-    box(cx, yBB + ffnH/2, 0, dx, ffnH, dz, "#dce6fd", "#8fa8e8", 0.7, 1);
+    box(cx, yBB + ffnH/2, 0, dx, ffnH, dz, C.ffnFill, C.ffnStroke, 0.7, 1);
     // the slice actually read this token, coloured by its measured loss
     const rh = ffnH*readFrac;
     box(cx, yBB + rh/2, 0, dx*1.03, rh, dz*1.03,
@@ -370,15 +403,17 @@ function buildStack(){
   callout([x0-0.06, 0, -dz/2], 34, 78,
     `embedding ${(G.embedding/1e6).toFixed(0)}M\n` +
     `${G.vocab.toLocaleString()} x ${H.toLocaleString()} — a gather`, C.ink2);
-  // legend, as sheet furniture rather than a leader into a crowded corner
-  const h = cv.clientHeight;
-  screenText(20, h-46,
+  /* Legend, as sheet furniture rather than a leader into a crowded corner. It
+     sits bottom-right, because the bottom-left is where the embedding callout
+     lands and this view is re-fitted whenever the header height changes. */
+  const w = cv.clientWidth, h = cv.clientHeight;
+  screenText(w-20, h-46,
     "One column = one layer.  Teal = Gated DeltaNet (48 layers), violet = " +
-    "full attention (16 layers, every 4th).", C.ink2, 11.5);
-  screenText(20, h-28,
+    "full attention (16 layers, every 4th).", C.ink2, 11.5, "right");
+  screenText(w-20, h-28,
     `The coloured band is the slice of the FFN actually read: ` +
     `${(readFrac*100).toFixed(1)}% now, measured oracle loss ` +
-    `${oracleAt(readFrac).oracle_loss.toFixed(4)}.`, C.ink2, 11.5);
+    `${oracleAt(readFrac).oracle_loss.toFixed(4)}.`, C.ink2, 11.5, "right");
 
   screenText(20, 26, "ELEVATION A — the whole model, heights to scale",
              C.ink, 13.5, "left", "700");
@@ -451,7 +486,7 @@ function buildLayer(){
   for (const p of blk.parts){
     const prm = p.rows*p.cols*p.n, hh = (prm/totalParts) * 1.5;
     box(xBB, y0+hh/2, 0, wBB, hh, 0.8,
-        layerType==="gdn" ? "#a7d9de" : "#c9b8ff", C.ink, 1.1, 1, true);
+        layerType==="gdn" ? C.gdnFill : C.attnFill, C.ink, 1.1, 1, true);
     if (hh > 0.075 || blk.parts.indexOf(p) < 4)
       label([xBB - wBB/2 - 0.06, y0+hh/2, 0.42],
             `${p.name}  ${p.rows.toLocaleString()}x${p.cols.toLocaleString()}` +
@@ -461,7 +496,7 @@ function buildLayer(){
   }
   label([xBB, 1.62, 0], `${blk.title} — ${(blk.params/1e6).toFixed(2)}M`,
         C.ink, 13.5, "center", "700");
-  label([xBB, 1.50, 0], blk.subtitle, C.dim, 12, "center");
+  label([xBB, 1.50, 0], blk.subtitle, C.ink2, 12, "center");
 
   // RIGHT: the FFN, three projections with real shapes
   const xF = 0.30, wF = 0.62;
@@ -470,7 +505,7 @@ function buildLayer(){
                 ["down_proj",0.68,1.00]];
   for (const [nm,a,b] of segs){
     const hh = (b-a)*1.5;
-    box(xF, a*1.5+hh/2, 0, wF, hh, 0.8, "#dce6fd", "#8fa8e8", 1, 1);
+    box(xF, a*1.5+hh/2, 0, wF, hh, 0.8, C.ffnFill, C.ffnStroke, 1, 1);
     const shp = ffnParts.find(p => p.name === nm);
     label([xF + wF/2 + 0.06, a*1.5+hh/2, 0.42],
           `${nm}  ${shp.rows.toLocaleString()}x${shp.cols.toLocaleString()}`,
@@ -478,7 +513,7 @@ function buildLayer(){
   }
   label([xF, 1.62, 0], `swiGLU FFN — ${(D.section.ffn.params/1e6).toFixed(2)}M`,
         C.blue, 13.5, "center", "700");
-  label([xF, 1.50, 0], D.section.ffn.subtitle, C.dim, 12, "center");
+  label([xF, 1.50, 0], D.section.ffn.subtitle, C.ink2, 12, "center");
 
   // the read band on the FFN, same language as view A
   const rh = 1.5*readFrac;
@@ -547,7 +582,7 @@ function buildTarget(){
   const G = D.geometry, s = 1/3.0e9;
   const floorH = G.floor*s;
   poly([[-2.8,floorH,-2.4],[2.8,floorH,-2.4],[2.8,floorH,2.4],[-2.8,floorH,2.4]],
-       "rgba(185,28,28,0.07)", C.red, 1.6);
+       C.floorWash, C.red, 1.6);
   callout([2.8, floorH, 2.4], 10, -18,
     `FLOOR ${(G.floor/1e9).toFixed(2)}B — embeddings, LM head, DeltaNet, ` +
     `attention, norms.\nRead on every token. No router touches it.`, C.red);
@@ -555,14 +590,14 @@ function buildTarget(){
   D.targets.forEach((t,i) => {
     const x = (i-(n-1)/2)*1.1, fh = (G.floor/1e9)*s;
     if (!t.possible){
-      box(x, fh/2, 0, 0.55, fh, 0.55, "#f7d5d5", C.red, 1.6, 1);
+      box(x, fh/2, 0, 0.55, fh, 0.55, C.badFill, C.red, 1.6, 1);
       callout([x, fh+0.1, 0], -30, -30,
         `${t.target_b}B active needs ${t.ffn_active_b.toFixed(2)}B of FFN — ` +
         `a negative amount.\nImpossible by routing.`, C.red);
       label([x, fh+0.16, 0], `${t.target_b}B`, C.red, 14, "center", "700");
       return;
     }
-    box(x, fh/2, 0, 0.55, fh, 0.55, "#f1e6d0", C.ink, 1.4, 1, true);
+    box(x, fh/2, 0, 0.55, fh, 0.55, C.barFill, C.ink, 1.4, 1, true);
     const nh = t.ffn_active_b*s;
     const c = lossColour(oracleAt(t.ffn_fraction_pct/100).oracle_loss);
     box(x, fh+nh/2, 0, 0.58, nh, 0.58, c, null, 0, 0.93);
@@ -618,7 +653,7 @@ function buildEnvelope(){
 
   // the ceiling: everything under this fits the fast tier
   poly([[X(0),Y(1.5),Z(0)],[X(xMax),Y(1.5),Z(0)],[X(xMax),Y(1.5),Z(zMax)],
-        [X(0),Y(1.5),Z(zMax)]], "rgba(21,128,61,0.06)", C.green, 1.4);
+        [X(0),Y(1.5),Z(zMax)]], C.ceilWash, C.green, 1.4);
   callout([X(0), Y(1.5), Z(zMax)], -10, -26,
     `the ${T.resident_gb.toFixed(2)} GB fast tier — anything under this plane ` +
     `is RESIDENT`, C.green);
@@ -662,7 +697,7 @@ function buildEnvelope(){
       `${p.tok.toFixed(2)} tok/s ` +
       (p.kind==="measured" ? "(MEASURED)" : "(predicted)"));
   }
-  label([X(30),Y(2.0),Z(0)], "27.78B dense", C.ink2, 12);
+  label([X(27.78),Y(1.72),Z(0)], "27.78B dense", C.ink2, 12);
   label([X(38),Y(6.4),Z(13)], "35.5B / 3B active MoE", C.ink2, 12);
   screenText(18, 26, "ISOMETRIC D — what fits, at what precision", C.ink, 13,
              "left", "700");
@@ -828,6 +863,9 @@ function setLayerType(t){
   draw();
 }
 window.addEventListener("resize", () => { needsFit = true; draw(); });
+const themeBtn = document.getElementById("theme-btn");
+if (themeBtn) themeBtn.addEventListener("click", () =>
+  setTheme(theme === "dark" ? "light" : "dark", true));
 
 const PROV = {
   stack: "ELEVATION A — parameter geometry. Shapes and totals from "
@@ -845,18 +883,26 @@ const PROV = {
 };
 
 /* ---------- did the drawing land inside the frame? ----------
-   Blueprints are read off the paper, so clipped labels are a real defect, not a
-   cosmetic one. Ink = pixels dark enough to be a line or glyph (block fills and
-   the paper grid are deliberately excluded). */
+   Blueprints are read off the sheet, so clipped labels are a real defect, not a
+   cosmetic one. Ink is defined against the *current* palette -- anything that is
+   neither the sheet nor the grid -- so the same measurement works on the light
+   and the dark theme. (A fixed darkness threshold would have counted nothing at
+   all once the ink turned light.) */
 function measureInk(){
   const w = cv.clientWidth, h = cv.clientHeight;
   const d = ctx.getImageData(0,0,cv.width,cv.height).data;
   const sx = cv.width/w, sy = cv.height/h;
+  const paper = rgbTriple(C.paper);
+  // both grid colours: the major lines are a different colour from the minor
+  // ones, and either would span the canvas and fake a clipped edge
+  const grids = [rgbTriple(C.grid), rgbTriple(C.grid2)];
+  const away = (i,c,tol) => Math.abs(d[i]-c[0]) + Math.abs(d[i+1]-c[1])
+                           + Math.abs(d[i+2]-c[2]) > tol;
   let x0=1e9, y0=1e9, x1=-1, y1=-1, n=0;
   for (let y=0;y<cv.height;y+=2){
     for (let x=0;x<cv.width;x+=2){
       const i=(y*cv.width+x)*4;
-      if (d[i]+d[i+1]+d[i+2] < 480){
+      if (away(i, paper, 40) && grids.every(g => away(i, g, 40))){
         n++;
         const px=x/sx, py=y/sy;
         if (px<x0) x0=px; if (px>x1) x1=px;
@@ -897,6 +943,32 @@ function measureLabels(){
            sample:names };
 }
 
+/* ---------- contrast: the dark sheet has to be readable, not just dark ----- */
+function lumOf(hex){
+  const c = rgbTriple(hex).map(v => v/255).map(v => v <= 0.04045
+      ? v/12.92 : Math.pow((v + 0.055)/1.055, 2.4));
+  return 0.2126*c[0] + 0.7152*c[1] + 0.0722*c[2];
+}
+function contrastRatio(a, b){
+  const la = lumOf(a), lb = lumOf(b);
+  const hi = Math.max(la,lb), lo = Math.min(la,lb);
+  return (hi + 0.05)/(lo + 0.05);
+}
+/* every pair that carries meaning: text on the sheet, text on a block, chrome */
+const CONTRAST_PAIRS = [
+  ["ink","paper",7.0], ["ink2","paper",4.5], ["blue","paper",4.5],
+  ["red","paper",4.5], ["green","paper",4.5], ["amber","paper",4.5],
+  ["tipText","tipBg",7.0], ["ink","ffnFill",4.5],
+  ["badgeMfg","badgeMbg",4.5], ["badgePfg","badgePbg",4.5],
+  ["btnFg","blue",4.5],
+];
+function contrastFailures(){
+  return CONTRAST_PAIRS
+    .map(([f,b,m]) => ({ pair:`${f}/${b}`, ratio:+contrastRatio(C[f], C[b]).toFixed(2), min:m }))
+    .map(r => (r.ratio < r.min ? r : null))
+    .filter(Boolean);
+}
+
 /* ---------- self-test: what headless verification reads ---------- */
 window.__atlasSelfTest = function(){
   const out = [];
@@ -928,7 +1000,13 @@ window.__atlasSelfTest = function(){
   ok("drawing is inside the frame", !ink.touches);
   // how big is the drawing actually painted? "it fits" is not "you can see it"
   const G2 = D.geometry;
+  const badContrast = contrastFailures();
   const metrics = {
+    theme: theme,
+    paper: C.paper, grid: C.grid,
+    contrast_min: +Math.min(...CONTRAST_PAIRS.map(
+      ([f,b]) => contrastRatio(C[f], C[b]))).toFixed(2),
+    contrast_failures: badContrast,
     scale: sheet ? +sheet.scale.toFixed(2) : null,
     ffn_block_px: sheet ? +(1.5*G2.hidden/G2.intermediate*sheet.scale).toFixed(1) : null,
     column_px: (currentView === "stack" && sheet) ? +(0.155*sheet.scale).toFixed(1) : null,
@@ -937,6 +1015,8 @@ window.__atlasSelfTest = function(){
   ok("scale is sane", !!sheet && sheet.scale > 4);
   const labels = measureLabels();
   ok("no two labels overlap", labels.overlaps === 0);
+  ok(`${theme} theme contrast (${CONTRAST_PAIRS.length} pairs)`,
+     badContrast.length === 0);
   window.__atlasInk = ink;
   window.__atlasMetrics = metrics;
   window.__atlasLabels = labels;
@@ -950,6 +1030,7 @@ window.__atlasSelfTest = function(){
   return out;
 };
 
+setTheme(theme, false);
 setView((location.hash || "#stack").slice(1));
 window.__atlasSelfTest();
 </script>
