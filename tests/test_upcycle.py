@@ -199,6 +199,47 @@ def test_softmax_combine_with_top1_equals_sum_with_top1():
     torch.testing.assert_close(a(x), b(x), rtol=1e-6, atol=1e-6)
 
 
+def test_rescaled_combine_at_full_k_is_still_the_dense_limit():
+    """E/k is exactly 1.0 at k == E, so unlike mean/softmax the output rescaling
+    does *not* break the partition's dense limit. That is the whole reason it is
+    safe to offer as a combine mode."""
+    dense = make_dense()
+    E = 4
+    moe = MoEFFN.from_dense(dense, MoEConfig(n_experts=E, top_k=E,
+                                             combine="sum_rescaled"))
+    x = torch.randn(3, HIDDEN)
+    torch.testing.assert_close(moe(x), dense.forward(x), rtol=1e-5, atol=1e-5)
+
+
+def test_rescaled_combine_scales_a_sparse_sum_by_n_over_k():
+    dense = make_dense()
+    E, k = 8, 2
+
+    def build(combine):
+        torch.manual_seed(0)
+        return MoEFFN.from_dense(dense, MoEConfig(n_experts=E, top_k=k,
+                                                  combine=combine,
+                                                  plan="interleaved"))
+
+    x = torch.randn(5, HIDDEN)
+    torch.testing.assert_close(build("sum_rescaled")(x), build("sum")(x) * (E / k),
+                               rtol=1e-5, atol=1e-5)
+
+
+def test_rescaled_combine_is_a_global_scale_so_the_all_active_limit_holds():
+    """`all_active_forward` hardcodes `sum`, so the dense-equivalence check is
+    unaffected by the configured combine mode. Without that, a `sum_rescaled`
+    config would look like a broken partition at k < E."""
+    dense = make_dense(inter=96)
+    moe = MoEFFN.from_dense(dense, MoEConfig(n_experts=7, top_k=2,
+                                             combine="sum_rescaled",
+                                             plan="random"))
+    x = torch.randn(5, dense.hidden)
+    torch.testing.assert_close(moe.all_active_forward(x), dense.forward(x),
+                               rtol=1e-5, atol=1e-5)
+    assert moe.dense_equivalent_error(x) < 1e-5
+
+
 # ---------------------------------------------------------------------------
 # shapes and plumbing
 # ---------------------------------------------------------------------------
@@ -453,7 +494,7 @@ def test_module_follows_weights_onto_the_gpu():
 
 
 @pytest.mark.parametrize("dtype", [torch.bfloat16, torch.float16])
-@pytest.mark.parametrize("combine", ["sum", "mean", "softmax"])
+@pytest.mark.parametrize("combine", ["sum", "sum_rescaled", "mean", "softmax"])
 def test_forward_works_in_half_precision(dtype, combine):
     """The router runs in float32, so its combination weights must be cast to
     the activation dtype before `index_add_`.

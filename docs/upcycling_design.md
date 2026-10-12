@@ -116,11 +116,27 @@ E slices sum to roughly `k/E` of the dense layer's output. So the sparse layer
 starts with a systematic magnitude deficit that training has to absorb, and one
 place it can go wrong is experts scaling up so far that the layer saturates.
 
+**Measured (E21), and the `k/E` premise above is wrong for a partition.** That
+framing assumes the expert contributions add *coherently*. They do not: the experts
+are disjoint slices of one layer, so the selected expert's output is a *component*
+of the dense output, and for roughly orthogonal components the least-squares optimal
+output scale is exactly **1**. Fitting `s* = <ref, kept> / ||kept||^2` on frozen
+weights at E=8, mean over four layers, gives `s*` = 1.406, 1.257 and 1.114 at k = 1,
+2 and 4 -- against `E/k` of 8, 4 and 2. The whole magnitude correction is worth
+0.8493 -> 0.8163 at k=1, so **about 96% of the deficit is directional, not a scale
+error**: no output rescaling, imposed or learned, can recover it. Applying `E/k`
+makes the frozen residual worse (0.9249 -> 2.4461) and the trained model much worse
+(29.35x dense against 4.15x). `E/k` is the right correction for *replicated* experts,
+which is not what §2 builds.
+
 This is a real design risk, not a footnote. Three mitigations, in the order I
 would try them:
 
 1. **Scale expert init by `E/k`**, so the sparse sum starts at the right
-   magnitude. Cheap to test; may be unstable for large E/k.
+   magnitude. Cheap to test; may be unstable for large E/k. **Tested (E21) and it
+   is the wrong scale for a partition** -- `s*` is ~1.1-1.4, not `E/k` = 8/4/2, and
+   imposing it degrades both the frozen residual and the trained model. Kept here
+   as the hypothesis it was, not as a recommendation.
 2. **Let the router carry a learned gate**, `combine="softmax"` -- but note this
    *forfeits* the exact dense limit at `top_k=E` (softmax weights sum to 1, so a
    full-k combination is a weighted mean, not the sum). `tests/test_upcycle.py`
@@ -268,6 +284,21 @@ number. (The dense 19.5707 and the fresh post-hoc 99.6753 reproduce
 recorded 29.6900, and the loaded weights reproduce that run's per-layer residuals
 to <=7e-04, so this is the same model evaluated twice rather than two models.)
 
+**E21 -- the corpus-free arm, and what it settles.** An upcycled layer already has a
+teacher inside the model (the dense FFN it was partitioned from), so the objective
+needs no labels and no pretraining corpus. `experiments/self_teach_poc.py` trains on
+that signal alone, from 24 hand-written sentences (197 tokens, against E15's 614,400
+corpus tokens). The dense-reconstruction residual goes 0.9249 -> **0.0196** in-sample
+and 0.9239 -> **0.8398** held out: a ~98% in-sample improvement transfers as ~9%,
+because ~44M trainable parameters are fitting 197 tokens. Quality agrees with the
+held-out number rather than the in-sample one -- 4.15x, 29.35x and 3.12x dense
+perplexity for the `sum`, `sum_rescaled` and `softmax` arms, against E14's
+cross-entropy-trained **1.52x** on the same four layers, with 0 of 6 continuations
+identical in every arm. `softmax` is the best of the three and the only arm where the
+router receives gradient from the reconstruction loss (at k=1 softmax weights are
+1.0, so the arms differ only in whether the router learns). Self-organisation
+re-arranges; it does not create the knowledge that is missing.
+
 **Recommendation for *this project* stands: quantise resident; do not retrofit.**
 The remaining looseness is the aux loss (33.2 of 64 effective experts,
 `load_max_over_mean` up to 9.25 at E=64) and `combine="softmax"` — but neither can
@@ -282,7 +313,11 @@ pretraining compute (Sparse Upcycling); LLaMA-MoE partitioned the FFN exactly as
 over continued dense training on 1T tokens. E15 also used `combine="sum"` without
 the N/k rescaling §5 calls mitigation #1, and partitioned by weights where CMoE
 shows the axis should be the **activation pattern** with a shared expert — which is
-the published explanation for E15's router collapse. Treat §9's gate as satisfied
+the published explanation for E15's router collapse. **One of those three items no
+longer stands as a defect: E21 measured the optimal output scale for a partition at
+~1.1-1.4, not `E/k`, so omitting the rescaling cost E15 nothing — and applying it
+would have made the result worse.** That leaves the token budget and the partition
+axis as the real objections. Treat §9's gate as satisfied
 for *an untrained-partition initialisation*, not for upcycling.
 
 ## 10. Limitations of this design
@@ -296,8 +331,13 @@ for *an untrained-partition initialisation*, not for upcycling.
   though it does remove the reason to assume it would, since the deficit grows
   with E rather than shrinking.
 * Only `plan="random"`, `combine="sum"` was trained at the decisive ratios. The
-  `clustered` and `interleaved` plans are frozen-only, and `combine="softmax"` was
-  not trained at all.
+  `clustered` and `interleaved` plans are frozen-only. `combine="softmax"` has since
+  been trained once (E21) but only at the mildest cell -- 4 layers, E=8, k=1 -- where
+  its forward is identical to `sum`'s and the arms differ only in whether the router
+  learns, so it is still untested at the ratios a conversion needs.
+* The corpus-free arm (E21) was tested at **one** calibration size, 197 tokens. That
+  shows ~44M trainable parameters fit 197 tokens; it does not locate the crossover to
+  generalisation, so it closes the idea as *tested* rather than as *possible*.
 * Cost figures are FLOP-based estimates with an assumed efficiency, not quotes.
 * No benchmark suite or contamination analysis is included; quality claims would
   need `experiments/eval_gate.py` run at scale. A partial, text-level answer now

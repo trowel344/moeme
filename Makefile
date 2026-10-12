@@ -38,7 +38,7 @@ LLAMA_EXTRA  ?= --tasks $(SHORT19) --num-predict 768
 
 .PHONY: help venv test doctor bench-inference verify-sources \
         verify-real-ffn pilot upcycle upcycle-selftest branch branch-selftest \
-        compare-upcycled-08b \
+        compare-upcycled-08b self-teach \
         eval eval-llama eval-surplus quant-ppl quant-ppl-selftest \
         recover-eval-window recover-eval-window-selftest report \
         residency clean clean-results all
@@ -58,6 +58,8 @@ help:
 	@echo "  make branch           branching (complete modules) vs slicing (needs GPU)"
 	@echo "  make compare-upcycled-08b  does the upcycled 0.8B still answer like the"
 	@echo "                        dense one? perplexity + greedy text, same tokens"
+	@echo "  make self-teach       teach the upcycled layers from the model's own dense"
+	@echo "                        FFN, with no corpus (needs GPU, ~4 min)"
 	@echo "  make quant-ppl        perplexity of one model at two quantisations, on"
 	@echo "                        identical tokens (QUANT_PPL_MODELS overrides)"
 	@echo "  make recover-eval-window  recover the --eval-blocks window a perplexity"
@@ -138,6 +140,17 @@ branch:
 compare-upcycled-08b:
 	$(PY_SYS) experiments/compare_upcycled_08b.py \
 		--out results/upcycled_08b_vs_dense.json
+
+# The corpus-free version of the upcycling question: train the converted layers
+# against *their own dense FFN* -- no labels, no pretraining corpus, just enough
+# text to generate activations -- and measure whether that transfers to held-out
+# activations or only memorises the calibration set. It also measures the
+# least-squares optimal output scale, which decides whether the E/k rescaling
+# the literature calls essential applies to a *partition* (measured: it does
+# not, s* sits near 1 wherever k is, so ~96% of the deficit is directional).
+self-teach:
+	$(PY_SYS) experiments/self_teach_poc.py \
+		--out results/self_teach_08b.json
 
 eval:
 	$(PY_SYS) experiments/eval_gate.py --model $(MODEL) \

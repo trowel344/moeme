@@ -29,6 +29,22 @@ Design decisions, stated plainly (they are choices, not accidents)
   sparse sum is scaled by ~k/E relative to the dense layer; training has to
   learn that scale. `combine="mean"` and `combine="softmax"` are provided and
   documented, but they do *not* preserve the exact limit at top_k=E.
+* `combine="sum_rescaled"` multiplies the sparse sum by **E/k** -- the output
+  rescaling LLaMA-MoE and NVIDIA both call essential for upcycling -- so a
+  k-of-E partial sum starts at the dense layer's *magnitude* instead of ~k/E of
+  it. It is exactly 1.0 when k == E, so unlike `mean`/`softmax` it **does**
+  preserve the dense limit, and `all_active_forward` (which hardcodes `sum`)
+  remains the exact reference either way.
+
+  Note what this can and cannot fix, because it decides which metric to read. A
+  global scale `s` multiplies `total` and `kept` together, so any residual
+  written as `||total - kept|| / ||total||` is *invariant* to it -- which is
+  what `ffn.oracle_topk_residual` and `router_topk_residual` compute. The
+  rescaling therefore cannot move those two numbers at all; it can only move a
+  residual measured against the **dense layer** (`dense_forward`, i.e. the
+  unscaled sum), such as `reconstruction_residual`. A frozen 'oracle' table is
+  structurally blind to this fix, so a negative result read off it is not
+  evidence about the rescaling.
 * For the PoC the full weight matrices stay resident as `Parameter`s and the
   partition is a fixed buffer. This is deliberately **not** a memory-efficient
   MoE -- it exists to answer a quality question, not a memory question.
@@ -57,7 +73,7 @@ from .ffn import (
     random_plan,
 )
 
-COMBINE_MODES = ("sum", "mean", "softmax")
+COMBINE_MODES = ("sum", "sum_rescaled", "mean", "softmax")
 PLAN_MODES = ("contiguous", "interleaved", "random", "clustered")
 
 
@@ -281,6 +297,10 @@ class MoEFFN(nn.Module):
         k = top_val.shape[1]
         if combine == "sum":
             return torch.ones_like(top_val, dtype=x_dtype)
+        if combine == "sum_rescaled":
+            # E/k: the sparse partial sum carries the dense layer's magnitude.
+            # Exactly 1.0 at k == E, so the dense limit is preserved exactly.
+            return torch.full_like(top_val, self.n_experts / k, dtype=x_dtype)
         if combine == "mean":
             return torch.full_like(top_val, 1.0 / k, dtype=x_dtype)
         if combine == "softmax":
@@ -392,7 +412,14 @@ class MoEFFN(nn.Module):
             return self.routing_metrics_from(logits, top_idx)
 
     def all_active_forward(self, x: Tensor) -> Tensor:
-        """Partial sum over *every* expert -- must equal `dense_forward`."""
+        """Partial sum over *every* expert -- must equal `dense_forward`.
+
+        `combine="sum"` is hardcoded rather than taken from the config: the
+        identity this checks is about the *unscaled* sum of every expert, which
+        is the dense layer. With `sum_rescaled` the sparse path is scaled by
+        E/k, so reading the limit through the config would make the check fail
+        at k<E for a reason that has nothing to do with partitioning.
+        """
         y, _, _ = self._forward_impl(x, k=self.n_experts, combine="sum")
         return y
 

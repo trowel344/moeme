@@ -48,6 +48,23 @@ are committed under `results/` so the claims can be checked against raw data.
    model actually says, not only in a perplexity ratio — and with only 4 of its
    24 layers converted.
 
+8. **The converted layers cannot be taught by the model itself, and the output
+   rescaling the whole field calls essential does not apply to them.** Training
+   the same four layers against *their own dense FFN* — no labels, no pretraining
+   corpus, 24 hand-written sentences (**197 tokens**) instead of E15's 614,400 —
+   drives the reconstruction residual on that calibration set to **0.0196**, while
+   the residual on 2,048 **held-out** tokens only moves 0.9239 → **0.8398**: a 98%
+   in-sample improvement transfers as **9%**, because ~44M trainable parameters are
+   fitting 197 tokens. Perplexity agrees — 4.15x dense against the
+   cross-entropy-trained **1.52x**, and 0 of 6 continuations identical to dense.
+   The same run measures the least-squares optimal output scale at **s\* = 1.406**
+   for k=1 of E=8, where the literature's fix is **E/k = 8.0**, and s\* stays near
+   1 at k=2 (1.257) and k=4 (1.114) too. So ~96% of the deficit is directional
+   rather than a matter of scale, and applying E/k makes it *worse*: the frozen
+   residual rises 0.9249 → 2.4461 and the trained model lands at **29.35x** dense
+   against 4.15x without it. This corrects the repo's own account — E15's omission
+   of the N/k rescaling was listed as a defect of that run, and it cost nothing.
+
 Read `docs/feasibility_report.md` then `docs/decision_memo.md`. For the MoE
 question specifically, `docs/upcycling_design.md` (the plan) and
 `docs/prior_work.md` (what the field actually achieved, and why E15's negative
@@ -62,14 +79,17 @@ src/moeme/accounting.py     exact parameter accounting, memory-tier throughput m
 src/moeme/branch.py         the *branching* alternative: complete experts (tile or
                             replica init), shared experts, forced-expert mode for
                             independent training, residual_report diagnostics
-tests/                      352 tests: exactness, shapes, plans, oracle bounds,
+tests/                      369 tests: exactness, shapes, plans, oracle bounds,
                             accounting, upcycling (dense limit, gradients, aux loss,
-                            half precision, CUDA autocast), branching (exact and
-                            narrow limits, shared experts, forced-expert training),
-                            PoC driver budget and error resilience, the evaluation
-                            scorer and runner, the memory watchdog, GGUF metadata
-                            reading and perplexity parsing, and the eval-window
-                            recovery (identification, ambiguity, false-match refusal)
+                            half precision, CUDA autocast, the E/k output rescaling),
+                            branching (exact and narrow limits, shared experts,
+                            forced-expert training), PoC driver budget and error
+                            resilience, the evaluation scorer and runner, the memory
+                            watchdog, GGUF metadata reading and perplexity parsing,
+                            the eval-window recovery (identification, ambiguity,
+                            false-match refusal), the upcycled-vs-dense comparison,
+                            and corpus-free self-teaching (best-scale optimality,
+                            the fixed calibration set, scale sensitivity)
 tools/verify_model_geometry.py   exact param accounting from HF safetensors headers
 tools/hf_tensor.py               fetch single tensors via HTTP range requests
 tools/bench_hardware.py          non-destructive hardware characterisation
@@ -94,6 +114,11 @@ experiments/compare_upcycled_08b.py  does the upcycled 0.8B still *behave* like 
                                  dense one? perplexity plus greedy continuations,
                                  both models on identical tokens, with the
                                  dense-limit control measured on a fresh partition
+experiments/self_teach_poc.py    can a layer be taught by its own dense FFN with no
+                                 corpus? trains against the model's own dense
+                                 output and measures the least-squares optimal
+                                 output scale, which decides whether the E/k
+                                 rescaling applies to a partition (it does not)
 kaggle/upcycle_poc.ipynb         the same PoC, run on free Kaggle GPUs (E15);
 kaggle/README.md, kaggle_run.log  how to run it, and the raw session log
 configs/tiers.json               measured constants, with provenance and limitations
@@ -109,7 +134,7 @@ results/                         raw evidence: JSON + printed tables
 
 ```bash
 make venv        # .venv reusing system torch, plus pytest
-make test        # 352 tests, offline, ~17 s
+make test        # 369 tests, offline, ~17 s
 make doctor      # one-command local diagnostics (~90 s, writes results/hardware.json)
 make bench-inference
 make verify-sources      # re-derive parameter counts from the real artefacts
@@ -125,6 +150,7 @@ make upcycle           # upcycling PoC on a real model (GPU; or use kaggle/)
 make branch-selftest   # branching-vs-slicing check, offline, CPU, ~2 s (no download)
 make branch            # branching vs slicing on a real model (GPU)
 make compare-upcycled-08b  # upcycled 0.8B vs dense: perplexity + generated text (GPU)
+make self-teach        # teach the layers from the model's own dense FFN, no corpus (GPU)
 make eval MODEL=qwen3:4b NUM_PREDICT=1536   # 30-task gate, executable code checks
 
 # A model too slow for the full gate: same tasks, fixed settings, resumable.
@@ -448,6 +474,9 @@ measurement.)
 | Training beats it only at the mildest ratio, by 0.006 | `results/upcycle_poc.json` (E14) |
 | The upcycled 0.8B is fluent but not the same model (0/6 continuations identical) | `make compare-upcycled-08b` (`results/upcycled_08b_vs_dense.json`) |
 | The partition plumbing is exactly dense-equivalent on real text | same command's dense-limit control: 19.5635 vs 19.5707 |
+| The E/k output rescaling does not apply to a partition | `make self-teach` (frozen scan: s\* 1.406 at k=1 where E/k = 8.0) |
+| Corpus-free self-teaching memorises instead of generalising | `make self-teach` (in-sample 0.0196 vs held-out 0.8398) |
+| Self-teaching is worse than token training on quality | `make self-teach` (4.15x dense vs E14's 1.52x) |
 | A perplexity needs its eval window and its corpus | `results/upcycle_poc_rerun.json` vs `results/upcycle_poc.json` (E15 note) |
 | An unrecorded eval window is recoverable | `make recover-eval-window` (`results/eval_window_recovery.json`) |
 | ...and the recovery logic is sound offline | `make recover-eval-window-selftest` |

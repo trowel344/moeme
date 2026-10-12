@@ -1037,8 +1037,87 @@ bounds the question at the only interface that exists.
 
 ---
 
+## E21 — Can the model teach its own sparse layers, with no corpus?
+
+Every training run in this repo optimises next-token cross-entropy on a streamed
+corpus. But an upcycled layer already has a teacher inside the model: the dense FFN
+it was partitioned from. So the objective needs no labels and no pretraining corpus,
+only enough input to generate activations. `experiments/self_teach_poc.py` (new)
+tests that version — 24 hand-written sentences instead of a corpus — and, before
+training anything, measures the least-squares optimal output scale to check whether
+the `E/k` rescaling the field calls essential can even apply to a *partition*.
+
+**Model:** Qwen3.5-0.8B, layers 0/3/8/23 upcycled, E=8 top-1, `plan=random`, seed 0,
+300 steps, lr 1e-4. Training data: 24 hand-written sentences, **197 tokens** (E15,
+for contrast, trained on 614,400 corpus tokens). The teacher is the model's own dense
+FFN, so no labels are used. Held-out check: 4 corpus blocks, 2,048 tokens, disjoint
+from the evaluation window.
+**Command:** `python3 experiments/self_teach_poc.py --steps 300 --lr 1e-4`
+
+**The `E/k` rescaling does not apply to a partition, and that was measured before
+training anything.** §5 of the design doc assumes a sparse sum starts at `k/E` of the
+dense layer's magnitude. The least-squares optimal scale `s*` says otherwise, on
+frozen weights, E=8, mean over the four layers:
+
+| k | E/k | s* oracle | s* router | residual @ scale 1 | residual @ s* |
+|---|---:|---:|---:|---:|---:|
+| 1 | 8.0 | 1.406 | 1.568 | 0.8493 | 0.8163 |
+| 2 | 4.0 | 1.257 | 1.363 | 0.7422 | 0.7079 |
+| 4 | 2.0 | 1.114 | 1.194 | 0.5521 | 0.5308 |
+
+`s*` is near 1 at every k while `E/k` is 8, 4 and 2. The entire magnitude correction
+is worth 0.8493 -> 0.8163 at k=1, so **about 96% of the deficit is directional, not a
+scale error**. The reason is structural: the experts are disjoint slices of one
+layer, so the selected expert's output is a *component* of the dense output, and for
+roughly orthogonal components the least-squares optimal scale is exactly 1. `E/k` is
+the right correction for *replicated* experts, which is not this construction. Applied,
+it makes the frozen residual worse (0.9249 -> 2.4461) and the trained model far worse
+(29.35x dense against 4.15x without it).
+
+**Self-teaching memorises rather than generalises.** The reconstruction residual,
+in-sample against held out:
+
+| arm | in-sample (frozen -> trained) | **held-out** (frozen -> trained) | val ppl |
+|---|---:|---:|---:|
+| `sum` | 0.9249 -> **0.0196** | 0.9239 -> **0.8398** | 81.1285 (**4.15x**) |
+| `sum_rescaled` | 2.4461 -> 0.0847 | 2.2588 -> **2.0662** | 574.3223 (**29.35x**) |
+| `softmax` | 0.9220 -> **0.0124** | 0.9226 -> **0.8381** | 61.0955 (**3.12x**) |
+
+A ~98% in-sample improvement transfers as ~**9%** on held-out activations. That is
+what ~44M trainable parameters fitting 197 tokens looks like: the loss can be driven
+to near zero on the calibration sentences without learning the layer's function. **The
+held-out set is what made the result readable** — the first run of this driver reported
+only the in-sample number and would have supported the opposite conclusion. (That run
+also diverged at lr 1e-3, loss 0.92 -> 9.01 with one layer's residual at 28.8, which
+measures the learning rate rather than the method.)
+
+**And it is worse than token training on quality.** Against cross-entropy-trained E14,
+same four layers, same E and k, 300 steps: **1.52x** dense (29.79) versus 4.15x, 29.35x
+and 3.12x here, with **0 of 6** greedy continuations identical to dense in every arm.
+The arm that comes closest is `softmax` — the only one where the router receives
+gradient from the reconstruction loss at all (at k=1 softmax weights are 1.0, so its
+forward is identical to `sum`; the two arms differ *only* in whether the router
+learns). Even that arm is worse than token training. This is also another instance of
+the trap E16 recorded: the dense-reconstruction residual moves *against* quality.
+
+**Conclusion.** Goals and self-organisation cannot supply knowledge the model does not
+already have — self-organisation re-arranges, it does not create — and the measurable
+core of the idea, teach yourself from your own dense layer with no corpus, was run: it
+memorised ~197 tokens rather than fixing a deficit that is directional rather than one
+of scale.
+
+→ `experiments/self_teach_poc.py`, `results/self_teach_08b.json`.
+
+---
+
 ## Not executed (stated plainly)
 
+- **E21's open threads.** One calibration size (197 tokens) and one sentence list, so
+  the memorisation result shows that ~44M parameters fit 197 tokens, not where the
+  crossover to generalisation would be — a scan over calibration size is the obvious
+  next probe, and it is the one that would either rescue or finally close the
+  corpus-free idea. Also not run: a second seed, `plan=clustered`/`interleaved` under
+  self-teaching, and any task-level score (the same GGUF-converter gap as E20).
 - **E18's open threads.** Not run: a second run of any category, so every score
   here is one sample and the one-task gap in the equal-quant comparison is an
   inference rather than a measurement; any placement other than

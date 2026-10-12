@@ -397,6 +397,63 @@ def section_upcycle() -> None:
     print("  training moved the experts off the slices they were cut from. Re-run:")
     print("  `make compare-upcycled-08b`.")
 
+    # E21 -- the corpus-free arm, and the table that decides whether the field's
+    # output rescaling applies to a partition at all. `s*` is the least-squares
+    # optimal scale; it sitting near 1 while E/k is 8/4/2 is the finding. Then the
+    # arms, printed in-sample *beside* held-out, because only the second of those
+    # two is learning and the first is memorisation.
+    d = load("self_teach_08b.json")
+    if not d:
+        return
+    hr("SELF-TEACHING FROM THE MODEL'S OWN DENSE FFN, NO CORPUS (E21)")
+    arms = [a for a in d.get("arms", []) if "error" not in a]
+    if not arms:
+        print("  every arm failed; see results/self_teach_08b.json")
+        return
+    cfg = arms[0]["config"]
+    print(f"  {d['model']}  layers {arms[0]['layers']}  "
+          f"E={cfg['n_experts']} top-{cfg['top_k']}  "
+          f"{arms[0]['trainable_params']/1e6:.1f}M trainable params")
+    print(f"  calibration: {d['calibration_tokens']} tokens from "
+          f"{len(d.get('calibration_sentences', []))} hand-written sentences -- "
+          f"no labels, no pretraining corpus (E15 trained on 614,400 corpus tokens)")
+    print(f"  dense val ppl {d['dense_val_ppl']:.4f}  "
+          f"[{d.get('eval_blocks')} val blocks]\n")
+
+    scan = d.get("frozen_scale_scan", {})
+    if scan:
+        print("  the literature's output rescaling against the measured optimum")
+        print("  (untrained weights, oracle selection, mean over the upcycled layers):")
+        print(f"    {'k':>2} {'E/k':>6} {'s* measured':>12} {'residual@1':>11} "
+              f"{'residual@s*':>12}")
+        for k in sorted(scan, key=int):
+            per_layer = scan[k]
+            orc = [v["oracle"] for v in per_layer.values()]
+            m = lambda f: sum(v[f] for v in orc) / len(orc)          # noqa: E731
+            print(f"    {int(k):>2} {m('E_over_k'):>6.1f} "
+                  f"{m('best_scale_mean'):>12.3f} "
+                  f"{m('residual_at_scale_1'):>11.4f} "
+                  f"{m('residual_at_best_scale'):>12.4f}")
+        print("  s* sits near 1 wherever k is, while E/k is 8/4/2: the deficit is")
+        print("  directional, not a scale error, so E/k does not apply to a partition.\n")
+
+    ins = f"in-sample ({d['calibration_tokens']} tok)"
+    hold = f"held-out ({d.get('holdout_tokens', 'n/a')} tok)"
+    print(f"  {'arm':<16} {ins:>21} {hold:>21} {'val ppl':>16}")
+    for a in arms:
+        c = a["config"]
+        print(f"  {c['combine']:<16} "
+              f"{a['vs_original_dense_frozen_mean']:>8.4f} -> "
+              f"{a['vs_original_dense_trained_mean']:>8.4f} "
+              f"{a['vs_original_dense_holdout_frozen_mean']:>8.4f} -> "
+              f"{a['vs_original_dense_holdout_trained_mean']:>8.4f} "
+              f"{a['val_ppl']:>8.2f} ({a['ppl_ratio_vs_dense']:.2f}x)")
+    print("  The in-sample column is memorisation and only the held-out column is")
+    print("  learning: a ~98% in-sample gain transfers as ~9% held out. Every arm is")
+    print("  also worse than the corpus-trained E14 on the same four layers (1.52x).")
+    print("  `softmax` is the only arm where the router learns from the reconstruction")
+    print("  loss, and the best of the three. Re-run: `make self-teach`.")
+
 
 def section_branch() -> None:
     """E16: complete modules (replica) vs disjoint slices (tile).
