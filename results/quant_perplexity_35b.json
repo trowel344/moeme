@@ -1,0 +1,79 @@
+{
+  "corpus": {
+    "path": "results/ppl_corpus.txt",
+    "sha256": "47429f081dfd3cdf915f57e974e7e19bfefe1d5d54c1166623b5ac09af20379b",
+    "bytes": 397855,
+    "files": [
+      "README.md",
+      "docs/branching_vs_slicing.md",
+      "docs/decision_memo.md",
+      "docs/experiment_log.md",
+      "docs/expert_offloading.md",
+      "docs/feasibility_report.md",
+      "docs/prior_work.md",
+      "docs/quality_vs_speed.md",
+      "docs/source_validation.md",
+      "docs/upcycling_design.md",
+      "src/moeme/__init__.py",
+      "src/moeme/accounting.py",
+      "src/moeme/branch.py",
+      "src/moeme/ffn.py",
+      "src/moeme/upcycle.py",
+      "experiments/branch_poc.py",
+      "experiments/eval_gate.py",
+      "experiments/pilot_sparsity.py",
+      "experiments/quant_perplexity.py",
+      "experiments/upcycle_poc.py",
+      "experiments/verify_real_ffn.py"
+    ]
+  },
+  "ctx": 512,
+  "chunks": 8,
+  "threads": 6,
+  "gpu_layers": 12,
+  "cpu_moe": false,
+  "perplexity_binary": "/home/cleanerbox/.unsloth/llama.cpp/llama-perplexity",
+  "runs": {
+    "q2_35b": {
+      "ppl": 12.7113,
+      "stderr": 0.80933,
+      "cumulative_series": [
+        11.9402,
+        19.0249,
+        16.0206,
+        12.0089,
+        13.679,
+        11.5836,
+        12.3724,
+        12.7113
+      ],
+      "chunks_reported": 8,
+      "final_estimate_line": "Final estimate: PPL = 12.7113 +/- 0.80933",
+      "label": "q2_35b",
+      "model": "/home/cleanerbox/models/Ornith-1.5-35B-A3B-Q2_K.gguf",
+      "gguf_bytes": 13085779616,
+      "exit_code": 0,
+      "wall_s": 172.9535870260006,
+      "command": "/home/cleanerbox/.unsloth/llama.cpp/llama-perplexity -m /home/cleanerbox/models/Ornith-1.5-35B-A3B-Q2_K.gguf -f results/ppl_corpus.txt -c 512 --chunks 8 -t 6 -ngl 12",
+      "guard": "watched 57 sample(s) of pid 365993: min RAM available 9.47 GiB, peak VRAM 64 MiB, peak target RSS 11.32 GiB\nsamples: logs/ppl_q2_35b.watch.log",
+      "guard_ended_it": false,
+      "quant": "Q2_K"
+    },
+    "q4_35b": {
+      "ppl": null,
+      "stderr": null,
+      "cumulative_series": [],
+      "chunks_reported": 0,
+      "final_estimate_line": null,
+      "label": "q4_35b",
+      "model": "/home/cleanerbox/models/Ornith-1.5-35B-A3B-Q4_K_M.gguf",
+      "gguf_bytes": 21864081056,
+      "exit_code": -15,
+      "wall_s": 66.61646547000055,
+      "command": "/home/cleanerbox/.unsloth/llama.cpp/llama-perplexity -m /home/cleanerbox/models/Ornith-1.5-35B-A3B-Q4_K_M.gguf -f results/ppl_corpus.txt -c 512 --chunks 8 -t 6 -ngl 12",
+      "guard": "watched 13 sample(s) of pid 370926: min RAM available 0.11 GiB, peak VRAM 64 MiB, peak target RSS 12.23 GiB  -- GUARD TERMINATED THE TARGET\nsamples: logs/ppl_q4_35b.watch.log",
+      "guard_ended_it": true,
+      "quant": "Q4_K_M"
+    }
+  }
+}

@@ -1,0 +1,5 @@
+NOTE: coding tasks execute model-generated Python in a subprocess with a 10 s timeout.
+
+=== qwen3.8:latest (30 tasks, 0 already recorded) ===
+  [ 1/30] c_sum_evens            PASS 4/4 cases passed
+  [ 2/30] c_reverse_words        PASS 3/3 cases passed

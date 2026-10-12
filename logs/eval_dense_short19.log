@@ -1,0 +1,30 @@
+NOTE: coding tasks execute model-generated Python in a subprocess with a 10 s timeout.
+
+=== qwen3.8:latest (19 tasks, 0 already recorded) ===
+  [ 1/19] c_sum_evens            PASS 4/4 cases passed
+  [ 2/19] c_reverse_words        PASS 3/3 cases passed
+  [ 3/19] c_gcd                  PASS 3/3 cases passed
+  [ 4/19] r_bat_ball             FAIL got 1.0, want 0.1
+  [ 5/19] r_work_rate            FAIL got 1.0, want 3
+  [ 6/19] r_lily                 FAIL got 48.0, want 47
+  [ 7/19] r_sequence             FAIL got 3.0, want 42
+  [ 8/19] f_json_three_actions   PASS ok
+  [ 9/19] f_json_tool_call       PASS ok
+  [10/19] f_json_no_prose        PASS ok
+  [11/19] f_json_nested          PASS ok
+  [12/19] f_json_array           PASS ok
+  [13/19] f_json_nulls           PASS ok
+  [14/19] i_exact_three_bullets  PASS 3 bullets, want 3
+  [15/19] i_only_word            PASS got 'yes'
+  [16/19] i_uppercase            PASS got 'CONFIRMED'
+  [17/19] i_five_words           FAIL 3 words, want 5
+  [18/19] i_lowercase_start      PASS starts with 'c'
+  [19/19] i_no_letter_e          FAIL contains 'e'
+  -- qwen3.8:latest: 13/19 = 68.4% overall
+     coding       3/3 = 100%
+     format       6/6 = 100%
+     instruction  4/6 = 67%
+     reasoning    0/4 = 0%
+
+wrote results/eval_qwen3.8-latest_short19.json
+EXIT=0

@@ -1,0 +1,8 @@
+### surplus bench (planner placement) 2026-10-11T23:36:16+01:00
+surplus: benching conservative placement (no measured profile)
+surplus: benching /home/cleanerbox/models/Ornith-1.5-35B-A3B-Q2_K.gguf (128 prompt / 64 gen x3)
+surplus: [backend_error] llama-bench failed (signal: 11 (SIGSEGV) (core dumped)):
+ggml_cuda_init: found 1 CUDA devices (Total VRAM: 7807 MiB):
+  Device 0: NVIDIA GeForce RTX 4060 Laptop GPU, compute capability 8.9, VMM: yes, VRAM: 7807 MiB
+
+EXIT=1

@@ -1,0 +1,11 @@
+NOTE: coding tasks execute model-generated Python in a subprocess with a 10 s timeout.
+
+=== qwen3.8:latest (4 tasks, 0 already recorded) ===
+  [ 1/4] r_bat_ball             PASS got 0.05, want 0.05
+  [ 2/4] r_work_rate            PASS got 3.0, want 3
+  [ 3/4] r_lily                 PASS got 47.0, want 47
+  [ 4/4] r_sequence             PASS got 42.0, want 42
+  -- qwen3.8:latest: 4/4 = 100.0% overall
+     reasoning    4/4 = 100%
+
+wrote results/eval_qwen3.8-latest_reason768.json

@@ -1,0 +1,2 @@
+watched 188 sample(s) of pid 395992: min RAM available 7.69 GiB, peak VRAM 5100 MiB, peak target RSS 2.65 GiB
+samples: logs/upcycle_rerun.watch.log

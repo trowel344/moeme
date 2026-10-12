@@ -1,0 +1,69 @@
+{
+  "tasks_total": 30,
+  "models": {
+    "qwen3.8:latest": {
+      "overall": {
+        "passed": 2,
+        "total": 2
+      },
+      "tasks": [
+        {
+          "id": "c_sum_evens",
+          "category": "coding",
+          "passed": true,
+          "detail": "4/4 cases passed",
+          "response": "```python\ndef solve(nums):\n    return sum(x for x in nums if x % 2 == 0)\n```",
+          "decode_tok_s": 0.34929166270490913,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 76
+        },
+        {
+          "id": "c_reverse_words",
+          "category": "coding",
+          "passed": true,
+          "detail": "3/3 cases passed",
+          "response": "```python\ndef solve(s):\n    return ' '.join(s.split()[::-1])\n```",
+          "decode_tok_s": 0.387531177323592,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 64
+        }
+      ]
+    }
+  },
+  "task_ids": [
+    "c_sum_evens",
+    "c_reverse_words",
+    "c_fizzbuzz",
+    "c_is_palindrome",
+    "c_binary_search",
+    "c_unique_ordered",
+    "c_gcd",
+    "c_flatten",
+    "c_two_sum",
+    "c_word_count",
+    "r_train",
+    "r_bat_ball",
+    "r_work_rate",
+    "r_lily",
+    "r_combinatorics",
+    "r_modular",
+    "r_percent",
+    "r_sequence",
+    "f_json_three_actions",
+    "f_json_tool_call",
+    "f_json_no_prose",
+    "f_json_nested",
+    "f_json_array",
+    "f_json_nulls",
+    "i_exact_three_bullets",
+    "i_only_word",
+    "i_uppercase",
+    "i_five_words",
+    "i_lowercase_start",
+    "i_no_letter_e"
+  ],
+  "think": "off",
+  "num_predict": 384
+}

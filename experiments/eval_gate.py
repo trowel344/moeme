@@ -54,9 +54,37 @@ import urllib.request
 # cap they truncate mid-reasoning and return an EMPTY answer, which must not be
 # silently scored as a capability failure. 512 is not enough; 1536 is the
 # default here and truncations are reported explicitly.
+#
+# The first version of this only labelled truncation when the answer text was
+# EMPTY. A capped model that narrates before it answers -- every verbose model at
+# a small cap -- then recorded a bare "got 3.0, want 42", which reads as a wrong
+# answer rather than a run the harness cut off. On the 19-task subset that
+# mis-scored 3 of 4 reasoning failures of the dense 27B, all of which were
+# truncated mid-solution on the way to the right number. Rows now carry
+# `truncated`, and both scores are printed: the strict one (every row counts)
+# and the one with capped rows removed.
 API = "http://127.0.0.1:11434"
+# llama.cpp `llama-server` speaks a different request shape. Same task set, same
+# scorer, same greedy decode -- only the engine differs -- is what makes an
+# engine comparison (surplus's placement, or llama.cpp against the ollama tag)
+# mean anything, and it doubles as an agreement check: identical prompts at
+# temperature 0 should give identical answers if the weights and the graph are
+# the same. Start it with `llama-server -m <gguf> --port 8080 ...`.
+LLAMA_API = "http://127.0.0.1:8080"
 NUM_PREDICT = 1536
 SEED = 1234
+
+# Two expected values in this set were arithmetically wrong, in OPPOSITE
+# directions, so they were scoring correct answers as failures and failures as
+# passes (both are pinned by tests/test_eval_gate.py):
+#
+#   r_bat_ball  was expect=0.10. ball = (1.10 - 1.00) / 2 = 0.05.
+#   r_modular   was expect=1.    7**20 % 13 = 3  (7**12 % 13 == 1, 20 % 12 == 8,
+#                                and 7**8 % 13 == 3).
+#
+# `--rescore` replays the recorded responses through the corrected definitions,
+# so runs made before this fix are re-scored from their stored text instead of
+# being re-generated.
 
 # ---------------------------------------------------------------------------
 # task set: every check is mechanical
@@ -136,7 +164,9 @@ TASKS = [
        "A bat and a ball cost 1.10 in total. The bat costs 1.00 more than the "
        "ball. How much does the ball cost, in currency units? End with "
        "'ANSWER: <value>'.",
-       "number", expect=0.10, tol=1e-6),
+       # ball + (ball + 1.00) = 1.10 -> ball = 0.05. This previously read 0.10,
+       # which marked the correct answer (0.05) as a failure.
+       "number", expect=0.05, tol=1e-6),
     _t("r_work_rate", "reasoning",
        "If 3 machines make 3 widgets in 3 minutes, how many minutes do 100 "
        "machines need to make 100 widgets? End with 'ANSWER: <value>'.",
@@ -151,7 +181,9 @@ TASKS = [
        "number", expect=30, tol=1e-6),
     _t("r_modular", "reasoning",
        "What is 7^20 mod 13? End with 'ANSWER: <value>'.",
-       "number", expect=1, tol=1e-6),
+       # 7**12 % 13 == 1, 20 % 12 == 8, 7**8 % 13 == 3. This previously read 1,
+       # which marked an incorrect answer (1) as a pass.
+       "number", expect=3, tol=1e-6),
     _t("r_percent", "reasoning",
        "A price rises 25% then falls 20%. What is the net percentage change? End "
        "with 'ANSWER: <value>' where a rise is positive and a fall negative.",
@@ -437,23 +469,203 @@ def ensure_server() -> bool:
     return False
 
 
-def ask(model: str, prompt: str, num_predict: int = NUM_PREDICT) -> tuple[str, dict]:
-    payload = {"model": model, "prompt": prompt, "stream": False,
-               "options": {"temperature": 0.0, "seed": SEED,
-                           "num_predict": num_predict}}
-    req = urllib.request.Request(f"{API}/api/generate",
+def mark_truncation(detail: str, text: str, done_reason,
+                    eval_count) -> tuple[str, bool]:
+    """Label a row the token cap cut off, so it is not read as a wrong answer.
+
+    `detail` is the scorer's verdict and is kept: a truncated row still holds no
+    usable answer, so it stays a failure in the strict score. The marker and the
+    returned flag are what let a reader (and the summary) separate "the model
+    could not do this" from "the harness stopped it mid-sentence".
+    """
+    if done_reason != "length":
+        return detail, False
+    if not text.strip():
+        return (f"TRUNCATED during reasoning ({eval_count} tokens, empty answer; "
+                f"raise --num-predict or use --think off)"), True
+    return f"{detail} [truncated at {eval_count} tokens]", True
+
+
+def row_is_truncated(row: dict) -> bool:
+    """True for rows that hit the cap, including reports written before the
+    `truncated` field existed (they are marked only in `detail`)."""
+    return bool(row.get("truncated")) or "TRUNCATED" in (row.get("detail") or "")
+
+
+def ask_llama(prompt: str, num_predict: int = NUM_PREDICT, *,
+              api: str = LLAMA_API, timeout: float = 3600.0,
+              template_kwargs: dict | None = None) -> tuple[str, dict]:
+    """One greedy completion from a llama.cpp `llama-server`.
+
+    Via /v1/chat/completions, not /completion, and that is the whole point.
+    /completion is a raw continuation: it applies no chat template, so a
+    thinking model starts from a bare instruction and writes its `<think>` block
+    into the answer. Measured here, that alone cost a placement's score 13/19
+    against 17/19 on identical weights and prompts -- a template default
+    reported as engine quality. The chat route applies the model's template, so
+    `chat_template_kwargs={"enable_thinking": false}` reproduces what the ollama
+    runs get from `think: false`, and a bare `yes` comes back instead of
+    `<think>...why 17 is prime...</think>\nyes`.
+
+    Same returned shape as `ask`, so extraction, scoring, truncation labelling
+    and checkpointing are shared rather than reimplemented per engine. llama.cpp
+    reports a cap hit as finish_reason "length" (or `stopped_limit`) where ollama
+    says `done_reason == "length"`; both map onto the one condition
+    `mark_truncation` understands.
+    """
+    payload = {"messages": [{"role": "user", "content": prompt}],
+               "n_predict": num_predict, "temperature": 0.0, "seed": SEED,
+               "stream": False}
+    if template_kwargs:
+        payload["chat_template_kwargs"] = template_kwargs
+    req = urllib.request.Request(f"{api}/v1/chat/completions",
                                  data=json.dumps(payload).encode(),
                                  headers={"Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=1800) as r:
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        resp = json.load(r)
+    choice = (resp.get("choices") or [{}])[0]
+    message = choice.get("message") or {}
+    # A build that ignores the kwarg still answers, just not in `content`.
+    # Flagging it beats either scoring an empty answer as a wrong one or
+    # quietly scoring the reasoning as the answer.
+    reasoning = message.get("reasoning_content") or ""
+    capped = (choice.get("finish_reason") == "length"
+              or bool(resp.get("stopped_limit")))
+    timings = resp.get("timings") or {}
+    return message.get("content") or "", {
+        "eval_count": timings.get("predicted_n"),
+        "decode_tok_s": timings.get("predicted_per_second"),
+        "prompt_tok_s": timings.get("prompt_per_second"),
+        "done_reason": "length" if capped else "stop",
+        "thinking_chars": len(reasoning),
+        "reasoning_only": bool(reasoning) and not (message.get("content") or ""),
+        "num_predict": num_predict,
+    }
+
+
+def ask_backend(backend: str, model: str, prompt: str, num_predict: int, *,
+                think: str, api: str, keep_alive: str, timeout: float,
+                template_kwargs: dict | None = None) -> tuple[str, dict]:
+    if backend == "llama":
+        return ask_llama(prompt, num_predict, api=api, timeout=timeout,
+                         template_kwargs=template_kwargs)
+    return ask(model, prompt, num_predict, think=think, api=api,
+               keep_alive=keep_alive, timeout=timeout)
+
+
+def ask_llama_ready(api: str) -> bool:
+    """llama-server answers /health with 503 while it is still loading weights,
+    which is not the same thing as a wrong URL, but either way the run cannot
+    start yet."""
+    try:
+        with urllib.request.urlopen(f"{api}/health", timeout=3) as r:
+            return r.status == 200
+    except Exception:
+        return False
+
+
+def ask(model: str, prompt: str, num_predict: int = NUM_PREDICT, *,
+        think: str = "auto", api: str = API, keep_alive: str = "30s",
+        timeout: float = 1800.0) -> tuple[str, dict]:
+    payload = {"model": model, "prompt": prompt, "stream": False,
+               "keep_alive": keep_alive,
+               "options": {"temperature": 0.0, "seed": SEED,
+                           "num_predict": num_predict}}
+    # Only send `think` when asked for a specific behaviour. Leaving the key out
+    # keeps the model's own default, which is what --think auto means, and it
+    # avoids a hard error on builds that predate the parameter.
+    if think == "off":
+        payload["think"] = False
+    elif think == "on":
+        payload["think"] = True
+    req = urllib.request.Request(f"{api}/api/generate",
+                                 data=json.dumps(payload).encode(),
+                                 headers={"Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=timeout) as r:
         resp = json.load(r)
     ec, ed = resp.get("eval_count") or 0, resp.get("eval_duration") or 0
+    pc, pd = resp.get("prompt_eval_count") or 0, resp.get("prompt_eval_duration") or 0
     return resp.get("response", ""), {
         "eval_count": ec,
         "decode_tok_s": (ec / (ed / 1e9)) if ed else None,
+        # Prompt-processing rate on the same terms as the llama.cpp backend, so
+        # prefill can be compared between engines instead of only between a run
+        # and a separate 32-token benchmark.
+        "prompt_tok_s": (pc / (pd / 1e9)) if pd else None,
         "done_reason": resp.get("done_reason"),
         "thinking_chars": len(resp.get("thinking") or ""),
         "num_predict": num_predict,
     }
+
+
+def rescore(args) -> int:
+    """Re-run the current task definitions over the RECORDED responses.
+
+    Model answers are stored verbatim, so a corrected expectation (or a scorer
+    fix) can be applied to an existing multi-hour run without re-issuing a single
+    prompt. Rows recorded before responses were stored are left exactly as they
+    were and counted in the output, never silently turned into failures.
+    """
+    if not os.path.exists(args.out):
+        raise SystemExit(f"--rescore needs an existing --out, and {args.out} does not exist")
+    with open(args.out) as fh:
+        report = json.load(fh)
+    if "task_ids" not in report:
+        raise SystemExit(f"{args.out} predates --tasks, so there is no task_ids "
+                         f"list to re-score against")
+    by_id = {t["id"]: t for t in TASKS}
+    changed = unchanged = skipped = 0
+    for model, m in sorted(report.get("models", {}).items()):
+        by_cat: dict[str, list] = {}
+        for r in m.get("tasks", []):
+            response, task = r.get("response"), by_id.get(r["id"])
+            if response is None or task is None:
+                skipped += 1
+            else:
+                ok, detail = evaluate(task, response, execute=not args.no_execute)
+                # Truncation is a property of the recorded run, not of the
+                # definition, so it is re-derived from the stored done_reason.
+                # Reviews a report the harness wrote before it tracked this.
+                detail, r["truncated"] = mark_truncation(
+                    detail, response, r.get("done_reason"),
+                    r.get("eval_count") or r.get("response_chars"))
+                if ok != r["passed"]:
+                    changed += 1
+                    print(f"  {model} {r['id']}: {r['passed']} -> {ok}  ({detail})")
+                else:
+                    unchanged += 1
+                r["passed"], r["detail"] = ok, detail
+            by_cat.setdefault(r["category"], []).append(r["passed"])
+        rows = m.get("tasks", [])
+        passed = sum(1 for r in rows if r["passed"])
+        m["summary"] = {c: {"passed": sum(v), "total": len(v),
+                            "rate": sum(v) / len(v),
+                            "truncated": sum(1 for r in rows
+                                             if r["category"] == c
+                                             and row_is_truncated(r))}
+                        for c, v in sorted(by_cat.items())}
+        m["overall"] = {"passed": passed, "total": len(rows),
+                        "rate": (passed / len(rows)) if rows else 0.0}
+        scored_rows = [r for r in rows if not row_is_truncated(r)]
+        scored_pass = sum(1 for r in scored_rows if r["passed"])
+        m["overall_untruncated"] = {
+            "passed": scored_pass, "total": len(scored_rows),
+            "rate": (scored_pass / len(scored_rows)) if scored_rows else 0.0}
+        m["truncated_tasks"] = sum(1 for r in rows if row_is_truncated(r))
+        m["harness_errors"] = sum(1 for r in rows
+                                  if "harness error" in (r.get("detail") or ""))
+        tail = (f", {m['truncated_tasks']} truncated ("
+                f"{scored_pass}/{len(scored_rows)} excluding capped rows)"
+                if m["truncated_tasks"] else "")
+        print(f"  {model}: now {passed}/{len(rows)}{tail}")
+    tmp = args.out + ".tmp"
+    with open(tmp, "w") as fh:
+        json.dump(report, fh, indent=2)
+    os.replace(tmp, args.out)
+    print(f"re-scored {changed + unchanged} task(s): {changed} changed, "
+          f"{unchanged} unchanged, {skipped} with no stored response "
+          f"(left as recorded) -> {args.out}")
+    return 0
 
 
 def main() -> int:
@@ -463,76 +675,235 @@ def main() -> int:
     ap.add_argument("--no-execute", action="store_true",
                     help="do not run model-generated code (coding tasks auto-fail)")
     ap.add_argument("--only", default=None, help="comma-separated categories")
+    ap.add_argument("--tasks", default=None,
+                    help="comma-separated task ids -- a fixed subset, for a model "
+                         "too slow to run the full set in one sitting")
     ap.add_argument("--num-predict", type=int, default=NUM_PREDICT)
+    ap.add_argument("--think", choices=("auto", "off", "on"), default="auto",
+                    help="thinking models: 'off' suppresses the separate reasoning "
+                         "field, which is what makes a small --num-predict usable. "
+                         "'auto' sends nothing and keeps the model default")
+    ap.add_argument("--chat-template-kwargs", default=None,
+                    help="JSON passed to a llama.cpp server as "
+                         "chat_template_kwargs, e.g. '{\"enable_thinking\": false}'. "
+                         "Use it to match --think off: the server's template "
+                         "otherwise leaves a thinking model's <think> block in "
+                         "the answer, which fails strict-instruction tasks")
+    ap.add_argument("--backend", choices=("ollama", "llama"), default="ollama",
+                    help="ollama /api/generate (default) or a llama.cpp "
+                         "llama-server POST /completion, for comparing engines on "
+                         "the identical task set")
+    ap.add_argument("--api", default=None, help="base URL of the backend")
+    ap.add_argument("--keep-alive", default="30s",
+                    help="how long the model stays resident between tasks "
+                         "(reloading the dense 27B costs ~51 s)")
+    ap.add_argument("--timeout", type=float, default=1800.0,
+                    help="per-request HTTP timeout in seconds")
+    ap.add_argument("--resume", action="store_true",
+                    help="reuse tasks already recorded in --out and continue from there")
+    ap.add_argument("--pidfile", default=None,
+                    help="write this process's PID here at startup, so a memory "
+                         "watchdog (tools/mem_watchdog.py) can guard this run. "
+                         "Without it the guard has to be aimed by hand at a "
+                         "wrapper process, which is how a guard ends up armed on "
+                         "the wrong PID.")
+    ap.add_argument("--rescore", action="store_true",
+                    help="do not run a model: re-evaluate the responses already "
+                         "stored in --out against the current task definitions")
     args = ap.parse_args()
+    if args.rescore:
+        return rescore(args)
     if not args.model:
         raise SystemExit("give at least one --model")
-    if not ensure_server():
+    if args.pidfile:
+        os.makedirs(os.path.dirname(args.pidfile) or ".", exist_ok=True)
+        with open(args.pidfile, "w") as fh:
+            fh.write(str(os.getpid()))
+        print(f"NOTE: pid {os.getpid()} written to {args.pidfile}", flush=True)
+    api = args.api or (LLAMA_API if args.backend == "llama" else API)
+    template_kwargs = None
+    if args.chat_template_kwargs:
+        if args.backend != "llama":
+            raise SystemExit("--chat-template-kwargs only applies to --backend llama")
+        try:
+            template_kwargs = json.loads(args.chat_template_kwargs)
+        except ValueError as e:
+            raise SystemExit(f"--chat-template-kwargs is not valid JSON: {e}")
+        if not isinstance(template_kwargs, dict):
+            raise SystemExit("--chat-template-kwargs must be a JSON object")
+        print(f"NOTE: sending chat_template_kwargs={template_kwargs}\n")
+    if args.backend == "llama":
+        # Do not spawn it: the whole point is to control the placement the
+        # server was launched with, and a silent default launch would hide it.
+        if not ask_llama_ready(api):
+            raise SystemExit(
+                f"no llama.cpp server at {api} (or it is still loading). Start "
+                f"one, then rerun --backend llama --api {api}:\n"
+                f"  llama-server -m <gguf> --port 8080 -ngl 42 -ncmoe 24 -c 4096")
+        print(f"NOTE: measuring llama.cpp at {api}; the placement is whatever "
+              f"that server was launched with.\n")
+    elif not ensure_server():
         raise SystemExit("could not reach or start the ollama server")
 
     tasks = TASKS
     if args.only:
         cats = {c.strip() for c in args.only.split(",")}
         tasks = [t for t in tasks if t["category"] in cats]
+    if args.tasks:
+        want = {t.strip() for t in args.tasks.split(",") if t.strip()}
+        unknown = sorted(want - {t["id"] for t in TASKS})
+        if unknown:
+            raise SystemExit(f"unknown task id(s): {', '.join(unknown)}")
+        # Filter in canonical TASKS order so a subset run stays comparable with
+        # the full run task by task, and so --resume sees the same id list.
+        tasks = [t for t in tasks if t["id"] in want]
+    if not tasks:
+        raise SystemExit("no tasks selected")
 
     if not args.no_execute:
         print("NOTE: coding tasks execute model-generated Python in a subprocess "
               "with a 10 s timeout.\n")
 
-    report = {"tasks_total": len(tasks), "models": {}}
+    report = {"tasks_total": len(tasks), "models": {},
+              "task_ids": [t["id"] for t in tasks],
+              "backend": args.backend, "api": api,
+              "chat_template_kwargs": template_kwargs,
+              "think": args.think, "num_predict": args.num_predict}
+    if args.resume and os.path.exists(args.out):
+        try:
+            with open(args.out) as fh:
+                prev = json.load(fh)
+        except (OSError, ValueError) as e:
+            print(f"NOTE: cannot read {args.out} ({e}); starting fresh", flush=True)
+            prev = {}
+        if (prev.get("task_ids") == report["task_ids"]
+                and prev.get("num_predict") == args.num_predict
+                and prev.get("think") == args.think
+                # Reports written before --backend existed are ollama reports.
+                and prev.get("backend", "ollama") == args.backend):
+            report["models"] = prev.get("models", {})
+            have = ", ".join(f"{m}: {len(v.get('tasks', []))}"
+                             for m, v in report["models"].items()) or "nothing"
+            print(f"resuming {args.out}: {have}", flush=True)
+        elif prev:
+            print(f"NOTE: {args.out} is a different run (task_ids / num_predict / "
+                  f"think / backend differ); starting fresh", flush=True)
+
+    def save() -> None:
+        """Checkpoint after every task.
+
+        A 30-task run on the dense 27B takes hours. Losing it to one dropped
+        connection -- the exact failure the CPU-only control hit -- is not
+        acceptable, so the file on disk is always a valid partial report.
+        """
+        os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
+        tmp = args.out + ".tmp"
+        with open(tmp, "w") as fh:
+            json.dump(report, fh, indent=2)
+        os.replace(tmp, args.out)
+
     for model in args.model:
-        print(f"=== {model} ({len(tasks)} tasks) ===", flush=True)
-        rows, by_cat = [], {}
+        prev_run = report["models"].get(model) or {}
+        results = {r["id"]: r for r in prev_run.get("tasks", [])}
+        print(f"=== {model} ({len(tasks)} tasks, {len(results)} already "
+              f"recorded) ===", flush=True)
         t0 = time.perf_counter()
-        truncated = 0
+        consecutive_errors = 0
         for i, task in enumerate(tasks, 1):
+            if task["id"] in results:
+                print(f"  [{i:>2}/{len(tasks)}] {task['id']:<22} SKIP  already recorded",
+                      flush=True)
+                continue
             try:
-                text, meta = ask(model, task["prompt"], args.num_predict)
+                text, meta = ask_backend(args.backend, model, task["prompt"],
+                                         args.num_predict, think=args.think,
+                                         api=api, keep_alive=args.keep_alive,
+                                         timeout=args.timeout,
+                                         template_kwargs=template_kwargs)
                 ok, detail = evaluate(task, text, execute=not args.no_execute)
-                # An empty answer from a token-capped run is a HARNESS problem,
-                # not evidence about the model. Say so instead of reporting a
-                # bare "no number found".
-                if not ok and not text.strip() and meta.get("done_reason") == "length":
-                    detail = (f"TRUNCATED during reasoning ({meta['eval_count']} tokens, "
-                              f"empty answer; raise --num-predict)")
-                    truncated += 1
+                if not ok and meta.get("reasoning_only"):
+                    detail = (f"{detail} [the engine answered only in its reasoning "
+                              f"field -- thinking was not suppressed for this "
+                              f"request, so there is no answer to score]")
+                detail, truncated = mark_truncation(
+                    detail, text, meta.get("done_reason"), meta.get("eval_count"))
+                consecutive_errors = 0
             except Exception as e:
                 text, meta, ok, detail = "", {}, False, f"harness error: {e}"
-            rows.append({"id": task["id"], "category": task["category"],
-                         "passed": ok, "detail": detail,
-                         "decode_tok_s": meta.get("decode_tok_s"),
-                         "done_reason": meta.get("done_reason"),
-                         "thinking_chars": meta.get("thinking_chars"),
-                         "response_chars": len(text)})
-            by_cat.setdefault(task["category"], []).append(ok)
+                truncated = False
+                consecutive_errors += 1
+            results[task["id"]] = {
+                "id": task["id"], "category": task["category"],
+                "passed": ok, "detail": detail, "truncated": truncated,
+                "response": text[:1200],
+                "eval_count": meta.get("eval_count"),
+                "decode_tok_s": meta.get("decode_tok_s"),
+                "prompt_tok_s": meta.get("prompt_tok_s"),
+                "done_reason": meta.get("done_reason"),
+                "thinking_chars": meta.get("thinking_chars"),
+                "response_chars": len(text)}
             print(f"  [{i:>2}/{len(tasks)}] {task['id']:<22} "
                   f"{'PASS' if ok else 'FAIL':<4} {detail[:60]}", flush=True)
+            report["models"][model] = {
+                "overall": {"passed": sum(1 for r in results.values() if r["passed"]),
+                            "total": len(results)},
+                "tasks": [results[t["id"]] for t in tasks if t["id"] in results],
+            }
+            save()
+            if consecutive_errors >= 3:
+                print(f"  ABORT {model}: {consecutive_errors} consecutive harness "
+                      f"errors -- the backend is probably gone. Partial results are "
+                      f"checkpointed in {args.out}; rerun with --resume.", flush=True)
+                break
 
+        rows = [results[t["id"]] for t in tasks if t["id"] in results]
+        by_cat: dict[str, list] = {}
+        for r in rows:
+            by_cat.setdefault(r["category"], []).append(r["passed"])
         summary = {c: {"passed": sum(v), "total": len(v),
-                       "rate": sum(v) / len(v)} for c, v in sorted(by_cat.items())}
+                       "rate": sum(v) / len(v),
+                       "truncated": sum(1 for r in rows if r["category"] == c
+                                        and row_is_truncated(r))}
+                   for c, v in sorted(by_cat.items())}
         total_pass = sum(sum(v) for v in by_cat.values())
+        truncated = sum(1 for r in rows if row_is_truncated(r))
+        errors = sum(1 for r in rows if "harness error" in (r.get("detail") or ""))
+        scored_rows = [r for r in rows if not row_is_truncated(r)]
+        scored_pass = sum(1 for r in scored_rows if r["passed"])
         report["models"][model] = {
             "summary": summary,
-            "overall": {"passed": total_pass, "total": len(tasks),
-                        "rate": total_pass / len(tasks)},
+            "overall": {"passed": total_pass, "total": len(rows),
+                        "rate": (total_pass / len(rows)) if rows else 0.0},
+            "overall_untruncated": {
+                "passed": scored_pass, "total": len(scored_rows),
+                "rate": (scored_pass / len(scored_rows)) if scored_rows else 0.0},
+            "tasks_run": len(rows),
+            "tasks_selected": len(tasks),
             "truncated_tasks": truncated,
+            "harness_errors": errors,
             "num_predict": args.num_predict,
-            "wall_s": time.perf_counter() - t0,
+            "think": args.think,
+            "wall_s": (prev_run.get("wall_s") or 0.0) + (time.perf_counter() - t0),
             "tasks": rows,
         }
-        print(f"  -- {model}: {total_pass}/{len(tasks)} = "
-              f"{100 * total_pass / len(tasks):.1f}% overall")
+        save()
+        print(f"  -- {model}: {total_pass}/{len(rows)} = "
+              f"{100 * total_pass / max(len(rows), 1):.1f}% overall")
         for c, s in summary.items():
-            print(f"     {c:<12} {s['passed']}/{s['total']} = {100*s['rate']:.0f}%")
+            note = f"  ({s['truncated']} truncated)" if s["truncated"] else ""
+            print(f"     {c:<12} {s['passed']}/{s['total']} = {100*s['rate']:.0f}%{note}")
         if truncated:
-            print(f"     WARNING: {truncated}/{len(tasks)} tasks truncated during "
-                  f"reasoning at num_predict={args.num_predict}; those failures "
-                  f"are a harness setting, not a model result")
+            print(f"     WARNING: {truncated}/{len(rows)} task(s) hit the "
+                  f"num_predict={args.num_predict} cap; a harness setting, not a "
+                  f"model result")
+            print(f"     excluding capped rows: {scored_pass}/{len(scored_rows)} = "
+                  f"{100 * scored_pass / max(len(scored_rows), 1):.1f}%")
+        if errors:
+            print(f"     WARNING: {errors} task(s) hit a harness error (backend, "
+                  f"not the model)")
         print()
 
-    os.makedirs(os.path.dirname(args.out) or ".", exist_ok=True)
-    with open(args.out, "w") as fh:
-        json.dump(report, fh, indent=2)
+    save()
     print(f"wrote {args.out}")
     return 0
 

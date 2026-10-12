@@ -1,0 +1,24 @@
+{
+  "results": [
+    {
+      "model": "ornith-1.5:35b",
+      "num_gpu": -1,
+      "num_predict": 32,
+      "wall_s": 49.08370312396437,
+      "peak_vram_mib": 6932,
+      "peak_ram_used_bytes": 7590649856,
+      "min_ram_available_bytes": 8860872704,
+      "error": null,
+      "eval_count": 32,
+      "prompt_eval_count": 40,
+      "load_s": 33.606701353,
+      "prompt_eval_s": 10.470839,
+      "decode_s": 4.961294,
+      "decode_tok_s": 6.449930199661621,
+      "prefill_tok_s": 3.82013322905643,
+      "ttft_s": 44.077540353,
+      "response_chars": 148,
+      "response_preview": "The user wants a Python function that merges two sorted lists into one sorted list in O(n) time. This is the classic merge step from merge sort. Let"
+    }
+  ]
+}

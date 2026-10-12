@@ -1,0 +1,407 @@
+{
+  "tasks_total": 30,
+  "models": {
+    "ornith-1.5-35b-a3b:q2_k": {
+      "summary": {
+        "coding": {
+          "passed": 10,
+          "total": 10,
+          "rate": 1.0
+        },
+        "format": {
+          "passed": 6,
+          "total": 6,
+          "rate": 1.0
+        },
+        "instruction": {
+          "passed": 4,
+          "total": 6,
+          "rate": 0.6666666666666666
+        },
+        "reasoning": {
+          "passed": 6,
+          "total": 8,
+          "rate": 0.75
+        }
+      },
+      "overall": {
+        "passed": 26,
+        "total": 30,
+        "rate": 0.8666666666666667
+      },
+      "tasks_run": 30,
+      "tasks_selected": 30,
+      "truncated_tasks": 0,
+      "harness_errors": 0,
+      "num_predict": 384,
+      "think": "off",
+      "wall_s": 115.4362012000056,
+      "tasks": [
+        {
+          "id": "c_sum_evens",
+          "category": "coding",
+          "passed": true,
+          "detail": "4/4 cases passed",
+          "response": "```python\ndef solve(nums):\n    return sum(n for n in nums if n % 2 == 0)\n```",
+          "decode_tok_s": 14.401899404790072,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 76
+        },
+        {
+          "id": "c_reverse_words",
+          "category": "coding",
+          "passed": true,
+          "detail": "3/3 cases passed",
+          "response": "```python\ndef solve(s):\n    words = s.split(\" \")\n    return \" \".join(words[::-1])\n```",
+          "decode_tok_s": 32.604885842143446,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 85
+        },
+        {
+          "id": "c_fizzbuzz",
+          "category": "coding",
+          "passed": true,
+          "detail": "2/2 cases passed",
+          "response": "```python\ndef solve(n):\n    result = []\n    for i in range(1, n + 1):\n        if i % 3 == 0 and i % 5 == 0:\n            result.append('FizzBuzz')\n        elif i % 3 == 0:\n            result.append('Fizz')\n        elif i % 5 == 0:\n            result.append('Buzz')\n        else:\n            result.append(str(i))\n    return result\n```",
+          "decode_tok_s": 34.07860373272183,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 333
+        },
+        {
+          "id": "c_is_palindrome",
+          "category": "coding",
+          "passed": true,
+          "detail": "3/3 cases passed",
+          "response": "```python\ndef solve(s):\n    cleaned = [c.lower() for c in s if c.isalnum()]\n    return cleaned == cleaned[::-1]\n```",
+          "decode_tok_s": 42.92188336455106,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 115
+        },
+        {
+          "id": "c_binary_search",
+          "category": "coding",
+          "passed": true,
+          "detail": "4/4 cases passed",
+          "response": "```python\ndef solve(nums, target):\n    left, right = 0, len(nums) - 1\n    while left <= right:\n        mid = left + (right - left) // 2\n        if nums[mid] == target:\n            return mid\n        elif nums[mid] < target:\n            left = mid + 1\n        else:\n            right = mid - 1\n    return -1\n```",
+          "decode_tok_s": 43.843860474990535,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 310
+        },
+        {
+          "id": "c_unique_ordered",
+          "category": "coding",
+          "passed": true,
+          "detail": "2/2 cases passed",
+          "response": "```python\ndef solve(items):\n    seen = set()\n    result = []\n    for item in items:\n        if item not in seen:\n            seen.add(item)\n            result.append(item)\n    return result\n```",
+          "decode_tok_s": 47.830078128593,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 193
+        },
+        {
+          "id": "c_gcd",
+          "category": "coding",
+          "passed": true,
+          "detail": "3/3 cases passed",
+          "response": "```python\ndef solve(a, b):\n    while b:\n        a, b = b, a % b\n    return a\n```",
+          "decode_tok_s": 51.38704885784255,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 80
+        },
+        {
+          "id": "c_flatten",
+          "category": "coding",
+          "passed": true,
+          "detail": "2/2 cases passed",
+          "response": "```python\ndef solve(nested):\n    result = []\n    for item in nested:\n        if isinstance(item, list):\n            result.extend(solve(item))\n        else:\n            result.append(item)\n    return result\n```",
+          "decode_tok_s": 49.73555698193379,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 210
+        },
+        {
+          "id": "c_two_sum",
+          "category": "coding",
+          "passed": true,
+          "detail": "3/3 cases passed",
+          "response": "```python\ndef solve(nums, target):\n    seen = {}\n    for i, num in enumerate(nums):\n        if num in seen:\n            return [seen[num], i]\n        seen[target - num] = i\n    return []\n```",
+          "decode_tok_s": 49.518345662811896,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 190
+        },
+        {
+          "id": "c_word_count",
+          "category": "coding",
+          "passed": true,
+          "detail": "2/2 cases passed",
+          "response": "```python\ndef solve(text):\n    counts = {}\n    for word in text.split():\n        word = word.lower()\n        counts[word] = counts.get(word, 0) + 1\n    return counts\n```",
+          "decode_tok_s": 47.23875316145355,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 169
+        },
+        {
+          "id": "r_train",
+          "category": "reasoning",
+          "passed": false,
+          "detail": "got 17:50, want 16:50",
+          "response": "To find the arrival time, I need to calculate the travel time first.\n\n**Travel time:**\n- Distance = 210 km\n- Speed = 84 km/h\n- Time = Distance \u00f7 Speed = 210 \u00f7 84 = 2.5 hours = 2 hours 30 minutes\n\n**Arrival time:**\n- Departure: 14:20\n- Travel time: +2 hours 30 minutes\n- 14:20 + 2:30 = 17:50\n\n17:50",
+          "decode_tok_s": 39.62000978957407,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 297
+        },
+        {
+          "id": "r_bat_ball",
+          "category": "reasoning",
+          "passed": false,
+          "detail": "got 0.05, want 0.1",
+          "response": "Let me define variables. Let the ball cost $x$. Then the bat costs $x + 1.00$.\n\nThe total cost is:\n$$x + (x + 1.00) = 1.10$$\n$$2x + 1.00 = 1.10$$\n$$2x = 0.10$$\n$$x = 0.05$$\n\nSo the ball costs 0.05, and the bat costs 1.05.\n\n**Check:** Total = 1.05 + 0.05 = 1.10 \u2713. The bat costs 1.00 more than the ball \u2713.\n\nANSWER: 0.05",
+          "decode_tok_s": 43.41857665167406,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 318
+        },
+        {
+          "id": "r_work_rate",
+          "category": "reasoning",
+          "passed": true,
+          "detail": "got 3.0, want 3",
+          "response": "Let me work through this problem.\n\n**Step 1: Find the rate of one machine**\n\nIf 3 machines make 3 widgets in 3 minutes, then:\n- 3 machines produce 3 widgets in 3 minutes\n- So 1 machine produces 1 widget in 3 minutes\n\nThis means each machine makes 1 widget every 3 minutes.\n\n**Step 2: Apply to 100 machines**\n\nWith 100 machines working simultaneously, each machine makes 1 widget in 3 minutes. So 100 machines make 100 widgets in 3 minutes (since each machine independently produces its own widget).\n\n**Verification:**\n- Rate per machine = 1 widget / 3 minutes\n- 100 machines \u00d7 (1 widget / 3 minutes) = 100 widgets / 3 minutes\n- To make 100 widgets: 100 widgets \u00f7 (100 widgets / 3 minutes) = 3 minutes\n\nANSWER: 3",
+          "decode_tok_s": 39.38883634046415,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 711
+        },
+        {
+          "id": "r_lily",
+          "category": "reasoning",
+          "passed": true,
+          "detail": "got 47.0, want 47",
+          "response": "Since the lily pads double in size every day and cover the entire lake on day 48, I need to work backward.\n\nIf the lake is fully covered on day 48, then the day before (day 47), the patch was half that size \u2014 which means half the lake was covered.\n\nThis is because doubling on day 48 takes the half-covered amount to fully covered.\n\nANSWER: 47",
+          "decode_tok_s": 38.9364426057791,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 343
+        },
+        {
+          "id": "r_combinatorics",
+          "category": "reasoning",
+          "passed": true,
+          "detail": "got 30.0, want 30",
+          "response": "# Arranging the Letters of 'LEVEL'\n\n## Setting Up the Problem\n\nThe word **LEVEL** has 5 letters: L, E, V, E, L\n\nLet me count the frequency of each letter:\n- **L**: appears 2 times\n- **E**: appears 2 times\n- **V**: appears 1 time\n\n## Applying the Permutation Formula\n\nFor words with repeated letters, the number of distinct arrangements is:\n\n$$\\frac{n!}{n_1! \\cdot n_2! \\cdot n_3! \\cdots}$$\n\nwhere $n$ is the total number of letters and $n_i$ are the frequencies of each repeated letter.\n\n## Calculation\n\n$$\\frac{5!}{2! \\cdot 2! \\cdot 1!} = \\frac{120}{2 \\cdot 2 \\cdot 1} = \\frac{120}{4} = 30$$\n\n## Verification\n\nThe repeated L's and E's create duplicates among the $5! = 120$ total permutations. Dividing by $2! \\times 2! = 4$ removes these duplicates, leaving exactly 30 unique arrangements.\n\nANSWER: 30",
+          "decode_tok_s": 36.454743093483216,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 803
+        },
+        {
+          "id": "r_modular",
+          "category": "reasoning",
+          "passed": true,
+          "detail": "got 1.0, want 1",
+          "response": "To compute $7^{20} \\mod 13$, I'll use Fermat's Little Theorem.\n\n**Fermat's Little Theorem:** Since 13 is prime and $\\gcd(7, 13) = 1$:\n$$7^{12} \\equiv 1 \\pmod{13}$$\n\n**Simplify the exponent:**\n$$7^{20} = 7^{12} \\cdot 7^{8} \\equiv 1 \\cdot 7^{8} \\equiv 7^{8} \\pmod{13}$$\n\n**Compute $7^8$ by repeated squaring:**\n\n$7^2 = 49 \\equiv 49 - 39 = 10 \\pmod{13}$\n\n$7^4 = (7^2)^2 \\equiv 10^2 = 100 \\pmod{13}$\n\nSince $100 = 7 \\cdot 13 + 9 = 91 + 9$, we get $100 \\equiv 9 \\pmod{13}$\n\n$7^8 = (7^4)^2 \\equiv 9^2 = 81 \\pmod{13}$\n\nSince $81 = 6 \\cdot 13 + 3 = 78 + 3$, we get $81 \\equiv 3 \\pmod{13}$\n\n**Verification:** Let me verify by computing $7^{20}$ directly through powers:\n- $7^1 = 7$\n- $7^2 = 49 \\equiv 10$\n- $7^4 \\equiv 9$\n- $7^8 \\equiv 3$\n- $7^{1",
+          "decode_tok_s": 37.486037915174954,
+          "done_reason": "length",
+          "thinking_chars": 0,
+          "response_chars": 737
+        },
+        {
+          "id": "r_percent",
+          "category": "reasoning",
+          "passed": true,
+          "detail": "got 0.0, want 0.0",
+          "response": "**Step 1: Apply the 25% rise**\n\nA 25% increase multiplies the price by 1.25.\n\n**Step 2: Apply the 20% fall**\n\nA 20% decrease multiplies the price by 0.80.\n\n**Step 3: Combine the effects**\n\n$$1.25 \\times 0.80 = 1.00$$\n\nThe final price equals the original price (\u00d71.00).\n\n**Step 4: Net percentage change**\n\n$$(1.00 - 1) \\times 100\\% = 0\\%$$\n\nANSWER: 0",
+          "decode_tok_s": 37.82154935724798,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 349
+        },
+        {
+          "id": "r_sequence",
+          "category": "reasoning",
+          "passed": true,
+          "detail": "got 42.0, want 42",
+          "response": "Let me analyze the sequence: 2, 6, 12, 20, 30, ...\n\n**Finding the pattern:**\n\nLet me look at the differences between consecutive terms:\n- 6 \u2212 2 = 4\n- 12 \u2212 6 = 6\n- 20 \u2212 12 = 8\n- 30 \u2212 20 = 10\n\nThe differences are 4, 6, 8, 10 \u2014 increasing by 2 each time.\n\nSo the next difference should be **12**.\n\n**Computing the next term:**\n$$30 + 12 = 42$$\n\n**Verification:**\nThe terms follow the pattern $n(n+1)$:\n- $1 \\times 2 = 2$\n- $2 \\times 3 = 6$\n- $3 \\times 4 = 12$\n- $4 \\times 5 = 20$\n- $5 \\times 6 = 30$\n- $6 \\times 7 = 42$ \u2713\n\nANSWER: 42",
+          "decode_tok_s": 36.2097835891373,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 530
+        },
+        {
+          "id": "f_json_three_actions",
+          "category": "format",
+          "passed": true,
+          "detail": "ok",
+          "response": "{\"summary\": \"The build failed because a dependency was missing.\", \"actions\": [\"Identify the missing dependency and its required version.\", \"Install the missing dependency using the appropriate package manager.\", \"Re-run the build to confirm the issue is resolved.\"]}",
+          "decode_tok_s": 30.013234682139643,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 266
+        },
+        {
+          "id": "f_json_tool_call",
+          "category": "format",
+          "passed": true,
+          "detail": "ok",
+          "response": "{\n  \"tool\": \"read_file\",\n  \"arguments\": {\n    \"path\": \"src/main.js\"\n  }\n}",
+          "decode_tok_s": 24.736479195074967,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 73
+        },
+        {
+          "id": "f_json_no_prose",
+          "category": "format",
+          "passed": true,
+          "detail": "ok",
+          "response": "{\"ok\": true, \"count\": 3}",
+          "decode_tok_s": 29.41147635807492,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 24
+        },
+        {
+          "id": "f_json_nested",
+          "category": "format",
+          "passed": true,
+          "detail": "ok",
+          "response": "{\n  \"server\": {\n    \"host\": \"localhost\",\n    \"port\": 8080\n  }\n}",
+          "decode_tok_s": 27.203171714317556,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 63
+        },
+        {
+          "id": "f_json_array",
+          "category": "format",
+          "passed": true,
+          "detail": "ok",
+          "response": "```json\n[{\"name\": \"object1\", \"score\": 1}, {\"name\": \"object2\", \"score\": 2}]\n```",
+          "decode_tok_s": 29.122640735161355,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 78
+        },
+        {
+          "id": "f_json_nulls",
+          "category": "format",
+          "passed": true,
+          "detail": "ok",
+          "response": "{\"items\": [], \"total\": 0}",
+          "decode_tok_s": 36.95342524658013,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 25
+        },
+        {
+          "id": "i_exact_three_bullets",
+          "category": "instruction",
+          "passed": true,
+          "detail": "3 bullets, want 3",
+          "response": "- Catches bugs early in the development process before they reach production\n- Enables safe refactoring by verifying that code behavior remains consistent\n- Serves as living documentation that explains how individual components should behave",
+          "decode_tok_s": 21.644861668217,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 241
+        },
+        {
+          "id": "i_only_word",
+          "category": "instruction",
+          "passed": true,
+          "detail": "got 'yes'",
+          "response": "yes",
+          "decode_tok_s": 42.763368898201804,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 3
+        },
+        {
+          "id": "i_uppercase",
+          "category": "instruction",
+          "passed": true,
+          "detail": "got 'CONFIRMED'",
+          "response": "CONFIRMED",
+          "decode_tok_s": 26.789541363051864,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 9
+        },
+        {
+          "id": "i_five_words",
+          "category": "instruction",
+          "passed": false,
+          "detail": "6 words, want 5",
+          "response": "Deep, calm, serene, endless, cool blue.",
+          "decode_tok_s": 28.431639676353168,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 39
+        },
+        {
+          "id": "i_lowercase_start",
+          "category": "instruction",
+          "passed": true,
+          "detail": "starts with 'c'",
+          "response": "compilers translate high-level programming languages into machine code that computers can execute.",
+          "decode_tok_s": 16.8205572440358,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 98
+        },
+        {
+          "id": "i_no_letter_e",
+          "category": "instruction",
+          "passed": false,
+          "detail": "contains 'e'",
+          "response": "Binary trees store data in a hierarchical manner.",
+          "decode_tok_s": 22.384585079330968,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 49
+        }
+      ]
+    }
+  },
+  "task_ids": [
+    "c_sum_evens",
+    "c_reverse_words",
+    "c_fizzbuzz",
+    "c_is_palindrome",
+    "c_binary_search",
+    "c_unique_ordered",
+    "c_gcd",
+    "c_flatten",
+    "c_two_sum",
+    "c_word_count",
+    "r_train",
+    "r_bat_ball",
+    "r_work_rate",
+    "r_lily",
+    "r_combinatorics",
+    "r_modular",
+    "r_percent",
+    "r_sequence",
+    "f_json_three_actions",
+    "f_json_tool_call",
+    "f_json_no_prose",
+    "f_json_nested",
+    "f_json_array",
+    "f_json_nulls",
+    "i_exact_three_bullets",
+    "i_only_word",
+    "i_uppercase",
+    "i_five_words",
+    "i_lowercase_start",
+    "i_no_letter_e"
+  ],
+  "think": "off",
+  "num_predict": 384
+}

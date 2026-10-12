@@ -1,0 +1,46 @@
+surplus: memory cage 4G — the server cannot exceed it; the desktop stays safe
+surplus: backend: /home/cleanerbox/llama.cpp-upstream/build/bin/llama-server -m /home/cleanerbox/models/Ornith-1.5-35B-A3B-Q2_K.gguf --host 127.0.0.1 --port 40577 --alias surplus --parallel 1 -ngl 42 -c 8192 -b 512 -ub 256 --threads 14 --threads-batch 16 --load-mode auto --fit on --fit-target 1473 --n-cpu-moe 36 --cache-type-k q8_0 --cache-type-v q8_0 --flash-attn auto --cache-reuse 256
+surplus: loading /home/cleanerbox/models/Ornith-1.5-35B-A3B-Q2_K.gguf …
+Running as unit: run-rd808ca3cf497484eb6164fbba9d04c3d.scope; invocation ID: ae00184cba444f159c6aaa8527ba4d49
+0.00.111.162 I cmn  common_param: common_params_print_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.205.905 W srv  llama_server: -----------------
+0.00.205.909 W srv  llama_server: CORS is set to allow all origins ('*') and no API key is set
+0.00.205.910 W srv  llama_server: this can be a security risk (cross-origin attacks)
+0.00.205.910 W srv  llama_server: more info: https://github.com/ggml-org/llama.cpp/pull/25655
+0.00.205.910 W srv  llama_server: -----------------
+0.00.207.694 I srv    load_model: loading model '/home/cleanerbox/models/Ornith-1.5-35B-A3B-Q2_K.gguf'
+0.01.281.001 W llama_model_loader: tensor overrides to CPU are used with mmap enabled - consider using --no-mmap for better performance
+0.01.449.234 W model has unused tensor blk.40.attn_norm.weight (size = 8192 bytes) -- ignoring
+0.01.449.241 W model has unused tensor blk.40.post_attention_norm.weight (size = 8192 bytes) -- ignoring
+0.01.449.247 W model has unused tensor blk.40.attn_q.weight (size = 9437184 bytes) -- ignoring
+0.01.449.250 W model has unused tensor blk.40.attn_k.weight (size = 589824 bytes) -- ignoring
+0.01.449.252 W model has unused tensor blk.40.attn_v.weight (size = 589824 bytes) -- ignoring
+0.01.449.262 W model has unused tensor blk.40.attn_output.weight (size = 4718592 bytes) -- ignoring
+0.01.449.265 W model has unused tensor blk.40.attn_q_norm.weight (size = 1024 bytes) -- ignoring
+0.01.449.267 W model has unused tensor blk.40.attn_k_norm.weight (size = 1024 bytes) -- ignoring
+0.01.449.270 W model has unused tensor blk.40.ffn_gate_inp.weight (size = 2097152 bytes) -- ignoring
+0.01.449.272 W model has unused tensor blk.40.ffn_down_exps.weight (size = 150994944 bytes) -- ignoring
+0.01.449.277 W model has unused tensor blk.40.ffn_gate_exps.weight (size = 150994944 bytes) -- ignoring
+0.01.449.279 W model has unused tensor blk.40.ffn_up_exps.weight (size = 150994944 bytes) -- ignoring
+0.01.449.282 W model has unused tensor blk.40.ffn_gate_inp_shexp.weight (size = 8192 bytes) -- ignoring
+0.01.449.284 W model has unused tensor blk.40.ffn_gate_shexp.weight (size = 589824 bytes) -- ignoring
+0.01.449.287 W model has unused tensor blk.40.ffn_up_shexp.weight (size = 589824 bytes) -- ignoring
+0.01.449.289 W model has unused tensor blk.40.ffn_down_shexp.weight (size = 589824 bytes) -- ignoring
+0.01.449.293 W model has unused tensor blk.40.nextn.eh_proj.weight (size = 4718592 bytes) -- ignoring
+0.01.449.295 W model has unused tensor blk.40.nextn.enorm.weight (size = 8192 bytes) -- ignoring
+0.01.449.298 W model has unused tensor blk.40.nextn.hnorm.weight (size = 8192 bytes) -- ignoring
+0.01.449.305 W model has unused tensor blk.40.nextn.shared_head_norm.weight (size = 8192 bytes) -- ignoring
+0.15.539.301 W srv    load_model: cache_reuse is not supported by this context, it will be disabled
+0.16.162.848 I srv    load_model: initializing, n_slots = 1, n_ctx_slot = 8192, kv_unified = 'false'
+0.16.174.588 I srv          init: chat template supports preserving reasoning, consider enabling it via --reasoning-preserve
+0.16.175.005 I srv  llama_server: model loaded
+0.16.175.012 I srv  llama_server: listening on http://127.0.0.1:40577
+surplus: Ollama shim on 127.0.0.1:11435 fronting 40577 (alias surplus)
+0.43.467.905 I slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = -1
+0.43.467.942 I slot launch_slot_: id  0 | task 0 | processing task, is_child = 0
+0.50.792.465 I slot print_timing: id  0 | task 0 | prompt eval time =    2548.78 ms /    16 tokens (  159.30 ms per token,     6.28 tokens per second)
+0.50.792.468 I slot print_timing: id  0 | task 0 |        eval time =    4775.17 ms /    32 tokens (  149.22 ms per token,     6.70 tokens per second)
+0.50.792.468 I slot print_timing: id  0 | task 0 |       total time =    7323.95 ms /    48 tokens
+0.50.792.479 I slot print_timing: id  0 | task 0 |    graphs reused =         31
+0.50.794.784 I slot      release: id  0 | task 0 | stop processing: n_tokens = 47, truncated = 0
+1.02.294.483 I srv    operator(): operator(): cleaning up before exit...

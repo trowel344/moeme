@@ -1,0 +1,46 @@
+device=cuda amp=torch.bfloat16 model=Qwen/Qwen3.5-0.8B
+Loading weights:   0%|          | 0/320 [00:00<?, ?it/s]Loading weights:  85%|████████▌ | 272/320 [00:00<00:00, 2713.28it/s]Loading weights: 100%|██████████| 320/320 [00:00<00:00, 2894.39it/s]
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (661966 > 262144). Running this sequence through the model will result in indexing errors
+corpus: HuggingFaceFW/fineweb-edu streaming, 3,003,250 chars from 621 documents
+corpus: 661,966 tokens
+blocks: 1288 train / 4 val
+domains (one per branch):
+  domain code: 801,274 chars from 655 docs
+  domain math: 800,389 chars from 2667 docs
+  domain chat: 800,083 chars from 685 docs
+  domain wiki: 800,742 chars from 1046 docs
+domains usable: 4
+dense val ppl 15.4803
+intermediate width 3584
+
+=== tile_E8_k1_12pct  combine=sum E=8 k=1 units=448 shared=0 ===
+    width 0.125 stored 1.00x | best1 0.7104 oracle 0.7104 router 0.9231 all 0.0047 | ppl 54.00
+=== tile_E4_k1_25pct  combine=sum E=4 k=1 units=896 shared=0 ===
+    width 0.250 stored 1.00x | best1 0.6339 oracle 0.6339 router 0.8878 all 0.0051 | ppl 45.63
+=== tile_E2_k1_50pct  combine=sum E=2 k=1 units=1792 shared=0 ===
+    width 0.500 stored 1.00x | best1 0.4975 oracle 0.4975 router 0.6656 all 0.0035 | ppl 26.02
+=== tile_E1_k1_100pct  combine=sum E=1 k=1 units=3584 shared=0 ===
+    width 1.000 stored 1.00x | best1 0.0000 oracle 0.0000 router 0.0000 all 0.0000 | ppl 15.48
+=== tile_E4_k2_50pct  combine=sum E=4 k=2 units=896 shared=0 ===
+    width 0.500 stored 1.00x | best1 0.6339 oracle 0.4820 router 0.7392 all 0.0051 | ppl 34.34
+=== tile_E4_k4_100pct  combine=sum E=4 k=4 units=896 shared=0 ===
+    width 1.000 stored 1.00x | best1 0.6339 oracle 0.0051 router 0.0058 all 0.0051 | ppl 15.47
+=== replica_E4_k1_12pct  combine=sum E=4 k=1 units=448 shared=0 ===
+    width 0.125 stored 0.50x | best1 0.7307 oracle 0.7307 router 0.7307 all 1.8314 | ppl 33.88
+=== replica_E4_k1_25pct  combine=sum E=4 k=1 units=896 shared=0 ===
+    width 0.250 stored 1.00x | best1 0.6530 oracle 0.6530 router 0.6530 all 2.1169 | ppl 24.93
+=== replica_E4_k1_50pct  combine=sum E=4 k=1 units=1792 shared=0 ===
+    width 0.500 stored 2.00x | best1 0.5134 oracle 0.5134 router 0.5134 all 2.4933 | ppl 20.11
+=== replica_E4_k1_full  combine=sum E=4 k=1 units=3584 shared=0 ===
+    width 1.000 stored 4.00x | best1 0.0000 oracle 0.0000 router 0.0038 all 3.0000 | ppl 15.49
+=== trained_tile_E4_k1_25pct  combine=softmax E=4 k=1 units=896 shared=0 ===
+      step    0  loss 4.3926  elapsed      1s
+      step   16  loss 3.7530  elapsed      9s
+      step   32  loss 3.4268  elapsed     17s
+      step   48  loss 3.0346  elapsed     26s
+      step   64  loss 3.3963  elapsed     34s
+      step   79  loss 3.4606  elapsed     43s
+    width 0.250 stored 1.00x | best1 0.6339 oracle 0.6339 router 0.8852 all 0.0051 | ppl 23.19
+    after 80 steps: best1 0.7440 router 0.9303 | ppl 23.19
+=== trained_replica_E4_k1_full  combine=softmax E=4 k=1 units=3584 shared=0 ===
+      step    0  loss 3.1922  elapsed      1s

@@ -1,0 +1,30 @@
+NOTE: pid 3113902 written to logs/eval_q4_35b.pid
+NOTE: coding tasks execute model-generated Python in a subprocess with a 10 s timeout.
+
+=== ornith-1.5:35b (19 tasks, 0 already recorded) ===
+  [ 1/19] c_sum_evens            PASS 4/4 cases passed
+  [ 2/19] c_reverse_words        PASS 3/3 cases passed
+  [ 3/19] c_gcd                  PASS 3/3 cases passed
+  [ 4/19] r_bat_ball             PASS got 0.05, want 0.05
+  [ 5/19] r_work_rate            PASS got 3.0, want 3
+  [ 6/19] r_lily                 PASS got 47.0, want 47
+  [ 7/19] r_sequence             PASS got 42.0, want 42
+  [ 8/19] f_json_three_actions   PASS ok
+  [ 9/19] f_json_tool_call       PASS ok
+  [10/19] f_json_no_prose        PASS ok
+  [11/19] f_json_nested          PASS ok
+  [12/19] f_json_array           FAIL array length 0 != 2
+  [13/19] f_json_nulls           PASS ok
+  [14/19] i_exact_three_bullets  PASS 3 bullets, want 3
+  [15/19] i_only_word            PASS got 'yes'
+  [16/19] i_uppercase            PASS got 'CONFIRMED'
+  [17/19] i_five_words           PASS 5 words, want 5
+  [18/19] i_lowercase_start      FAIL starts with 'C'
+  [19/19] i_no_letter_e          FAIL contains 'e'
+  -- ornith-1.5:35b: 16/19 = 84.2% overall
+     coding       3/3 = 100%
+     format       5/6 = 83%
+     instruction  4/6 = 67%
+     reasoning    4/4 = 100%
+
+wrote results/eval_ornith-1.5-35b_short19_768.json

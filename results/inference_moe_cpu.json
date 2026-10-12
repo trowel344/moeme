@@ -1,0 +1,14 @@
+{
+  "results": [
+    {
+      "model": "ornith-1.5-35b-a3b:q2_k",
+      "num_gpu": 0,
+      "num_predict": 32,
+      "wall_s": 147.36049108603038,
+      "peak_vram_mib": 56,
+      "peak_ram_used_bytes": 16221335552,
+      "min_ram_available_bytes": 230883328,
+      "error": "RemoteDisconnected: Remote end closed connection without response"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+# watching pid 432789, floor 2.0 GiB, grace 3 samples, interval 3.0s
+# time avail_gib swap_free_gib vram_used_mib target_rss_gib note
+19:47:15 10.42 2.12 64 0.06 
+19:47:18 10.03 2.12 64 0.71 
+19:47:21 9.70 2.12 67 1.04 
+19:47:24 9.58 2.12 1708 1.15 
+19:47:27 9.57 2.12 1708 1.17 
+19:47:30 8.90 2.12 1708 1.87 
+19:47:33 8.92 2.12 3464 1.90 
+19:47:36 8.98 2.12 3464 1.85 
+# target exited on its own

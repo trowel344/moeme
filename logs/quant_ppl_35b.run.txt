@@ -1,0 +1,9 @@
+corpus results/ppl_corpus.txt: 397855 bytes from 21 files, sha256 47429f081dfd3cdf...
+
+q2_35b     ppl=12.7113 exit=0 wall=173s -- watched 57 sample(s) of pid 365993: min RAM available 9.47 GiB, peak VRAM 64 MiB, peak target RSS 11.32 GiB
+samples: logs/ppl_q2_35b.watch.log
+q4_35b     ppl=None exit=-15 wall=67s -- watched 13 sample(s) of pid 370926: min RAM available 0.11 GiB, peak VRAM 64 MiB, peak target RSS 12.23 GiB  -- GUARD TERMINATED THE TARGET
+samples: logs/ppl_q4_35b.watch.log
+
+  no estimate for q4_35b -- read the recorded exit code and guard verdict before comparing anything
+wrote results/quant_perplexity_35b.json

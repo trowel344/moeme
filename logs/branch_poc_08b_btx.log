@@ -1,0 +1,47 @@
+device=cuda amp=torch.bfloat16 model=Qwen/Qwen3.5-0.8B
+Loading weights:   0%|          | 0/320 [00:00<?, ?it/s]Loading weights: 100%|██████████| 320/320 [00:00<00:00, 16494.54it/s]
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (661966 > 262144). Running this sequence through the model will result in indexing errors
+corpus: HuggingFaceFW/fineweb-edu streaming, 3,003,250 chars from 621 documents
+corpus: 661,966 tokens
+blocks: 1288 train / 4 val
+domains (one per branch):
+  domain code: 801,274 chars from 655 docs
+  domain math: 800,389 chars from 2667 docs
+  domain chat: 800,083 chars from 685 docs
+  domain wiki: 800,742 chars from 1046 docs
+domains usable: 4
+dense val ppl 15.4803
+intermediate width 3584
+
+resume: 11 configs already complete (replica_E4_k1_12pct, replica_E4_k1_25pct, replica_E4_k1_50pct, replica_E4_k1_full, tile_E1_k1_100pct, tile_E2_k1_50pct, tile_E4_k1_25pct, tile_E4_k2_50pct, tile_E4_k4_100pct, tile_E8_k1_12pct, trained_tile_E4_k1_25pct)
+only: 3 configs selected
+=== btx_replica_k1_full  combine=softmax E=4 k=1 units=3584 shared=0 ===
+    -- expert 0 alone on 352 own-domain blocks --
+      step    0  loss 1.4132  elapsed      1s
+      step    8  loss 1.1910  elapsed      5s
+      step   16  loss 1.2280  elapsed      9s
+      step   24  loss 1.2705  elapsed     13s
+      step   32  loss 1.1777  elapsed     17s
+      step   39  loss 1.0252  elapsed     21s
+    -- expert 1 alone on 419 own-domain blocks --
+      step    0  loss 1.9090  elapsed      1s
+      step    8  loss 1.4425  elapsed      5s
+      step   16  loss 1.8056  elapsed      9s
+      step   24  loss 1.9387  elapsed     13s
+      step   32  loss 1.6598  elapsed     17s
+      step   39  loss 1.4953  elapsed     21s
+    -- expert 2 alone on 325 own-domain blocks --
+      step    0  loss 3.0988  elapsed      1s
+      step    8  loss 3.0014  elapsed      5s
+      step   16  loss 3.3438  elapsed      9s
+      step   24  loss 2.6945  elapsed     13s
+      step   32  loss 2.8517  elapsed     17s
+      step   39  loss 2.5109  elapsed     21s
+    -- expert 3 alone on 351 own-domain blocks --
+      step    0  loss 2.9091  elapsed      1s
+      step    8  loss 2.8067  elapsed      5s
+      step   16  loss 3.0264  elapsed      9s
+      step   24  loss 2.6673  elapsed     13s
+      step   32  loss 2.9333  elapsed     17s
+      step   39  loss 2.8966  elapsed     21s
+      step    0  loss 3.3931  elapsed      1s

@@ -1,0 +1,19 @@
+device=cuda amp=torch.bfloat16 model=Qwen/Qwen3.5-0.8B
+Loading weights:   0%|          | 0/320 [00:00<?, ?it/s]Loading weights: 100%|██████████| 320/320 [00:00<00:00, 18252.72it/s]
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (883186 > 262144). Running this sequence through the model will result in indexing errors
+params 0.752B
+corpus: HuggingFaceFW/fineweb-edu streaming, 4,004,296 chars from 822 documents
+corpus: 883,186 tokens
+blocks: 1638 train, 86 val
+dense val ppl 23.4212
+
+=== E=8 k=1 combine=sum plan=random ===
+  upcycled 4 layers, trainable params 44.1M
+    step     0  loss 3.4714  elapsed      1s
+  steps: 1/1
+  ppl: dense 23.4212 | untrained 113.8496 | trained 91.7322 | dense-limit 23.4219
+  top-k vs all-experts: untrained-oracle 0.8584 -> trained-oracle 0.8586 | trained-router 0.9225 | effective_experts 5.56
+  frozen pilot oracle 0.8624 vs trained 0.8586 -> beats_frozen_oracle=True
+  wrote /tmp/blocks8.json
+
+done

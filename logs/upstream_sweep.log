@@ -1,0 +1,16 @@
+=== ollama service log probe ===
+active
+      1 -ngl 0
+### ngl42_ncmoe24 2026-10-11T23:43:03+01:00
+EXIT=0
+  n_prompt=128 n_gen=0 avg_ts=121.482 threads=14
+  n_prompt=0 n_gen=64 avg_ts=50.057 threads=14
+### ngl99_ncmoe48 2026-10-11T23:43:24+01:00
+EXIT=0
+  n_prompt=128 n_gen=0 avg_ts=80.144 threads=14
+  n_prompt=0 n_gen=64 avg_ts=36.498 threads=14
+### ngl99_ncmoe56 2026-10-11T23:43:43+01:00
+EXIT=0
+  n_prompt=128 n_gen=0 avg_ts=49.729 threads=14
+  n_prompt=0 n_gen=64 avg_ts=33.092 threads=14
+SWEEP DONE

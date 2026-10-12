@@ -1,0 +1,73 @@
+### A: moe-cache, planner placement -ngl 42 -ncmoe 24  2026-10-11T23:38:36+01:00
+  -n, --n-gen <n>                             (default: 128)
+  -pg <pp,tg>                                 (default: )
+  -d, --n-depth <n>                           (default: 0)
+  -b, --batch-size <n>                        (default: 2048)
+  -ub, --ubatch-size <n>                      (default: 512)
+  -ctk, --cache-type-k <t>                    (default: f16)
+  -ctv, --cache-type-v <t>                    (default: f16)
+  -t, --threads <n>                           (default: 6)
+  -C, --cpu-mask <hex,hex>                    (default: 0x0)
+  --cpu-strict <0|1>                          (default: 0)
+  --poll <0...100>                            (default: 50)
+  -ngl, --n-gpu-layers <n>                    (default: -1)
+  -ncmoe, --n-cpu-moe <n>                     (default: 0)
+  -sm, --split-mode <none|layer|row|tensor>   (default: layer)
+  -mg, --main-gpu <i>                         (default: 0)
+  -nkvo, --no-kv-offload <0|1>                (default: 0)
+  -fa, --flash-attn <on|off|auto>             (default: auto)
+  -dev, --device <dev0/dev1/...>              (default: auto)
+  -mmp, --mmap <0|1>                          (default: 1)
+  -dio, --direct-io <0|1>                     (default: 0)
+  -embd, --embeddings <0|1>                   (default: 0)
+  -ts, --tensor-split <ts0/ts1/..>            (default: 0)
+  -ot --override-tensor <tensor name pattern>=<buffer type>;...
+                                              (default: disabled)
+  -nopo, --no-op-offload <0|1>                (default: 0)
+  --no-host <0|1>                             (default: 0)
+
+Multiple values can be given for each parameter by separating them with ','
+or by specifying the parameter multiple times. Ranges can be given as
+'first-last' or 'first-last+step' or 'first-last*mult'.
+EXIT=1
+
+### B: moe-cache, -ngl 99 (no explicit CPU-MoE split)  2026-10-11T23:38:36+01:00
+ggml_cuda_init: found 1 CUDA devices (Total VRAM: 7807 MiB):
+  Device 0: NVIDIA GeForce RTX 4060 Laptop GPU, compute capability 8.9, VMM: yes, VRAM: 7807 MiB
+llama_bench: error: failed to load model '/home/cleanerbox/models/Ornith-1.5-35B-A3B-Q2_K.gguf'
+[
+EXIT=1
+
+### C: upstream, planner placement  2026-10-11T23:38:46+01:00
+  -pg <pp,tg>                                       (default: )
+  -d, --n-depth <n>                                 (default: 0)
+  -b, --batch-size <n>                              (default: 2048)
+  -ub, --ubatch-size <n>                            (default: 512)
+  -ctk, --cache-type-k <t>                          (default: f16)
+  -ctv, --cache-type-v <t>                          (default: f16)
+  -t, --threads <n>                                 (default: 6)
+  -C, --cpu-mask <hex,hex>                          (default: 0x0)
+  --cpu-strict <0|1>                                (default: 0)
+  --poll <0...100>                                  (default: 50)
+  -ngl, --n-gpu-layers <n>                          (default: -1)
+  -ncmoe, --n-cpu-moe <n>                           (default: 0)
+  -sm, --split-mode <none|layer|row|tensor>         (default: layer)
+  -mg, --main-gpu <i>                               (default: 0)
+  -nkvo, --no-kv-offload <0|1>                      (default: 0)
+  -fa, --flash-attn <on|off|auto>                   (default: auto)
+  -dev, --device <dev0/dev1/...>                    (default: auto)
+  -lm, --load-mode <auto|none|mmap|mlock|mmap+mlock|dio> (default: auto)
+  -mmp, --mmap <0|1>                                (DEPRECATED IN FAVOUR OF --load-mode)
+  -dio, --direct-io <0|1>                           (DEPRECATED IN FAVOUR OF --load-mode)
+  -embd, --embeddings <0|1>                         (default: 0)
+  -ts, --tensor-split <ts0/ts1/..>                  (default: 0)
+  -ot --override-tensor <tensor name pattern>=<buffer type>;...
+                                                    (default: disabled)
+  -nopo, --no-op-offload <0|1>                      (default: 0)
+  --no-host <0|1>                                   (default: 0)
+
+Multiple values can be given for each parameter by separating them with ','
+or by specifying the parameter multiple times. Ranges can be given as
+'first-last' or 'first-last+step' or 'first-last*mult'.
+EXIT=1
+

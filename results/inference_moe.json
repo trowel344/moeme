@@ -1,0 +1,24 @@
+{
+  "results": [
+    {
+      "model": "ornith-1.5-35b-a3b:q2_k",
+      "num_gpu": -1,
+      "num_predict": 32,
+      "wall_s": 23.444050882011652,
+      "peak_vram_mib": 6730,
+      "peak_ram_used_bytes": 7163797504,
+      "min_ram_available_bytes": 9287938048,
+      "error": null,
+      "eval_count": 32,
+      "prompt_eval_count": 40,
+      "load_s": 18.332468313,
+      "prompt_eval_s": 3.437594,
+      "decode_s": 1.653226,
+      "decode_tok_s": 19.35609529489616,
+      "prefill_tok_s": 11.636045443411875,
+      "ttft_s": 21.770062313,
+      "response_chars": 155,
+      "response_preview": "The user wants a Python function that merges two sorted lists into one sorted list in O(n) time. Then explain time and space complexity in two sentences.\n\n"
+    }
+  ]
+}

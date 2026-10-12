@@ -1,0 +1,27 @@
+device=cuda amp=torch.bfloat16 model=Qwen/Qwen3.5-0.8B
+Loading weights:   0%|          | 0/320 [00:00<?, ?it/s]Loading weights: 100%|██████████| 320/320 [00:00<00:00, 15971.27it/s]
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (883186 > 262144). Running this sequence through the model will result in indexing errors
+corpus: HuggingFaceFW/fineweb-edu streaming, 4,004,296 chars from 822 documents
+corpus: 883,186 tokens
+corpus dataset:HuggingFaceFW/fineweb-edu, 883,186 tokens; val blocks 86
+
+  calibration ppl(4) = 19.5707  vs recorded 19.5707  [OK]
+  calibration ppl(8) = 23.4212  vs recorded 23.4212  [OK]
+
+  ppl(k) over k=1..86: min 15.2770 max 23.8304
+
+  target 21.7359: window = [6]  (k=6 reproduces it exactly; nearest 6 at 1.14e-07)
+  target 21.7396: NO window reproduces it (nearest k=6, still off by 1.70e-04, i.e. 0.02%; curve range 15.2770-23.8304)
+      -> the difference was not the window. Do not read k=6 as an answer.
+
+wrote results/eval_window_recovery.json
+
+===== re-decided with the three-way verdict (no GPU; --curve-from) =====
+re-deciding 2 target(s) against the curve in results/eval_window_recovery.json (calibrated: True)
+
+  target 21.7359: RECOVERED -- window = [6] (residual 1.14e-07; nearest k=6)
+  target 21.7396: LIKELY window = 6 -- closest by 1.70e-04 (0.017%), just outside the 1e-04 match tolerance
+      This is the signature of an equivalent-but-differently-rounded path
+      (e.g. the sum-of-all-experts dense-limit check), not a different window.
+
+wrote results/eval_window_recovery.json

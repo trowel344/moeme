@@ -1,0 +1,71 @@
+### A: moe-cache -ngl 42 -ncmoe 24 (no --load-mode)  2026-10-11T23:39:40+01:00
+environment: line 5: 1409123 Segmentation fault      timeout 420 "$@" > /tmp/probe.out 2>&1
+EXIT=139
+[
+[expert cache] init: caching 110 experts from layer blk.0.ffn_gate_exps.weight. GPU expert cache size: 36 MiB
+[expert cache] RAM expert cache size: 98 MiB
+[expert cache] registered staging buffer for blk.0.ffn_gate_exps.weight (98 MiB)
+[expert cache] RAM cache pre-populated for blk.0.ffn_gate_exps.weight (146/300 experts in RAM)
+[expert cache] io_uring ring initialized (depth=64)
+[expert cache] registered disk staging buffer for type 0 (21 MiB)
+[expert cache] init: caching 110 experts from layer blk.0.ffn_up_exps.weight. GPU expert cache size: 72 MiB
+[expert cache] RAM expert cache size: 196 MiB
+[expert cache] registered staging buffer for blk.0.ffn_up_exps.weight (98 MiB)
+[expert cache] RAM cache pre-populated for blk.0.ffn_up_exps.weight (146/300 experts in RAM)
+[expert cache] registered disk staging buffer for type 1 (21 MiB)
+[expert cache] init: caching 110 experts from layer blk.0.ffn_down_exps.weight. GPU expert cache size: 119 MiB
+[expert cache] RAM expert cache size: 325 MiB
+
+### B: moe-cache -ngl 42 -ncmoe 24 --load-mode auto (reproduce surplus crash)  2026-10-11T23:39:59+01:00
+EXIT=1
+error: invalid parameter for argument: --load-mode
+usage: /home/cleanerbox/llama.cpp-moe-cache/build/bin/llama-bench [options]
+options:
+  -h, --help
+  --numa <distribute|isolate|numactl>         numa mode (default: disabled)
+  -r, --repetitions <n>                       number of times to repeat each test (default: 5)
+  --prio <-1|0|1|2|3>                         process/thread priority (default: 0)
+  --delay <0...N> (seconds)                   delay between each test (default: 0)
+  -o, --output <csv|json|jsonl|md|sql>        output format printed to stdout (default: md)
+  -oe, --output-err <csv|json|jsonl|md|sql>   output format printed to stderr (default: none)
+  --list-devices                              list available devices and exit
+  -v, --verbose                               verbose output
+  --progress                                  print test progress indicators
+  --no-warmup                                 skip warmup runs before benchmarking
+
+### C: upstream -ngl 42 -ncmoe 24  2026-10-11T23:40:00+01:00
+EXIT=0
+[
+  {
+    "build_commit": "5d9e5ac",
+    "build_number": 91,
+    "cpu_info": "13th Gen Intel(R) Core(TM) i7-13620H",
+    "gpu_info": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "backends": "CUDA",
+    "model_filename": "/home/cleanerbox/models/Ornith-1.5-35B-A3B-Q2_K.gguf",
+    "model_type": "qwen35moe 35B.A3B Q2_K - Medium",
+    "model_size": 13074788864,
+    "model_n_params": 35505251456,
+    "n_batch": 512,
+    "n_ubatch": 256,
+    "n_threads": 14,
+
+### D: moe-cache -ngl 42 -ncmoe 40  2026-10-11T23:40:20+01:00
+environment: line 5: 1410656 Killed                  timeout 420 "$@" > /tmp/probe.out 2>&1
+EXIT=137
+[
+[expert cache] init: caching 110 experts from layer blk.0.ffn_gate_exps.weight. GPU expert cache size: 36 MiB
+[expert cache] RAM expert cache size: 98 MiB
+[expert cache] registered staging buffer for blk.0.ffn_gate_exps.weight (98 MiB)
+[expert cache] RAM cache pre-populated for blk.0.ffn_gate_exps.weight (146/300 experts in RAM)
+[expert cache] io_uring ring initialized (depth=64)
+[expert cache] registered disk staging buffer for type 0 (21 MiB)
+[expert cache] init: caching 110 experts from layer blk.0.ffn_up_exps.weight. GPU expert cache size: 72 MiB
+[expert cache] RAM expert cache size: 196 MiB
+[expert cache] registered staging buffer for blk.0.ffn_up_exps.weight (98 MiB)
+[expert cache] RAM cache pre-populated for blk.0.ffn_up_exps.weight (146/300 experts in RAM)
+[expert cache] registered disk staging buffer for type 1 (21 MiB)
+[expert cache] init: caching 110 experts from layer blk.0.ffn_down_exps.weight. GPU expert cache size: 119 MiB
+[expert cache] RAM expert cache size: 325 MiB
+
+PROBE2 DONE

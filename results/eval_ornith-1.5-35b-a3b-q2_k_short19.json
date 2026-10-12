@@ -1,0 +1,303 @@
+{
+  "tasks_total": 19,
+  "models": {
+    "ornith-1.5-35b-a3b:q2_k": {
+      "summary": {
+        "coding": {
+          "passed": 3,
+          "total": 3,
+          "rate": 1.0,
+          "truncated": 0
+        },
+        "format": {
+          "passed": 6,
+          "total": 6,
+          "rate": 1.0,
+          "truncated": 0
+        },
+        "instruction": {
+          "passed": 4,
+          "total": 6,
+          "rate": 0.6666666666666666,
+          "truncated": 0
+        },
+        "reasoning": {
+          "passed": 2,
+          "total": 4,
+          "rate": 0.5,
+          "truncated": 2
+        }
+      },
+      "overall": {
+        "passed": 15,
+        "total": 19,
+        "rate": 0.7894736842105263
+      },
+      "tasks_run": 19,
+      "tasks_selected": 19,
+      "truncated_tasks": 2,
+      "harness_errors": 0,
+      "num_predict": 192,
+      "think": "off",
+      "wall_s": 54.50084230792709,
+      "tasks": [
+        {
+          "id": "c_sum_evens",
+          "category": "coding",
+          "passed": true,
+          "detail": "4/4 cases passed",
+          "response": "```python\ndef solve(nums):\n    return sum(n for n in nums if n % 2 == 0)\n```",
+          "decode_tok_s": 20.831147922725368,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 76,
+          "truncated": false
+        },
+        {
+          "id": "c_reverse_words",
+          "category": "coding",
+          "passed": true,
+          "detail": "3/3 cases passed",
+          "response": "```python\ndef solve(s):\n    words = s.split(\" \")\n    return \" \".join(words[::-1])\n```",
+          "decode_tok_s": 35.132978322952376,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 85,
+          "truncated": false
+        },
+        {
+          "id": "c_gcd",
+          "category": "coding",
+          "passed": true,
+          "detail": "3/3 cases passed",
+          "response": "```python\ndef solve(a, b):\n    while b:\n        a, b = b, a % b\n    return a\n```",
+          "decode_tok_s": 28.34793547301188,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 80,
+          "truncated": false
+        },
+        {
+          "id": "r_bat_ball",
+          "category": "reasoning",
+          "passed": true,
+          "detail": "got 0.05, want 0.05",
+          "response": "Let me define variables. Let the ball cost $x$. Then the bat costs $x + 1.00$.\n\nThe total cost is:\n$$x + (x + 1.00) = 1.10$$\n$$2x + 1.00 = 1.10$$\n$$2x = 0.10$$\n$$x = 0.05$$\n\nSo the ball costs 0.05, and the bat costs 1.05.\n\n**Check:** Total = 1.05 + 0.05 = 1.10 \u2713. The bat costs 1.00 more than the ball \u2713.\n\nANSWER: 0.05",
+          "decode_tok_s": 33.78569331005025,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 318,
+          "truncated": false
+        },
+        {
+          "id": "r_work_rate",
+          "category": "reasoning",
+          "passed": false,
+          "detail": "got 100.0, want 3 [truncated at 649 tokens]",
+          "response": "Let me work through this problem.\n\n**Step 1: Find the rate of one machine**\n\nIf 3 machines make 3 widgets in 3 minutes, then:\n- 3 machines produce 3 widgets in 3 minutes\n- So 1 machine produces 1 widget in 3 minutes\n\nThis means each machine makes 1 widget every 3 minutes.\n\n**Step 2: Apply to 100 machines**\n\nWith 100 machines working simultaneously, each machine makes 1 widget in 3 minutes. So 100 machines make 100 widgets in 3 minutes (since each machine independently produces its own widget).\n\n**Verification:**\n- Rate per machine = 1 widget / 3 minutes\n- 100 machines \u00d7 (1 widget / 3 minutes) = 100 widgets / 3 minutes\n- To make 100 widgets: ",
+          "decode_tok_s": 44.70066617961565,
+          "done_reason": "length",
+          "thinking_chars": 0,
+          "response_chars": 649,
+          "truncated": true
+        },
+        {
+          "id": "r_lily",
+          "category": "reasoning",
+          "passed": true,
+          "detail": "got 47.0, want 47",
+          "response": "Since the lily pads double in size every day and cover the entire lake on day 48, I need to work backward.\n\nIf the lake is fully covered on day 48, then the day before (day 47), the patch was half that size \u2014 which means half the lake was covered.\n\nThis is because doubling on day 48 takes the half-covered amount to fully covered.\n\nANSWER: 47",
+          "decode_tok_s": 47.16872303499971,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 343,
+          "truncated": false
+        },
+        {
+          "id": "r_sequence",
+          "category": "reasoning",
+          "passed": false,
+          "detail": "got 3.0, want 42 [truncated at 449 tokens]",
+          "response": "Let me analyze the sequence: 2, 6, 12, 20, 30, ...\n\n**Finding the pattern:**\n\nLet me look at the differences between consecutive terms:\n- 6 \u2212 2 = 4\n- 12 \u2212 6 = 6\n- 20 \u2212 12 = 8\n- 30 \u2212 20 = 10\n\nThe differences are 4, 6, 8, 10 \u2014 increasing by 2 each time.\n\nSo the next difference should be **12**.\n\n**Computing the next term:**\n$$30 + 12 = 42$$\n\n**Verification:**\nThe terms follow the pattern $n(n+1)$:\n- $1 \\times 2 = 2$\n- $2 \\times 3 = 6$\n- $3 \\times ",
+          "decode_tok_s": 47.258606973795104,
+          "done_reason": "length",
+          "thinking_chars": 0,
+          "response_chars": 449,
+          "truncated": true
+        },
+        {
+          "id": "f_json_three_actions",
+          "category": "format",
+          "passed": true,
+          "detail": "ok",
+          "response": "{\"summary\": \"The build failed because a dependency was missing.\", \"actions\": [\"Identify the missing dependency and its required version.\", \"Install the missing dependency using the appropriate package manager.\", \"Re-run the build to confirm the issue is resolved.\"]}",
+          "decode_tok_s": 47.177172055146485,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 266,
+          "truncated": false
+        },
+        {
+          "id": "f_json_tool_call",
+          "category": "format",
+          "passed": true,
+          "detail": "ok",
+          "response": "{\n  \"tool\": \"read_file\",\n  \"arguments\": {\n    \"path\": \"src/main.js\"\n  }\n}",
+          "decode_tok_s": 46.243977444500004,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 73,
+          "truncated": false
+        },
+        {
+          "id": "f_json_no_prose",
+          "category": "format",
+          "passed": true,
+          "detail": "ok",
+          "response": "{\"ok\": true, \"count\": 3}",
+          "decode_tok_s": 49.64976230176298,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 24,
+          "truncated": false
+        },
+        {
+          "id": "f_json_nested",
+          "category": "format",
+          "passed": true,
+          "detail": "ok",
+          "response": "{\n  \"server\": {\n    \"host\": \"localhost\",\n    \"port\": 8080\n  }\n}",
+          "decode_tok_s": 46.76280697520063,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 63,
+          "truncated": false
+        },
+        {
+          "id": "f_json_array",
+          "category": "format",
+          "passed": true,
+          "detail": "ok",
+          "response": "```json\n[{\"name\": \"object1\", \"score\": 1}, {\"name\": \"object2\", \"score\": 2}]\n```",
+          "decode_tok_s": 47.83184064170038,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 78,
+          "truncated": false
+        },
+        {
+          "id": "f_json_nulls",
+          "category": "format",
+          "passed": true,
+          "detail": "ok",
+          "response": "{\"items\": [], \"total\": 0}",
+          "decode_tok_s": 45.31858968548899,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 25,
+          "truncated": false
+        },
+        {
+          "id": "i_exact_three_bullets",
+          "category": "instruction",
+          "passed": true,
+          "detail": "3 bullets, want 3",
+          "response": "- Catches bugs early in the development process before they reach production\n- Enables safe refactoring by verifying that code behavior remains consistent\n- Serves as living documentation that explains how individual components should behave",
+          "decode_tok_s": 47.33339798382814,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 241,
+          "truncated": false
+        },
+        {
+          "id": "i_only_word",
+          "category": "instruction",
+          "passed": true,
+          "detail": "got 'yes'",
+          "response": "yes",
+          "decode_tok_s": 83.72404554588078,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 3,
+          "truncated": false
+        },
+        {
+          "id": "i_uppercase",
+          "category": "instruction",
+          "passed": true,
+          "detail": "got 'CONFIRMED'",
+          "response": "CONFIRMED",
+          "decode_tok_s": 51.699625177717465,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 9,
+          "truncated": false
+        },
+        {
+          "id": "i_five_words",
+          "category": "instruction",
+          "passed": false,
+          "detail": "6 words, want 5",
+          "response": "Deep, calm, serene, endless, cool blue.",
+          "decode_tok_s": 45.62494772141407,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 39,
+          "truncated": false
+        },
+        {
+          "id": "i_lowercase_start",
+          "category": "instruction",
+          "passed": true,
+          "detail": "starts with 'c'",
+          "response": "compilers translate high-level programming languages into machine code that computers can execute.",
+          "decode_tok_s": 47.002558701789326,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 98,
+          "truncated": false
+        },
+        {
+          "id": "i_no_letter_e",
+          "category": "instruction",
+          "passed": false,
+          "detail": "contains 'e'",
+          "response": "Binary trees store data in a hierarchical manner.",
+          "decode_tok_s": 43.514207388712414,
+          "done_reason": "stop",
+          "thinking_chars": 0,
+          "response_chars": 49,
+          "truncated": false
+        }
+      ],
+      "overall_untruncated": {
+        "passed": 15,
+        "total": 17,
+        "rate": 0.8823529411764706
+      }
+    }
+  },
+  "task_ids": [
+    "c_sum_evens",
+    "c_reverse_words",
+    "c_gcd",
+    "r_bat_ball",
+    "r_work_rate",
+    "r_lily",
+    "r_sequence",
+    "f_json_three_actions",
+    "f_json_tool_call",
+    "f_json_no_prose",
+    "f_json_nested",
+    "f_json_array",
+    "f_json_nulls",
+    "i_exact_three_bullets",
+    "i_only_word",
+    "i_uppercase",
+    "i_five_words",
+    "i_lowercase_start",
+    "i_no_letter_e"
+  ],
+  "think": "off",
+  "num_predict": 192
+}

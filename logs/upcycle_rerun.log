@@ -1,0 +1,73 @@
+device=cuda amp=torch.bfloat16 model=Qwen/Qwen3.5-0.8B
+Loading weights:   0%|          | 0/320 [00:00<?, ?it/s]Loading weights:  88%|████████▊ | 282/320 [00:00<00:00, 2817.80it/s]Loading weights: 100%|██████████| 320/320 [00:00<00:00, 2879.86it/s]
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (883186 > 262144). Running this sequence through the model will result in indexing errors
+params 0.752B
+corpus: HuggingFaceFW/fineweb-edu streaming, 4,004,296 chars from 822 documents
+corpus: 883,186 tokens
+blocks: 1638 train, 86 val
+dense val ppl 19.5707
+
+=== E=8 k=1 combine=sum plan=random ===
+  upcycled 4 layers, trainable params 44.1M
+    step     0  loss 3.4714  elapsed      1s
+    step    25  loss 3.5356  elapsed     15s
+    step    50  loss 2.9114  elapsed     30s
+    step    75  loss 3.2719  elapsed     45s
+    step   100  loss 3.4198  elapsed     60s
+    step   125  loss 2.7931  elapsed     75s
+    step   150  loss 3.2226  elapsed     90s
+    step   175  loss 2.6029  elapsed    105s
+    step   200  loss 3.1404  elapsed    120s
+    step   225  loss 3.3563  elapsed    135s
+    step   250  loss 3.3563  elapsed    150s
+    step   275  loss 3.1911  elapsed    165s
+    step   299  loss 3.3567  elapsed    179s
+  steps: 300/300
+  ppl: dense 19.5707 | untrained 99.6753 | trained 29.6900 | dense-limit 19.5635
+  top-k vs all-experts: untrained-oracle 0.8584 -> trained-oracle 0.8502 | trained-router 0.8865 | effective_experts 7.34
+  frozen pilot oracle 0.8624 vs trained 0.8502 -> beats_frozen_oracle=True
+  wrote results/upcycle_poc_rerun.json
+
+=== E=8 k=2 combine=sum plan=random ===
+  upcycled 4 layers, trainable params 44.1M
+    step     0  loss 3.3845  elapsed      1s
+    step    25  loss 3.3770  elapsed     16s
+    step    50  loss 2.7470  elapsed     31s
+    step    75  loss 3.0633  elapsed     46s
+    step   100  loss 3.2375  elapsed     62s
+    step   125  loss 2.6983  elapsed     77s
+    step   150  loss 3.1065  elapsed     92s
+    step   175  loss 2.4378  elapsed    108s
+    step   200  loss 3.0358  elapsed    123s
+    step   225  loss 3.2355  elapsed    139s
+    step   250  loss 3.2379  elapsed    154s
+    step   275  loss 3.0550  elapsed    168s
+    step   299  loss 3.2596  elapsed    183s
+  steps: 300/300
+  ppl: dense 19.5707 | untrained 61.8438 | trained 27.3771 | dense-limit 19.5635
+  top-k vs all-experts: untrained-oracle 0.7520 -> trained-oracle 0.7374 | trained-router 0.7924 | effective_experts 7.69
+  frozen pilot oracle 0.7578 vs trained 0.7374 -> beats_frozen_oracle=True
+  wrote results/upcycle_poc_rerun.json
+
+=== E=8 k=4 combine=sum plan=random ===
+  upcycled 4 layers, trainable params 44.1M
+    step     0  loss 2.9631  elapsed      1s
+    step    25  loss 3.1419  elapsed     15s
+    step    50  loss 2.5278  elapsed     30s
+    step    75  loss 2.8533  elapsed     45s
+    step   100  loss 3.1583  elapsed     60s
+    step   125  loss 2.6115  elapsed     76s
+    step   150  loss 3.0130  elapsed     91s
+    step   175  loss 2.2828  elapsed    107s
+    step   200  loss 2.9044  elapsed    122s
+    step   225  loss 3.0986  elapsed    138s
+    step   250  loss 3.0604  elapsed    153s
+    step   275  loss 2.9263  elapsed    168s
+    step   299  loss 3.1447  elapsed    183s
+  steps: 300/300
+  ppl: dense 19.5707 | untrained 42.3937 | trained 25.1581 | dense-limit 19.5635
+  top-k vs all-experts: untrained-oracle 0.5638 -> trained-oracle 0.5364 | trained-router 0.6095 | effective_experts 7.89
+  frozen pilot oracle 0.5710 vs trained 0.5364 -> beats_frozen_oracle=True
+  wrote results/upcycle_poc_rerun.json
+
+done
