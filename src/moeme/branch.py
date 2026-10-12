@@ -54,8 +54,15 @@ A warning about `combine="sum"`, which is also `upcycle.MoEFFN`'s default
 With `sum` the combination weights are a constant 1.0, so the router's only
 influence on the output is the *discrete* expert choice -- and a discrete choice
 carries no gradient. The router is then reached **only** by the load-balancing
-auxiliary loss, never by the language-model objective. Measured on a probe: 6e-9
-versus 2.8e-3 for `softmax`, i.e. ~5 orders of magnitude less signal.
+auxiliary loss, never by the language-model objective: from that loss alone the
+router receives **no gradient at all** (`router.weight.grad is None`), against
+~2.6e1 under `softmax`; with the auxiliary loss included -- the form a training
+loop actually backprops -- `sum` reaches ~1e-2 against `softmax`'s ~2.6e1 at
+E=8, k=2, a factor of ~1.6e3. (An earlier note here quoted 6e-9 against 2.8e-3,
+~5 orders; neither figure reproduces, so it is replaced by the measured one. At
+`k=1` the two modes coincide exactly, since a single selected logit has softmax
+weight 1.0, so the difference exists only for `k>1`.) Pinned by
+`tests/test_branch.py::test_softmax_carries_far_more_router_gradient_than_sum`.
 
 So a `sum`-mode router is optimised for *balance*, never for *quality*, and a
 router-underperforms-oracle result from a `sum` run says nothing about what a

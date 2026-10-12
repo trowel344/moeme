@@ -79,7 +79,7 @@ src/moeme/accounting.py     exact parameter accounting, memory-tier throughput m
 src/moeme/branch.py         the *branching* alternative: complete experts (tile or
                             replica init), shared experts, forced-expert mode for
                             independent training, residual_report diagnostics
-tests/                      369 tests: exactness, shapes, plans, oracle bounds,
+tests/                      371 tests: exactness, shapes, plans, oracle bounds,
                             accounting, upcycling (dense limit, gradients, aux loss,
                             half precision, CUDA autocast, the E/k output rescaling),
                             branching (exact and narrow limits, shared experts,
@@ -134,7 +134,7 @@ results/                         raw evidence: JSON + printed tables
 
 ```bash
 make venv        # .venv reusing system torch, plus pytest
-make test        # 369 tests, offline, ~17 s
+make test        # 371 tests, offline, ~17 s
 make doctor      # one-command local diagnostics (~90 s, writes results/hardware.json)
 make bench-inference
 make verify-sources      # re-derive parameter counts from the real artefacts
@@ -277,8 +277,10 @@ same thing for both constructions.)
    untrained tile router picks a random block (0.8878 against a best of 0.6339);
    a replica has one block and nothing to choose. Training the tile router
    recovers most of it (45.63 → 23.19).
-4. **Dense residual cannot arbitrate a trained model.** In every trained row the
-   residual *rises* while ppl *improves*.
+4. **Dense residual cannot arbitrate a trained model.** The router residual
+   *rises* in every trained row, whichever way ppl moves: 0.8852 → 0.9303 as ppl
+   improves 45.63 → 23.19, and 0.0044 → 0.5491 as ppl *worsens* 15.49 → 19.11. A
+   rising residual is therefore evidence of nothing.
 5. **Giving each module its own domain helps where a division of labour exists.**
    Experts pre-trained apart on code/math/chat/wiki (`--btx`) reach ppl **21.64**
    at 1.00x storage and 25% active width, against **23.19** for the same

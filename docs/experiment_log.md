@@ -615,9 +615,10 @@ stage 3 trains router and experts jointly.
    block (0.8878 against a 0.6339 best). Training it recovers most of the gap
    (45.63 -> 23.19). Reporting only ppl for these two constructions measures the
    router, not the MoE.
-4. **Dense residual is the wrong objective once anything is trained.** In every
-   trained row the router residual *rises* while ppl *improves*: 0.8852 -> 0.9303
-   with ppl 45.63 -> 23.19; 0.0044 -> 0.5491 with ppl 15.49 -> 19.11. Drift from
+4. **Dense residual is the wrong objective once anything is trained.** The router
+   residual *rises* in every trained row, whichever way ppl moves: 0.8852 -> 0.9303
+   with ppl improving 45.63 -> 23.19, and 0.0044 -> 0.5491 with ppl *worsening*
+   15.49 -> 19.11. Drift from
    the dense function is what finetuning does. E14/E15 used this residual as the
    decisive gate; it cannot arbitrate a trained model.
 5. **Training a lossless configuration only makes it worse at this budget, and

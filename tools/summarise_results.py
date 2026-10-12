@@ -492,8 +492,9 @@ def section_branch() -> None:
     print("  (ppl 15.49 vs 15.48) at 4.00x the FFN storage; no slicing")
     print("  configuration does unless k == E. Best-tile and best-replica agree")
     print("  to ~0.02 at equal active width, so width -- not tiling -- sets the")
-    print("  deficit. In every trained row the dense residual RISES while ppl")
-    print("  falls, so that residual cannot arbitrate a trained model.")
+    print("  deficit. In every trained row the dense residual RISES, whether ppl")
+    print("  falls (45.63->23.19) or worsens (15.49->19.11), so it cannot")
+    print("  arbitrate a trained model.")
     btx = [r for r in d.get("runs", []) if r.get("btx")]
     if btx:
         print("\n  branch-train-miX (experts pre-trained apart on code/math/chat/wiki):")

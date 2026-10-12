@@ -122,9 +122,10 @@ comparison of these two constructions that reports only end-to-end ppl is
 measuring router initialisation.
 
 **4. Residual against the dense function is the wrong objective once anything is
-trained.** In every trained row the router's residual *rises* while ppl
-*improves*: `trained_tile_E4_k1_25pct` 0.8852 → 0.9303 with ppl 45.63 →
-23.19; `trained_replica_E4_k1_full` 0.0044 → 0.5491 with ppl 15.49 → 19.11. A MoE that is being
+trained.** The router's residual *rises* in every trained row, whichever way ppl
+moves: `trained_tile_E4_k1_25pct` 0.8852 → 0.9303 with ppl improving 45.63 →
+23.19, and `trained_replica_E4_k1_full` 0.0044 → 0.5491 with ppl *worsening*
+15.49 → 19.11. A MoE that is being
 finetuned on a corpus is no longer trying to reproduce the dense function, and
 drift away from it is what training *does*. This is the metric E14/E15 used as
 the decisive gate, and it cannot arbitrate a trained model.
@@ -180,9 +181,13 @@ quantisation ladder remain the route to a 27B on this laptop.
    methodological lesson; the gate set in `experiments/eval_gate.py` exists and
    should be the arbiter.
 4. **Re-test `combine="softmax"` against `sum` with the router actually in the
-   output path.** `sum` gives the router ~5 orders of magnitude less gradient
-   from the language-model objective than `softmax` (measured in
-   `src/moeme/branch.py`); the tile-router recovery in finding 3 was obtained
+   output path.** From the language-model objective alone `sum` gives the router
+   **no gradient at all** (`grad is None`); with the balancing loss included it
+   reaches ~1e-2 against ~2.6e1 for `softmax` at E=8, k=2 — ~1.6e3 less, i.e. ~3
+   orders, not the 5 an earlier probe recorded. At `k=1` the two modes coincide
+   exactly. Pinned by
+   `tests/test_branch.py::test_softmax_carries_far_more_router_gradient_than_sum`;
+   the tile-router recovery in finding 3 was obtained
    with `softmax` and would not have been possible with `sum`.
 5. **Only then re-run at 27B.** Nothing in this experiment changes the arithmetic
    in `docs/upcycling_design.md`: at 9B active of 27B total the selectable part

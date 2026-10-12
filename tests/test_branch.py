@@ -408,15 +408,81 @@ def test_softmax_combine_gives_the_router_a_real_gradient():
     """`combine="softmax"` is the mode that actually trains the router.
 
     The weighted combination depends on the router logits, so the language-model
-    objective reaches the router directly. Measured at roughly five orders of
-    magnitude more signal than `sum` (+ aux loss). This is why the branch
-    experiment must not read router quality off a `sum` run.
+    objective reaches the router directly. This is why the branch experiment must
+    not read router quality off a `sum` run.
+
+    The configuration is load-bearing, and an earlier version of this test got
+    it wrong. With `init="replica"` every expert is a bit-identical copy, so at
+    `top_k == n_experts` the combination `sum_e p_e * o_e` equals `o` whatever
+    the weights are and the true gradient is zero: measured over 500 router
+    initialisations that configuration gives `median 4.2e-5`, `min 0.0`, with 1%
+    of draws under `1e-6`. That is float32 cancellation residue, so the assertion
+    was testing the RNG rather than the design and failed about one run in a
+    hundred. Distinct experts at `top_k < n_experts` is the configuration where
+    the weights do something, and there the gradient is ~4e1: seven orders of
+    magnitude above the noise floor.
     """
-    m = make_branch(BranchConfig(n_experts=4, top_k=4, init="replica",
+    torch.manual_seed(0)
+    m = make_branch(BranchConfig(n_experts=4, top_k=2, init="tile",
                                  expert_units=INTER // 4, combine="softmax"))
     m(make_input()).sum().backward()
     assert m.router.weight.grad is not None
-    assert float(m.router.weight.grad.abs().sum()) > 1e-6
+    assert float(m.router.weight.grad.abs().sum()) > 1e-1
+
+
+def test_full_width_replica_softmax_router_gradient_is_only_noise():
+    """Why the naive form of the test above cannot work.
+
+    With `init="replica"` and `top_k == n_experts` every expert is bit-identical
+    and every one is selected, so the softmax combination is the identity on the
+    expert output: `sum_e p_e * o = o` for *any* weights `p`. The gradient with
+    respect to the router logits is therefore exactly zero in exact arithmetic.
+    The parameter still receives a tensor because the softmax Jacobian is
+    evaluated in float32, leaving ~4e-5 of cancellation residue.
+
+    Pinned so that no one re-derives router trainability from this configuration,
+    where the property does not exist. `sum`'s router gradient, which is `None`
+    for a different reason (no path at all), is pinned separately.
+    """
+    torch.manual_seed(0)
+    m = make_branch(BranchConfig(n_experts=4, top_k=4, init="replica",
+                                 expert_units=INTER // 4, combine="softmax"))
+    assert torch.equal(m.gate[0], m.gate[1])          # identical experts
+    m(make_input()).sum().backward()
+    assert float(m.router.weight.grad.abs().sum()) < 1e-2
+
+
+def test_softmax_carries_far_more_router_gradient_than_sum():
+    """The gradient figures quoted in `moeme.branch`'s docstring, pinned.
+
+    A probe recorded in that docstring reported `sum` at 6e-9 against `softmax`
+    at 2.8e-3, i.e. ~5 orders of magnitude. Neither figure reproduces on the
+    module as it stands, so the claim is re-measured rather than repeated. From
+    the language-model loss alone, `sum` leaves the router with **no gradient at
+    all** -- the discrete expert choice is not differentiable, so `grad` is
+    `None` rather than small. Once the auxiliary loss is included, which is the
+    form a training loop backprops, `sum` reaches ~1e-2 against ~2.6e1 for
+    `softmax` at E=8, k=2: a factor of ~1.6e3, i.e. ~3 orders, not 5.
+
+    Asserted as a ratio with headroom, because the absolute magnitudes move with
+    batch size and input scale. At `k=1` the two modes coincide exactly and the
+    difference vanishes, since a single selected logit has softmax weight 1.0.
+    """
+    def router_grad(combine, aux):
+        torch.manual_seed(0)
+        m = make_branch(BranchConfig(n_experts=8, top_k=2, init="tile",
+                                     expert_units=INTER // 8,
+                                     combine=combine))
+        loss = m(make_input(n=32)).pow(2).mean()
+        if aux:
+            loss = loss + m.total_aux_loss()
+        loss.backward()
+        g = m.router.weight.grad
+        return None if g is None else float(g.abs().sum())
+
+    assert router_grad("sum", False) is None
+    assert router_grad("softmax", False) > 1.0
+    assert router_grad("softmax", True) / router_grad("sum", True) > 100
 
 
 def test_only_selected_experts_receive_gradient():

@@ -47,8 +47,9 @@ Arms
 Traps this experiment exists to avoid
 -------------------------------------
 * The residual metric is *anti-correlated* with quality in the trained regime:
-  E16 measured the dense-reproduction residual **rising** while perplexity
-  improved, in every trained row. So perplexity and generated text are measured
+  E16 measured the dense-reproduction residual **rising in every trained row**,
+  whether perplexity improved (45.63 -> 23.19) or *worsened* (15.49 -> 19.11).
+  So perplexity and generated text are measured
   beside it; a residual win alone would not mean the model got better.
 * Training on activations from the evaluation window would leak. The calibration
   sentences are hand-written and outside it, and the report records them.
