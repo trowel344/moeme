@@ -1,0 +1,129 @@
+{
+  "model": "Qwen/Qwen3.5-0.8B",
+  "checkpoint": ".cache/moeme/poc_ckpt/E8_k1_sum_random_s0_0-3-8-23.pt",
+  "checkpoint_step": 300,
+  "layers_upcycled": [
+    0,
+    3,
+    8,
+    23
+  ],
+  "n_layers_total": 24,
+  "config": {
+    "n_experts": 8,
+    "top_k": 1,
+    "combine": "sum",
+    "plan": "random",
+    "seed": 0
+  },
+  "corpus": "dataset:HuggingFaceFW/fineweb-edu",
+  "corpus_tokens": 883186,
+  "eval_blocks": 4,
+  "seq_len": 512,
+  "new_tokens": 48,
+  "dense_val_ppl": 19.57067870397227,
+  "fresh_val_ppl": 99.67529599778467,
+  "moe_val_ppl": 29.792871943632917,
+  "ppl_ratio_moe_over_dense": 1.5223218568084633,
+  "dense_limit_val_ppl": 19.563454715807342,
+  "dense_limit_rel_error": 0.0003691230270650329,
+  "trained_all_experts_val_ppl": 1597.728931205121,
+  "metrics_trained": {
+    "vs_original_dense_mean": 1.0089083462953568,
+    "oracle_topk_mean": 0.8500503599643707,
+    "router_topk_mean": 0.8863984197378159
+  },
+  "metrics_trained_per_layer": {
+    "0": {
+      "vs_original_dense": 0.9374939799308777,
+      "oracle_topk": 0.821699857711792,
+      "router_topk": 0.8836252689361572
+    },
+    "3": {
+      "vs_original_dense": 0.9733643531799316,
+      "oracle_topk": 0.8625916242599487,
+      "router_topk": 0.8988558053970337
+    },
+    "8": {
+      "vs_original_dense": 1.0665748119354248,
+      "oracle_topk": 0.8621045351028442,
+      "router_topk": 0.8904106616973877
+    },
+    "23": {
+      "vs_original_dense": 1.0582002401351929,
+      "oracle_topk": 0.853805422782898,
+      "router_topk": 0.8727019429206848
+    }
+  },
+  "recorded_run": {
+    "source": "results/upcycle_poc_rerun.json",
+    "trained_val_ppl": 29.68999003713827,
+    "metrics_trained": {
+      "vs_original_dense_mean": 1.0082098096609116,
+      "oracle_topk_mean": 0.8501663208007812,
+      "router_topk_mean": 0.8865318894386292
+    },
+    "steps": 300
+  },
+  "prompts": [
+    {
+      "prompt": "The capital of France is",
+      "identical": false,
+      "first_divergence_index": 0,
+      "tokens_compared": 48,
+      "token_match_fraction": 0.041666666666666664,
+      "dense_text": " Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is",
+      "moe_text": " the capital of the world.\nA. The capital of France is the capital of the world.\nB. The capital of France is the capital of the world.\nC. The capital of France is the capital of the world."
+    },
+    {
+      "prompt": "Q: What is 17 * 23?\nA:",
+      "identical": false,
+      "first_divergence_index": 1,
+      "tokens_compared": 48,
+      "token_match_fraction": 0.0625,
+      "dense_text": " 391\n\nQ: What is 17 * 23?\nA: 391\n\nA: 391\n\nA: 391\n\nA: 391\n\nA:",
+      "moe_text": " 17 * 23 = 391\nB: 17 * 23 = 391\nC: 17 * 23 = 391\nD: 17"
+    },
+    {
+      "prompt": "def fibonacci(n):\n    ",
+      "identical": false,
+      "first_divergence_index": 2,
+      "tokens_compared": 48,
+      "token_match_fraction": 0.14583333333333334,
+      "dense_text": " if n <= 1:\n         return n\n     return fibonacci(n-1) + fibonacci(n-2)\n\nprint(fibonacci(10))\nprint(fibonacci(100))\nprint(fibonacci",
+      "moe_text": " if n == 0:\n         return 0\n     if n == 1:\n         return 1\n     if n == 2:\n         return 1\n     if n == 3:\n         return"
+    },
+    {
+      "prompt": "Once upon a time, in a small village,",
+      "identical": false,
+      "first_divergence_index": 3,
+      "tokens_compared": 48,
+      "token_match_fraction": 0.0625,
+      "dense_text": " there was a very special kind of animal. It was a little fox named Bob. Bob had a very special name, and he was very special.\n\nOne day, Bob decided to go on a journey. He went to a very big",
+      "moe_text": " there was a man named John.\nHe was a man with a very large heart.\nHe was a man with a very large heart.\nHe was a man with a very large heart.\nHe was a man with a very"
+    },
+    {
+      "prompt": "The three largest planets in the solar system, in order, are",
+      "identical": false,
+      "first_divergence_index": 0,
+      "tokens_compared": 48,
+      "token_match_fraction": 0.041666666666666664,
+      "dense_text": ":\n\nA. Mercury, Venus, Earth\nB. Earth, Venus, Mars\nC. Earth, Mars, Jupiter\nD. Jupiter, Saturn, Uranus\n\n<think>\n\n</think>\n\nTo determine the correct order of the three largest",
+      "moe_text": " Mercury, Venus, and Earth.\n- Mercury is the smallest planet and the closest to the Sun. It has the smallest distance from the Sun and the smallest orbital distance from the Sun. It is also the closest planet to the Sun."
+    },
+    {
+      "prompt": "A recipe for bread needs flour, water, yeast and",
+      "identical": false,
+      "first_divergence_index": 3,
+      "tokens_compared": 48,
+      "token_match_fraction": 0.08333333333333333,
+      "dense_text": " salt.\nThe first step is to prepare the dough.\nThe second step is to bake the bread.\nThe third step is to serve the bread.\nThe fourth step is to eat the bread.\nThe fifth step is to",
+      "moe_text": " salt.\nA recipe for bread is a mixture of flour, water, yeast and salt.\nA recipe for bread is a mixture of flour, water, yeast and salt.\nA recipe for bread is a mixture of flour, water"
+    }
+  ],
+  "prompts_identical": 0,
+  "prompts_total": 6,
+  "mean_token_match_fraction": 0.07291666666666667,
+  "dense_limit_prompts_identical": 5,
+  "n_params": 752393024
+}
