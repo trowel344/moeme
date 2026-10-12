@@ -140,9 +140,17 @@ would try them:
 2. **Let the router carry a learned gate**, `combine="softmax"` -- but note this
    *forfeits* the exact dense limit at `top_k=E` (softmax weights sum to 1, so a
    full-k combination is a weighted mean, not the sum). `tests/test_upcycle.py`
-   pins this difference deliberately.
+   pins this difference deliberately. **Trained once (E21)**, at k=1 where the
+   weights are 1.0 and so the forward is identical to `sum` -- the arms differ
+   only in whether the *router* receives gradient from the reconstruction loss.
+   It was the best of the three arms and still worse than token training, which
+   is the interesting part: letting the router learn is the one version of this
+   mitigation that does something, and it is worth ~0.08 of a 0.84 deficit.
 3. **An explicit layer scale** (a per-layer multiplier on the MoE output),
-   which is the most flexible and the least principled.
+   which is the most flexible and the least principled. **E21 bounds what it can
+   recover**: the least-squares optimal scale is ~1.1-1.4 rather than 1, so a
+   learned layer scale has at most that much to find, and the deficit it leaves
+   behind is directional.
 
 The PoC reports `vs_original_dense`, which can exceed 1.0 precisely because of
 this effect -- that is a signal, not a bug.
