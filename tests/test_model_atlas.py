@@ -121,6 +121,40 @@ def test_measured_points_come_from_the_tier_config(data):
     assert moe["tok_s"] == pytest.approx(19.356, abs=1e-3)
 
 
+def test_layer_section_sums_match_the_block_totals(data):
+    """The sectioned layer is drawn from these part lists, so they have to
+    account for the whole block -- every projection, none counted twice.
+
+    A part with `n=2` means two matrices of the same shape (in_proj_a and
+    in_proj_b): counting it once understated the Gated DeltaNet layer by
+    245,760 parameters, which is exactly the kind of quiet error a drawing
+    turns into a lie.
+    """
+    S = data["section"]
+    for name, blk in S.items():
+        assert blk["parts_total"] == blk["params"], name
+        assert sum(p["rows"] * p["cols"] * p["n"]
+                   for p in blk["parts"]) == blk["params"]
+        assert all(p["n"] >= 1 for p in blk["parts"])
+    g = data["geometry"]
+    assert S["gdn"]["parts_total"] == g["gdn_layer_params"] == 115_875_936
+    assert S["attention"]["parts_total"] == g["fa_layer_params"] == 104_857_600
+    assert S["ffn"]["parts_total"] == g["ffn_per_layer"] == 267_386_880
+    paired = next(p for p in S["gdn"]["parts"] if "in_proj_a" in p["name"])
+    assert paired["n"] == 2
+
+
+def test_geometry_supports_the_ratios_the_drawing_claims(data):
+    """View A draws the FFN block 3.40x the height of the backbone block and
+    colours every 4th column as attention. Both must be true of the model."""
+    g = data["geometry"]
+    assert g["intermediate"] / g["hidden"] == pytest.approx(3.40, abs=0.005)
+    assert g["gdn_layers"] + g["fa_layers"] == g["layers"] == 64
+    assert g["gdn_layers"] == 3 * g["fa_layers"]
+    # the drawing labels this share, so it must be the measured one
+    assert g["ffn"] / g["params"] == pytest.approx(0.616, abs=0.001)
+
+
 def test_quality_block_keeps_the_unbacked_pair_labelled(data):
     """The Q2-vs-Q4 perplexity pair is flagged in its own source as not backed
     by a committed artifact. The atlas must not present it as measured."""
@@ -146,6 +180,26 @@ def test_rendered_page_is_self_contained(data):
                     r'@import', r'<link[^>]+stylesheet'):
         assert not re.search(pattern, html, re.I), f"external ref: {pattern}"
     assert "<canvas" in html and "SELFTEST" in html
+
+
+def test_every_tab_declares_a_fit_box_and_the_layout_checks(data):
+    """Coherence between the tabs and the sheet layout.
+
+    The drawing is only readable if it is laid out to fit the frame: an earlier
+    version had no fit at all and ran off the paper on every side. Each view
+    must therefore declare the volume it draws into, and the page must keep the
+    two checks that catch the readable-but-broken cases (clipping, and two
+    labels printed on top of each other). Those are browser-only properties, so
+    they are asserted in-page and read back by the render verification.
+    """
+    tmpl = model_atlas.TEMPLATE
+    tabs = set(re.findall(r'data-view="([a-z]+)"', tmpl))
+    assert tabs == {"stack", "layer", "target", "envelope"}
+    boxes = set(re.findall(r"^\s{2}([a-z]+):\s+\{ min:\[", tmpl, re.M))
+    assert tabs <= boxes, f"views with no fit box: {sorted(tabs - boxes)}"
+    assert "drawing is inside the frame" in tmpl
+    assert "no two labels overlap" in tmpl
+    assert "__atlasSelfTest" in tmpl and "measureInk" in tmpl
 
 
 def test_committed_page_is_what_the_generator_produces(data):
