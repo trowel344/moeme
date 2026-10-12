@@ -1,0 +1,3083 @@
+{
+  "model": "Qwen/Qwen3.5-0.8B",
+  "device": "cuda",
+  "weight_dtype": "bfloat16",
+  "amp_dtype": "torch.bfloat16",
+  "corpus": "dataset:HuggingFaceFW/fineweb-edu",
+  "corpus_tokens": 661966,
+  "seq_len": 512,
+  "dense_val_ppl": 15.480310850563608,
+  "layers": [
+    0,
+    3,
+    8,
+    23
+  ],
+  "intermediate": 3584,
+  "runs": [
+    {
+      "name": "tile_E8_k1_12pct",
+      "config": {
+        "n_experts": 8,
+        "top_k": 1,
+        "init": "tile",
+        "expert_units": 448,
+        "n_shared": 0,
+        "combine": "sum"
+      },
+      "accounting": {
+        "active_params": 5505024,
+        "stored_params": 44072992,
+        "active_width_fraction": 0.125,
+        "stored_width_fraction": 1.0,
+        "n_layers": 4
+      },
+      "untrained": {
+        "residual_best_single_expert": 0.7103608772158623,
+        "residual_oracle_topk": 0.7103608772158623,
+        "residual_router": 0.9230832755565643,
+        "residual_all_experts_sum": 0.0047106496058404446,
+        "active_width_fraction": 0.125,
+        "stored_width_fraction": 1.0,
+        "per_layer": {
+          "0": {
+            "residual_best_single_expert": 0.7915952801704407,
+            "residual_oracle_topk": 0.7915952801704407,
+            "residual_router": 0.9220957159996033,
+            "residual_all_experts_sum": 0.004885074682533741,
+            "active_width_fraction": 0.125,
+            "stored_width_fraction": 1.0
+          },
+          "3": {
+            "residual_best_single_expert": 0.8602203726768494,
+            "residual_oracle_topk": 0.8602203726768494,
+            "residual_router": 0.928547739982605,
+            "residual_all_experts_sum": 0.004834882915019989,
+            "active_width_fraction": 0.125,
+            "stored_width_fraction": 1.0
+          },
+          "8": {
+            "residual_best_single_expert": 0.8486900925636292,
+            "residual_oracle_topk": 0.8486900925636292,
+            "residual_router": 0.9250733256340027,
+            "residual_all_experts_sum": 0.005140649154782295,
+            "active_width_fraction": 0.125,
+            "stored_width_fraction": 1.0
+          },
+          "23": {
+            "residual_best_single_expert": 0.3409377634525299,
+            "residual_oracle_topk": 0.3409377634525299,
+            "residual_router": 0.9166163206100464,
+            "residual_all_experts_sum": 0.003981991671025753,
+            "active_width_fraction": 0.125,
+            "stored_width_fraction": 1.0
+          }
+        }
+      },
+      "trained": null,
+      "train": null,
+      "val_ppl": 54.00328643981005,
+      "routing": {
+        "0": {
+          "usage_fraction": [
+            0.14453125,
+            0.232421875,
+            0.087890625,
+            0.296875,
+            0.13671875,
+            0.009765625,
+            0.01953125,
+            0.072265625
+          ],
+          "effective_experts": 5.124002933502197,
+          "load_max_over_mean": 2.375,
+          "usage_entropy_normalised": 0.8545380234718323,
+          "router_entropy_mean": 0.9503805041313171,
+          "n_tokens": 512
+        },
+        "3": {
+          "usage_fraction": [
+            0.04296875,
+            0.310546875,
+            0.12109375,
+            0.19921875,
+            0.05078125,
+            0.0625,
+            0.1640625,
+            0.048828125
+          ],
+          "effective_experts": 5.30720329284668,
+          "load_max_over_mean": 2.484375,
+          "usage_entropy_normalised": 0.886806070804596,
+          "router_entropy_mean": 0.9407931566238403,
+          "n_tokens": 512
+        },
+        "8": {
+          "usage_fraction": [
+            0.3984375,
+            0.0390625,
+            0.185546875,
+            0.0703125,
+            0.02734375,
+            0.1875,
+            0.01953125,
+            0.072265625
+          ],
+          "effective_experts": 4.146667003631592,
+          "load_max_over_mean": 3.1875,
+          "usage_entropy_normalised": 0.803844153881073,
+          "router_entropy_mean": 0.9396114945411682,
+          "n_tokens": 512
+        },
+        "23": {
+          "usage_fraction": [
+            0.06640625,
+            0.0703125,
+            0.126953125,
+            0.4453125,
+            0.134765625,
+            0.06640625,
+            0.064453125,
+            0.025390625
+          ],
+          "effective_experts": 3.9817728996276855,
+          "load_max_over_mean": 3.5625,
+          "usage_entropy_normalised": 0.8219554424285889,
+          "router_entropy_mean": 0.9348648190498352,
+          "n_tokens": 512
+        }
+      },
+      "error": null
+    },
+    {
+      "name": "tile_E4_k1_25pct",
+      "config": {
+        "n_experts": 4,
+        "top_k": 1,
+        "init": "tile",
+        "expert_units": 896,
+        "n_shared": 0,
+        "combine": "sum"
+      },
+      "accounting": {
+        "active_params": 11010048,
+        "stored_params": 44056592,
+        "active_width_fraction": 0.25,
+        "stored_width_fraction": 1.0,
+        "n_layers": 4
+      },
+      "untrained": {
+        "residual_best_single_expert": 0.6339494436979294,
+        "residual_oracle_topk": 0.6339494436979294,
+        "residual_router": 0.8877988010644913,
+        "residual_all_experts_sum": 0.0050622482085600495,
+        "active_width_fraction": 0.25,
+        "stored_width_fraction": 1.0,
+        "per_layer": {
+          "0": {
+            "residual_best_single_expert": 0.7157377600669861,
+            "residual_oracle_topk": 0.7157377600669861,
+            "residual_router": 0.8652714490890503,
+            "residual_all_experts_sum": 0.005172389559447765,
+            "active_width_fraction": 0.25,
+            "stored_width_fraction": 1.0
+          },
+          "3": {
+            "residual_best_single_expert": 0.7871599197387695,
+            "residual_oracle_topk": 0.7871599197387695,
+            "residual_router": 0.8829200267791748,
+            "residual_all_experts_sum": 0.0051533253863453865,
+            "active_width_fraction": 0.25,
+            "stored_width_fraction": 1.0
+          },
+          "8": {
+            "residual_best_single_expert": 0.7522976994514465,
+            "residual_oracle_topk": 0.7522976994514465,
+            "residual_router": 0.8890306353569031,
+            "residual_all_experts_sum": 0.005460961256176233,
+            "active_width_fraction": 0.25,
+            "stored_width_fraction": 1.0
+          },
+          "23": {
+            "residual_best_single_expert": 0.2806023955345154,
+            "residual_oracle_topk": 0.2806023955345154,
+            "residual_router": 0.9139730930328369,
+            "residual_all_experts_sum": 0.004462316632270813,
+            "active_width_fraction": 0.25,
+            "stored_width_fraction": 1.0
+          }
+        }
+      },
+      "trained": null,
+      "train": null,
+      "val_ppl": 45.62790073896574,
+      "routing": {
+        "0": {
+          "usage_fraction": [
+            0.150390625,
+            0.341796875,
+            0.181640625,
+            0.326171875
+          ],
+          "effective_experts": 3.586493730545044,
+          "load_max_over_mean": 1.3671875,
+          "usage_entropy_normalised": 0.9572999477386475,
+          "router_entropy_mean": 0.9404057860374451,
+          "n_tokens": 512
+        },
+        "3": {
+          "usage_fraction": [
+            0.02734375,
+            0.208984375,
+            0.3515625,
+            0.412109375
+          ],
+          "effective_experts": 2.959871768951416,
+          "load_max_over_mean": 1.6484375,
+          "usage_entropy_normalised": 0.8356196880340576,
+          "router_entropy_mean": 0.8705840706825256,
+          "n_tokens": 512
+        },
+        "8": {
+          "usage_fraction": [
+            0.205078125,
+            0.103515625,
+            0.541015625,
+            0.150390625
+          ],
+          "effective_experts": 2.7167434692382812,
+          "load_max_over_mean": 2.1640625,
+          "usage_entropy_normalised": 0.8489992022514343,
+          "router_entropy_mean": 0.9339838624000549,
+          "n_tokens": 512
+        },
+        "23": {
+          "usage_fraction": [
+            0.251953125,
+            0.0,
+            0.625,
+            0.123046875
+          ],
+          "effective_experts": 2.1310787200927734,
+          "load_max_over_mean": 2.5,
+          "usage_entropy_normalised": 0.6484043598175049,
+          "router_entropy_mean": 0.8367362022399902,
+          "n_tokens": 512
+        }
+      },
+      "error": null
+    },
+    {
+      "name": "tile_E2_k1_50pct",
+      "config": {
+        "n_experts": 2,
+        "top_k": 1,
+        "init": "tile",
+        "expert_units": 1792,
+        "n_shared": 0,
+        "combine": "sum"
+      },
+      "accounting": {
+        "active_params": 22020096,
+        "stored_params": 44048392,
+        "active_width_fraction": 0.5,
+        "stored_width_fraction": 1.0,
+        "n_layers": 4
+      },
+      "untrained": {
+        "residual_best_single_expert": 0.4974925108253956,
+        "residual_oracle_topk": 0.4974925108253956,
+        "residual_router": 0.6655997037887573,
+        "residual_all_experts_sum": 0.0035354753490537405,
+        "active_width_fraction": 0.5,
+        "stored_width_fraction": 1.0,
+        "per_layer": {
+          "0": {
+            "residual_best_single_expert": 0.5649674534797668,
+            "residual_oracle_topk": 0.5649674534797668,
+            "residual_router": 0.7441594004631042,
+            "residual_all_experts_sum": 0.0033851144835352898,
+            "active_width_fraction": 0.5,
+            "stored_width_fraction": 1.0
+          },
+          "3": {
+            "residual_best_single_expert": 0.632698655128479,
+            "residual_oracle_topk": 0.632698655128479,
+            "residual_router": 0.6595432162284851,
+            "residual_all_experts_sum": 0.0033835347276180983,
+            "active_width_fraction": 0.5,
+            "stored_width_fraction": 1.0
+          },
+          "8": {
+            "residual_best_single_expert": 0.5843679904937744,
+            "residual_oracle_topk": 0.5843679904937744,
+            "residual_router": 0.6639317274093628,
+            "residual_all_experts_sum": 0.003570006461814046,
+            "active_width_fraction": 0.5,
+            "stored_width_fraction": 1.0
+          },
+          "23": {
+            "residual_best_single_expert": 0.20793594419956207,
+            "residual_oracle_topk": 0.20793594419956207,
+            "residual_router": 0.5947644710540771,
+            "residual_all_experts_sum": 0.003803245723247528,
+            "active_width_fraction": 0.5,
+            "stored_width_fraction": 1.0
+          }
+        }
+      },
+      "trained": null,
+      "train": null,
+      "val_ppl": 26.016929440609772,
+      "routing": {
+        "0": {
+          "usage_fraction": [
+            0.150390625,
+            0.849609375
+          ],
+          "effective_experts": 1.3432673215866089,
+          "load_max_over_mean": 1.69921875,
+          "usage_entropy_normalised": 0.6108169555664062,
+          "router_entropy_mean": 0.8756527304649353,
+          "n_tokens": 512
+        },
+        "3": {
+          "usage_fraction": [
+            0.8515625,
+            0.1484375
+          ],
+          "effective_experts": 1.3383433818817139,
+          "load_max_over_mean": 1.703125,
+          "usage_entropy_normalised": 0.6059162616729736,
+          "router_entropy_mean": 0.8321390748023987,
+          "n_tokens": 512
+        },
+        "8": {
+          "usage_fraction": [
+            0.525390625,
+            0.474609375
+          ],
+          "effective_experts": 1.9948557615280151,
+          "load_max_over_mean": 1.05078125,
+          "usage_entropy_normalised": 0.998138964176178,
+          "router_entropy_mean": 0.916486918926239,
+          "n_tokens": 512
+        },
+        "23": {
+          "usage_fraction": [
+            0.7890625,
+            0.2109375
+          ],
+          "effective_experts": 1.4989936351776123,
+          "load_max_over_mean": 1.578125,
+          "usage_entropy_normalised": 0.7432709336280823,
+          "router_entropy_mean": 0.8732957243919373,
+          "n_tokens": 512
+        }
+      },
+      "error": null
+    },
+    {
+      "name": "tile_E1_k1_100pct",
+      "config": {
+        "n_experts": 1,
+        "top_k": 1,
+        "init": "tile",
+        "expert_units": 3584,
+        "n_shared": 0,
+        "combine": "sum"
+      },
+      "accounting": {
+        "active_params": 44040192,
+        "stored_params": 44044292,
+        "active_width_fraction": 1.0,
+        "stored_width_fraction": 1.0,
+        "n_layers": 4
+      },
+      "untrained": {
+        "residual_best_single_expert": 0.0,
+        "residual_oracle_topk": 0.0,
+        "residual_router": 0.0,
+        "residual_all_experts_sum": 0.0,
+        "active_width_fraction": 1.0,
+        "stored_width_fraction": 1.0,
+        "per_layer": {
+          "0": {
+            "residual_best_single_expert": 0.0,
+            "residual_oracle_topk": 0.0,
+            "residual_router": 0.0,
+            "residual_all_experts_sum": 0.0,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 1.0
+          },
+          "3": {
+            "residual_best_single_expert": 0.0,
+            "residual_oracle_topk": 0.0,
+            "residual_router": 0.0,
+            "residual_all_experts_sum": 0.0,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 1.0
+          },
+          "8": {
+            "residual_best_single_expert": 0.0,
+            "residual_oracle_topk": 0.0,
+            "residual_router": 0.0,
+            "residual_all_experts_sum": 0.0,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 1.0
+          },
+          "23": {
+            "residual_best_single_expert": 0.0,
+            "residual_oracle_topk": 0.0,
+            "residual_router": 0.0,
+            "residual_all_experts_sum": 0.0,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 1.0
+          }
+        }
+      },
+      "trained": null,
+      "train": null,
+      "val_ppl": 15.480310850563608,
+      "routing": {
+        "0": {
+          "usage_fraction": [
+            1.0
+          ],
+          "effective_experts": 1.0,
+          "load_max_over_mean": 1.0,
+          "usage_entropy_normalised": NaN,
+          "router_entropy_mean": NaN,
+          "n_tokens": 512
+        },
+        "3": {
+          "usage_fraction": [
+            1.0
+          ],
+          "effective_experts": 1.0,
+          "load_max_over_mean": 1.0,
+          "usage_entropy_normalised": NaN,
+          "router_entropy_mean": NaN,
+          "n_tokens": 512
+        },
+        "8": {
+          "usage_fraction": [
+            1.0
+          ],
+          "effective_experts": 1.0,
+          "load_max_over_mean": 1.0,
+          "usage_entropy_normalised": NaN,
+          "router_entropy_mean": NaN,
+          "n_tokens": 512
+        },
+        "23": {
+          "usage_fraction": [
+            1.0
+          ],
+          "effective_experts": 1.0,
+          "load_max_over_mean": 1.0,
+          "usage_entropy_normalised": NaN,
+          "router_entropy_mean": NaN,
+          "n_tokens": 512
+        }
+      },
+      "error": null
+    },
+    {
+      "name": "tile_E4_k2_50pct",
+      "config": {
+        "n_experts": 4,
+        "top_k": 2,
+        "init": "tile",
+        "expert_units": 896,
+        "n_shared": 0,
+        "combine": "sum"
+      },
+      "accounting": {
+        "active_params": 22020096,
+        "stored_params": 44056592,
+        "active_width_fraction": 0.5,
+        "stored_width_fraction": 1.0,
+        "n_layers": 4
+      },
+      "untrained": {
+        "residual_best_single_expert": 0.6339494436979294,
+        "residual_oracle_topk": 0.48196688294410706,
+        "residual_router": 0.7391526252031326,
+        "residual_all_experts_sum": 0.0050622482085600495,
+        "active_width_fraction": 0.5,
+        "stored_width_fraction": 1.0,
+        "per_layer": {
+          "0": {
+            "residual_best_single_expert": 0.7157377600669861,
+            "residual_oracle_topk": 0.5326857566833496,
+            "residual_router": 0.7241344451904297,
+            "residual_all_experts_sum": 0.005172389559447765,
+            "active_width_fraction": 0.5,
+            "stored_width_fraction": 1.0
+          },
+          "3": {
+            "residual_best_single_expert": 0.7871599197387695,
+            "residual_oracle_topk": 0.6129936575889587,
+            "residual_router": 0.7158186435699463,
+            "residual_all_experts_sum": 0.0051533253863453865,
+            "active_width_fraction": 0.5,
+            "stored_width_fraction": 1.0
+          },
+          "8": {
+            "residual_best_single_expert": 0.7522976994514465,
+            "residual_oracle_topk": 0.5810183882713318,
+            "residual_router": 0.6865935921669006,
+            "residual_all_experts_sum": 0.005460961256176233,
+            "active_width_fraction": 0.5,
+            "stored_width_fraction": 1.0
+          },
+          "23": {
+            "residual_best_single_expert": 0.2806023955345154,
+            "residual_oracle_topk": 0.20116972923278809,
+            "residual_router": 0.8300638198852539,
+            "residual_all_experts_sum": 0.004462316632270813,
+            "active_width_fraction": 0.5,
+            "stored_width_fraction": 1.0
+          }
+        }
+      },
+      "trained": null,
+      "train": null,
+      "val_ppl": 34.34273248431521,
+      "routing": {
+        "0": {
+          "usage_fraction": [
+            0.0908203125,
+            0.357421875,
+            0.1650390625,
+            0.38671875
+          ],
+          "effective_experts": 3.1970534324645996,
+          "load_max_over_mean": 1.546875,
+          "usage_entropy_normalised": 0.9019229412078857,
+          "router_entropy_mean": 0.9345893263816833,
+          "n_tokens": 512
+        },
+        "3": {
+          "usage_fraction": [
+            0.2509765625,
+            0.4033203125,
+            0.1806640625,
+            0.1650390625
+          ],
+          "effective_experts": 3.502211093902588,
+          "load_max_over_mean": 1.61328125,
+          "usage_entropy_normalised": 0.9519194960594177,
+          "router_entropy_mean": 0.915132999420166,
+          "n_tokens": 512
+        },
+        "8": {
+          "usage_fraction": [
+            0.3134765625,
+            0.3046875,
+            0.1552734375,
+            0.2265625
+          ],
+          "effective_experts": 3.7517478466033936,
+          "load_max_over_mean": 1.25390625,
+          "usage_entropy_normalised": 0.9747903347015381,
+          "router_entropy_mean": 0.9296024441719055,
+          "n_tokens": 512
+        },
+        "23": {
+          "usage_fraction": [
+            0.0771484375,
+            0.412109375,
+            0.2802734375,
+            0.23046875
+          ],
+          "effective_experts": 3.2525079250335693,
+          "load_max_over_mean": 1.6484375,
+          "usage_entropy_normalised": 0.9072585105895996,
+          "router_entropy_mean": 0.9098970890045166,
+          "n_tokens": 512
+        }
+      },
+      "error": null
+    },
+    {
+      "name": "tile_E4_k4_100pct",
+      "config": {
+        "n_experts": 4,
+        "top_k": 4,
+        "init": "tile",
+        "expert_units": 896,
+        "n_shared": 0,
+        "combine": "sum"
+      },
+      "accounting": {
+        "active_params": 44040192,
+        "stored_params": 44056592,
+        "active_width_fraction": 1.0,
+        "stored_width_fraction": 1.0,
+        "n_layers": 4
+      },
+      "untrained": {
+        "residual_best_single_expert": 0.6339494436979294,
+        "residual_oracle_topk": 0.0050622482085600495,
+        "residual_router": 0.0057728319661691785,
+        "residual_all_experts_sum": 0.0050622482085600495,
+        "active_width_fraction": 1.0,
+        "stored_width_fraction": 1.0,
+        "per_layer": {
+          "0": {
+            "residual_best_single_expert": 0.7157377600669861,
+            "residual_oracle_topk": 0.005172389559447765,
+            "residual_router": 0.005820256657898426,
+            "residual_all_experts_sum": 0.005172389559447765,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 1.0
+          },
+          "3": {
+            "residual_best_single_expert": 0.7871599197387695,
+            "residual_oracle_topk": 0.0051533253863453865,
+            "residual_router": 0.005841550417244434,
+            "residual_all_experts_sum": 0.0051533253863453865,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 1.0
+          },
+          "8": {
+            "residual_best_single_expert": 0.7522976994514465,
+            "residual_oracle_topk": 0.005460961256176233,
+            "residual_router": 0.0061295186169445515,
+            "residual_all_experts_sum": 0.005460961256176233,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 1.0
+          },
+          "23": {
+            "residual_best_single_expert": 0.2806023955345154,
+            "residual_oracle_topk": 0.004462316632270813,
+            "residual_router": 0.005300002172589302,
+            "residual_all_experts_sum": 0.004462316632270813,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 1.0
+          }
+        }
+      },
+      "trained": null,
+      "train": null,
+      "val_ppl": 15.468005101812574,
+      "routing": {
+        "0": {
+          "usage_fraction": [
+            0.25,
+            0.25,
+            0.25,
+            0.25
+          ],
+          "effective_experts": 4.0,
+          "load_max_over_mean": 1.0,
+          "usage_entropy_normalised": 1.0,
+          "router_entropy_mean": 0.9352830648422241,
+          "n_tokens": 512
+        },
+        "3": {
+          "usage_fraction": [
+            0.25,
+            0.25,
+            0.25,
+            0.25
+          ],
+          "effective_experts": 4.0,
+          "load_max_over_mean": 1.0,
+          "usage_entropy_normalised": 1.0,
+          "router_entropy_mean": 0.9216805696487427,
+          "n_tokens": 512
+        },
+        "8": {
+          "usage_fraction": [
+            0.25,
+            0.25,
+            0.25,
+            0.25
+          ],
+          "effective_experts": 4.0,
+          "load_max_over_mean": 1.0,
+          "usage_entropy_normalised": 1.0,
+          "router_entropy_mean": 0.9236565232276917,
+          "n_tokens": 512
+        },
+        "23": {
+          "usage_fraction": [
+            0.25,
+            0.25,
+            0.25,
+            0.25
+          ],
+          "effective_experts": 4.0,
+          "load_max_over_mean": 1.0,
+          "usage_entropy_normalised": 1.0,
+          "router_entropy_mean": 0.8873087763786316,
+          "n_tokens": 512
+        }
+      },
+      "error": null
+    },
+    {
+      "name": "replica_E4_k1_12pct",
+      "config": {
+        "n_experts": 4,
+        "top_k": 1,
+        "init": "replica",
+        "expert_units": 448,
+        "n_shared": 0,
+        "combine": "sum"
+      },
+      "accounting": {
+        "active_params": 5505024,
+        "stored_params": 22036496,
+        "active_width_fraction": 0.125,
+        "stored_width_fraction": 0.5,
+        "n_layers": 4
+      },
+      "untrained": {
+        "residual_best_single_expert": 0.7306727021932602,
+        "residual_oracle_topk": 0.7306727021932602,
+        "residual_router": 0.730669230222702,
+        "residual_all_experts_sum": 1.8314171135425568,
+        "active_width_fraction": 0.125,
+        "stored_width_fraction": 0.5,
+        "per_layer": {
+          "0": {
+            "residual_best_single_expert": 0.8446670174598694,
+            "residual_oracle_topk": 0.8446670174598694,
+            "residual_router": 0.8446546196937561,
+            "residual_all_experts_sum": 1.5702338218688965,
+            "active_width_fraction": 0.125,
+            "stored_width_fraction": 0.5
+          },
+          "3": {
+            "residual_best_single_expert": 0.8856844305992126,
+            "residual_oracle_topk": 0.8856844305992126,
+            "residual_router": 0.8856774568557739,
+            "residual_all_experts_sum": 1.592606782913208,
+            "active_width_fraction": 0.125,
+            "stored_width_fraction": 0.5
+          },
+          "8": {
+            "residual_best_single_expert": 0.8507586717605591,
+            "residual_oracle_topk": 0.8507586717605591,
+            "residual_router": 0.8507627844810486,
+            "residual_all_experts_sum": 1.828964352607727,
+            "active_width_fraction": 0.125,
+            "stored_width_fraction": 0.5
+          },
+          "23": {
+            "residual_best_single_expert": 0.34158068895339966,
+            "residual_oracle_topk": 0.34158068895339966,
+            "residual_router": 0.3415820598602295,
+            "residual_all_experts_sum": 2.3338634967803955,
+            "active_width_fraction": 0.125,
+            "stored_width_fraction": 0.5
+          }
+        }
+      },
+      "trained": null,
+      "train": null,
+      "val_ppl": 33.877205721592965,
+      "routing": {
+        "0": {
+          "usage_fraction": [
+            0.14453125,
+            0.306640625,
+            0.287109375,
+            0.26171875
+          ],
+          "effective_experts": 3.7615725994110107,
+          "load_max_over_mean": 1.2265625,
+          "usage_entropy_normalised": 0.974645733833313,
+          "router_entropy_mean": 0.9455576539039612,
+          "n_tokens": 512
+        },
+        "3": {
+          "usage_fraction": [
+            0.205078125,
+            0.13671875,
+            0.322265625,
+            0.3359375
+          ],
+          "effective_experts": 3.604146718978882,
+          "load_max_over_mean": 1.34375,
+          "usage_entropy_normalised": 0.9581969380378723,
+          "router_entropy_mean": 0.9215529561042786,
+          "n_tokens": 512
+        },
+        "8": {
+          "usage_fraction": [
+            0.51953125,
+            0.1484375,
+            0.26953125,
+            0.0625
+          ],
+          "effective_experts": 2.7137060165405273,
+          "load_max_over_mean": 2.078125,
+          "usage_entropy_normalised": 0.8295663595199585,
+          "router_entropy_mean": 0.9291648268699646,
+          "n_tokens": 512
+        },
+        "23": {
+          "usage_fraction": [
+            0.224609375,
+            0.017578125,
+            0.119140625,
+            0.638671875
+          ],
+          "effective_experts": 2.1148149967193604,
+          "load_max_over_mean": 2.5546875,
+          "usage_entropy_normalised": 0.6826028227806091,
+          "router_entropy_mean": 0.8921478390693665,
+          "n_tokens": 512
+        }
+      },
+      "error": null
+    },
+    {
+      "name": "replica_E4_k1_25pct",
+      "config": {
+        "n_experts": 4,
+        "top_k": 1,
+        "init": "replica",
+        "expert_units": 896,
+        "n_shared": 0,
+        "combine": "sum"
+      },
+      "accounting": {
+        "active_params": 11010048,
+        "stored_params": 44056592,
+        "active_width_fraction": 0.25,
+        "stored_width_fraction": 1.0,
+        "n_layers": 4
+      },
+      "untrained": {
+        "residual_best_single_expert": 0.6530205085873604,
+        "residual_oracle_topk": 0.6530205085873604,
+        "residual_router": 0.6530148684978485,
+        "residual_all_experts_sum": 2.116928994655609,
+        "active_width_fraction": 0.25,
+        "stored_width_fraction": 1.0,
+        "per_layer": {
+          "0": {
+            "residual_best_single_expert": 0.7663120031356812,
+            "residual_oracle_topk": 0.7663120031356812,
+            "residual_router": 0.7662962675094604,
+            "residual_all_experts_sum": 1.8803306818008423,
+            "active_width_fraction": 0.25,
+            "stored_width_fraction": 1.0
+          },
+          "3": {
+            "residual_best_single_expert": 0.8105239868164062,
+            "residual_oracle_topk": 0.8105239868164062,
+            "residual_router": 0.8105149269104004,
+            "residual_all_experts_sum": 1.8745039701461792,
+            "active_width_fraction": 0.25,
+            "stored_width_fraction": 1.0
+          },
+          "8": {
+            "residual_best_single_expert": 0.7534853219985962,
+            "residual_oracle_topk": 0.7534853219985962,
+            "residual_router": 0.7534855604171753,
+            "residual_all_experts_sum": 2.1745808124542236,
+            "active_width_fraction": 0.25,
+            "stored_width_fraction": 1.0
+          },
+          "23": {
+            "residual_best_single_expert": 0.28176072239875793,
+            "residual_oracle_topk": 0.28176072239875793,
+            "residual_router": 0.2817627191543579,
+            "residual_all_experts_sum": 2.5383005142211914,
+            "active_width_fraction": 0.25,
+            "stored_width_fraction": 1.0
+          }
+        }
+      },
+      "trained": null,
+      "train": null,
+      "val_ppl": 24.92718742088703,
+      "routing": {
+        "0": {
+          "usage_fraction": [
+            0.060546875,
+            0.150390625,
+            0.609375,
+            0.1796875
+          ],
+          "effective_experts": 2.3260750770568848,
+          "load_max_over_mean": 2.4375,
+          "usage_entropy_normalised": 0.7682267427444458,
+          "router_entropy_mean": 0.9317749738693237,
+          "n_tokens": 512
+        },
+        "3": {
+          "usage_fraction": [
+            0.177734375,
+            0.07421875,
+            0.45703125,
+            0.291015625
+          ],
+          "effective_experts": 3.024203300476074,
+          "load_max_over_mean": 1.828125,
+          "usage_entropy_normalised": 0.8779765963554382,
+          "router_entropy_mean": 0.9067685604095459,
+          "n_tokens": 512
+        },
+        "8": {
+          "usage_fraction": [
+            0.015625,
+            0.146484375,
+            0.126953125,
+            0.7109375
+          ],
+          "effective_experts": 1.840769648551941,
+          "load_max_over_mean": 2.84375,
+          "usage_entropy_normalised": 0.6138159036636353,
+          "router_entropy_mean": 0.8865237832069397,
+          "n_tokens": 512
+        },
+        "23": {
+          "usage_fraction": [
+            0.115234375,
+            0.408203125,
+            0.126953125,
+            0.349609375
+          ],
+          "effective_experts": 3.1421585083007812,
+          "load_max_over_mean": 1.6328125,
+          "usage_entropy_normalised": 0.8974893689155579,
+          "router_entropy_mean": 0.9250050783157349,
+          "n_tokens": 512
+        }
+      },
+      "error": null
+    },
+    {
+      "name": "replica_E4_k1_50pct",
+      "config": {
+        "n_experts": 4,
+        "top_k": 1,
+        "init": "replica",
+        "expert_units": 1792,
+        "n_shared": 0,
+        "combine": "sum"
+      },
+      "accounting": {
+        "active_params": 22020096,
+        "stored_params": 88096784,
+        "active_width_fraction": 0.5,
+        "stored_width_fraction": 2.0,
+        "n_layers": 4
+      },
+      "untrained": {
+        "residual_best_single_expert": 0.5133796483278275,
+        "residual_oracle_topk": 0.5133796483278275,
+        "residual_router": 0.5133837386965752,
+        "residual_all_experts_sum": 2.4933390021324158,
+        "active_width_fraction": 0.5,
+        "stored_width_fraction": 2.0,
+        "per_layer": {
+          "0": {
+            "residual_best_single_expert": 0.6086142659187317,
+            "residual_oracle_topk": 0.6086142659187317,
+            "residual_router": 0.6086243987083435,
+            "residual_all_experts_sum": 2.3378803730010986,
+            "active_width_fraction": 0.5,
+            "stored_width_fraction": 2.0
+          },
+          "3": {
+            "residual_best_single_expert": 0.6507007479667664,
+            "residual_oracle_topk": 0.6507007479667664,
+            "residual_router": 0.650704026222229,
+            "residual_all_experts_sum": 2.3380441665649414,
+            "active_width_fraction": 0.5,
+            "stored_width_fraction": 2.0
+          },
+          "8": {
+            "residual_best_single_expert": 0.5855104327201843,
+            "residual_oracle_topk": 0.5855104327201843,
+            "residual_router": 0.5855126976966858,
+            "residual_all_experts_sum": 2.5387680530548096,
+            "active_width_fraction": 0.5,
+            "stored_width_fraction": 2.0
+          },
+          "23": {
+            "residual_best_single_expert": 0.20869314670562744,
+            "residual_oracle_topk": 0.20869314670562744,
+            "residual_router": 0.20869383215904236,
+            "residual_all_experts_sum": 2.7586634159088135,
+            "active_width_fraction": 0.5,
+            "stored_width_fraction": 2.0
+          }
+        }
+      },
+      "trained": null,
+      "train": null,
+      "val_ppl": 20.112128565409325,
+      "routing": {
+        "0": {
+          "usage_fraction": [
+            0.513671875,
+            0.140625,
+            0.28515625,
+            0.060546875
+          ],
+          "effective_experts": 2.7128634452819824,
+          "load_max_over_mean": 2.0546875,
+          "usage_entropy_normalised": 0.8264016509056091,
+          "router_entropy_mean": 0.9337360858917236,
+          "n_tokens": 512
+        },
+        "3": {
+          "usage_fraction": [
+            0.3046875,
+            0.359375,
+            0.140625,
+            0.1953125
+          ],
+          "effective_experts": 3.5726122856140137,
+          "load_max_over_mean": 1.4375,
+          "usage_entropy_normalised": 0.9555875062942505,
+          "router_entropy_mean": 0.9074980616569519,
+          "n_tokens": 512
+        },
+        "8": {
+          "usage_fraction": [
+            0.0859375,
+            0.1640625,
+            0.189453125,
+            0.560546875
+          ],
+          "effective_experts": 2.6014091968536377,
+          "load_max_over_mean": 2.2421875,
+          "usage_entropy_normalised": 0.8274517059326172,
+          "router_entropy_mean": 0.9276404976844788,
+          "n_tokens": 512
+        },
+        "23": {
+          "usage_fraction": [
+            0.083984375,
+            0.265625,
+            0.486328125,
+            0.1640625
+          ],
+          "effective_experts": 2.9321939945220947,
+          "load_max_over_mean": 1.9453125,
+          "usage_entropy_normalised": 0.8708794713020325,
+          "router_entropy_mean": 0.9112026691436768,
+          "n_tokens": 512
+        }
+      },
+      "error": null
+    },
+    {
+      "name": "replica_E4_k1_full",
+      "config": {
+        "n_experts": 4,
+        "top_k": 1,
+        "init": "replica",
+        "expert_units": 3584,
+        "n_shared": 0,
+        "combine": "sum"
+      },
+      "accounting": {
+        "active_params": 44040192,
+        "stored_params": 176177168,
+        "active_width_fraction": 1.0,
+        "stored_width_fraction": 4.0,
+        "n_layers": 4
+      },
+      "untrained": {
+        "residual_best_single_expert": 0.0,
+        "residual_oracle_topk": 0.0,
+        "residual_router": 0.0038373134448193014,
+        "residual_all_experts_sum": 3.0,
+        "active_width_fraction": 1.0,
+        "stored_width_fraction": 4.0,
+        "per_layer": {
+          "0": {
+            "residual_best_single_expert": 0.0,
+            "residual_oracle_topk": 0.0,
+            "residual_router": 0.0029262418393045664,
+            "residual_all_experts_sum": 3.0,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0
+          },
+          "3": {
+            "residual_best_single_expert": 0.0,
+            "residual_oracle_topk": 0.0,
+            "residual_router": 0.004208249039947987,
+            "residual_all_experts_sum": 2.999999761581421,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0
+          },
+          "8": {
+            "residual_best_single_expert": 0.0,
+            "residual_oracle_topk": 0.0,
+            "residual_router": 0.00399302551522851,
+            "residual_all_experts_sum": 3.0,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0
+          },
+          "23": {
+            "residual_best_single_expert": 0.0,
+            "residual_oracle_topk": 0.0,
+            "residual_router": 0.004221737384796143,
+            "residual_all_experts_sum": 3.000000238418579,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0
+          }
+        }
+      },
+      "trained": null,
+      "train": null,
+      "val_ppl": 15.490580198027995,
+      "routing": {
+        "0": {
+          "usage_fraction": [
+            0.431640625,
+            0.087890625,
+            0.0703125,
+            0.41015625
+          ],
+          "effective_experts": 2.7232344150543213,
+          "load_max_over_mean": 1.7265625,
+          "usage_entropy_normalised": 0.8140930533409119,
+          "router_entropy_mean": 0.9169057011604309,
+          "n_tokens": 512
+        },
+        "3": {
+          "usage_fraction": [
+            0.20703125,
+            0.435546875,
+            0.236328125,
+            0.12109375
+          ],
+          "effective_experts": 3.2994840145111084,
+          "load_max_over_mean": 1.7421875,
+          "usage_entropy_normalised": 0.9266573786735535,
+          "router_entropy_mean": 0.9165859818458557,
+          "n_tokens": 512
+        },
+        "8": {
+          "usage_fraction": [
+            0.65625,
+            0.087890625,
+            0.103515625,
+            0.15234375
+          ],
+          "effective_experts": 2.1172404289245605,
+          "load_max_over_mean": 2.625,
+          "usage_entropy_normalised": 0.7296941876411438,
+          "router_entropy_mean": 0.9101659059524536,
+          "n_tokens": 512
+        },
+        "23": {
+          "usage_fraction": [
+            0.091796875,
+            0.021484375,
+            0.392578125,
+            0.494140625
+          ],
+          "effective_experts": 2.455911636352539,
+          "load_max_over_mean": 1.9765625,
+          "usage_entropy_normalised": 0.7337127327919006,
+          "router_entropy_mean": 0.8284316658973694,
+          "n_tokens": 512
+        }
+      },
+      "error": null
+    },
+    {
+      "name": "trained_tile_E4_k1_25pct",
+      "config": {
+        "n_experts": 4,
+        "top_k": 1,
+        "init": "tile",
+        "expert_units": 896,
+        "n_shared": 0,
+        "combine": "softmax"
+      },
+      "accounting": {
+        "active_params": 11010048,
+        "stored_params": 44056592,
+        "active_width_fraction": 0.25,
+        "stored_width_fraction": 1.0,
+        "n_layers": 4
+      },
+      "untrained": {
+        "residual_best_single_expert": 0.6339494436979294,
+        "residual_oracle_topk": 0.6339494436979294,
+        "residual_router": 0.8851997405290604,
+        "residual_all_experts_sum": 0.0050622482085600495,
+        "active_width_fraction": 0.25,
+        "stored_width_fraction": 1.0,
+        "per_layer": {
+          "0": {
+            "residual_best_single_expert": 0.7157377600669861,
+            "residual_oracle_topk": 0.7157377600669861,
+            "residual_router": 0.8713123202323914,
+            "residual_all_experts_sum": 0.005172389559447765,
+            "active_width_fraction": 0.25,
+            "stored_width_fraction": 1.0
+          },
+          "3": {
+            "residual_best_single_expert": 0.7871599197387695,
+            "residual_oracle_topk": 0.7871599197387695,
+            "residual_router": 0.8564456105232239,
+            "residual_all_experts_sum": 0.0051533253863453865,
+            "active_width_fraction": 0.25,
+            "stored_width_fraction": 1.0
+          },
+          "8": {
+            "residual_best_single_expert": 0.7522976994514465,
+            "residual_oracle_topk": 0.7522976994514465,
+            "residual_router": 0.8686249256134033,
+            "residual_all_experts_sum": 0.005460961256176233,
+            "active_width_fraction": 0.25,
+            "stored_width_fraction": 1.0
+          },
+          "23": {
+            "residual_best_single_expert": 0.2806023955345154,
+            "residual_oracle_topk": 0.2806023955345154,
+            "residual_router": 0.9444161057472229,
+            "residual_all_experts_sum": 0.004462316632270813,
+            "active_width_fraction": 0.25,
+            "stored_width_fraction": 1.0
+          }
+        }
+      },
+      "trained": {
+        "residual_best_single_expert": 0.7439849078655243,
+        "residual_oracle_topk": 0.7439849078655243,
+        "residual_router": 0.9303370714187622,
+        "residual_all_experts_sum": 0.8408552631735802,
+        "active_width_fraction": 0.25,
+        "stored_width_fraction": 1.0,
+        "per_layer": {
+          "0": {
+            "residual_best_single_expert": 0.7352307438850403,
+            "residual_oracle_topk": 0.7352307438850403,
+            "residual_router": 0.8584555387496948,
+            "residual_all_experts_sum": 0.41064104437828064,
+            "active_width_fraction": 0.25,
+            "stored_width_fraction": 1.0
+          },
+          "3": {
+            "residual_best_single_expert": 0.8323721885681152,
+            "residual_oracle_topk": 0.8323721885681152,
+            "residual_router": 0.8975500464439392,
+            "residual_all_experts_sum": 0.6714537143707275,
+            "active_width_fraction": 0.25,
+            "stored_width_fraction": 1.0
+          },
+          "8": {
+            "residual_best_single_expert": 0.8957693576812744,
+            "residual_oracle_topk": 0.8957693576812744,
+            "residual_router": 0.9686489701271057,
+            "residual_all_experts_sum": 1.1676932573318481,
+            "active_width_fraction": 0.25,
+            "stored_width_fraction": 1.0
+          },
+          "23": {
+            "residual_best_single_expert": 0.5125673413276672,
+            "residual_oracle_topk": 0.5125673413276672,
+            "residual_router": 0.9966937303543091,
+            "residual_all_experts_sum": 1.1136330366134644,
+            "active_width_fraction": 0.25,
+            "stored_width_fraction": 1.0
+          }
+        }
+      },
+      "train": {
+        "steps_completed": 80,
+        "loss_curve": [
+          {
+            "step": 0,
+            "loss": 4.3925992250442505,
+            "elapsed": 0.8741272879997268
+          },
+          {
+            "step": 16,
+            "loss": 3.7530431747436523,
+            "elapsed": 9.055782285984606
+          },
+          {
+            "step": 32,
+            "loss": 3.426801383495331,
+            "elapsed": 17.43098097096663
+          },
+          {
+            "step": 48,
+            "loss": 3.0345687866210938,
+            "elapsed": 25.824904586886987
+          },
+          {
+            "step": 64,
+            "loss": 3.3962969183921814,
+            "elapsed": 34.42520279798191
+          },
+          {
+            "step": 79,
+            "loss": 3.4606430530548096,
+            "elapsed": 42.59361319395248
+          }
+        ],
+        "wall_seconds": 42.59498256596271,
+        "trainable_params": 44056592
+      },
+      "val_ppl": 23.189535853195284,
+      "routing": {
+        "0": {
+          "usage_fraction": [
+            0.28515625,
+            0.197265625,
+            0.28125,
+            0.236328125
+          ],
+          "effective_experts": 3.918797016143799,
+          "load_max_over_mean": 1.140625,
+          "usage_entropy_normalised": 0.9923384785652161,
+          "router_entropy_mean": 0.9516952037811279,
+          "n_tokens": 512
+        },
+        "3": {
+          "usage_fraction": [
+            0.20703125,
+            0.322265625,
+            0.248046875,
+            0.22265625
+          ],
+          "effective_experts": 3.8786730766296387,
+          "load_max_over_mean": 1.2890625,
+          "usage_entropy_normalised": 0.9891453981399536,
+          "router_entropy_mean": 0.9342314004898071,
+          "n_tokens": 512
+        },
+        "8": {
+          "usage_fraction": [
+            0.240234375,
+            0.20703125,
+            0.263671875,
+            0.2890625
+          ],
+          "effective_experts": 3.942370653152466,
+          "load_max_over_mean": 1.15625,
+          "usage_entropy_normalised": 0.9946699142456055,
+          "router_entropy_mean": 0.9490323066711426,
+          "n_tokens": 512
+        },
+        "23": {
+          "usage_fraction": [
+            0.23828125,
+            0.216796875,
+            0.193359375,
+            0.3515625
+          ],
+          "effective_experts": 3.7769644260406494,
+          "load_max_over_mean": 1.40625,
+          "usage_entropy_normalised": 0.9799120426177979,
+          "router_entropy_mean": 0.9402042031288147,
+          "n_tokens": 512
+        }
+      },
+      "error": null
+    },
+    {
+      "name": "btx_replica_k1_full",
+      "config": {
+        "n_experts": 4,
+        "top_k": 1,
+        "init": "replica",
+        "expert_units": 3584,
+        "n_shared": 0,
+        "combine": "softmax"
+      },
+      "accounting": {
+        "active_params": 44040192,
+        "stored_params": 176177168,
+        "active_width_fraction": 1.0,
+        "stored_width_fraction": 4.0,
+        "n_layers": 4
+      },
+      "untrained": {
+        "residual_best_single_expert": 0.0,
+        "residual_oracle_topk": 0.0,
+        "residual_router": 0.004375204851385206,
+        "residual_all_experts_sum": 3.0,
+        "active_width_fraction": 1.0,
+        "stored_width_fraction": 4.0,
+        "per_layer": {
+          "0": {
+            "residual_best_single_expert": 0.0,
+            "residual_oracle_topk": 0.0,
+            "residual_router": 0.004329875577241182,
+            "residual_all_experts_sum": 3.0,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0
+          },
+          "3": {
+            "residual_best_single_expert": 0.0,
+            "residual_oracle_topk": 0.0,
+            "residual_router": 0.0038025740068405867,
+            "residual_all_experts_sum": 2.999999761581421,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0
+          },
+          "8": {
+            "residual_best_single_expert": 0.0,
+            "residual_oracle_topk": 0.0,
+            "residual_router": 0.00540389958769083,
+            "residual_all_experts_sum": 3.0,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0
+          },
+          "23": {
+            "residual_best_single_expert": 0.0,
+            "residual_oracle_topk": 0.0,
+            "residual_router": 0.003964470233768225,
+            "residual_all_experts_sum": 3.000000238418579,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0
+          }
+        }
+      },
+      "trained": {
+        "residual_best_single_expert": 0.5070931762456894,
+        "residual_oracle_topk": 0.5070931762456894,
+        "residual_router": 0.6296122670173645,
+        "residual_all_experts_sum": 3.2815642952919006,
+        "active_width_fraction": 1.0,
+        "stored_width_fraction": 4.0,
+        "per_layer": {
+          "0": {
+            "residual_best_single_expert": 0.35694342851638794,
+            "residual_oracle_topk": 0.35694342851638794,
+            "residual_router": 0.5579104423522949,
+            "residual_all_experts_sum": 3.1872847080230713,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0
+          },
+          "3": {
+            "residual_best_single_expert": 0.5254910588264465,
+            "residual_oracle_topk": 0.5254910588264465,
+            "residual_router": 0.6547561287879944,
+            "residual_all_experts_sum": 3.341644763946533,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0
+          },
+          "8": {
+            "residual_best_single_expert": 0.6272329092025757,
+            "residual_oracle_topk": 0.6272329092025757,
+            "residual_router": 0.735249400138855,
+            "residual_all_experts_sum": 3.3716495037078857,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0
+          },
+          "23": {
+            "residual_best_single_expert": 0.5187053084373474,
+            "residual_oracle_topk": 0.5187053084373474,
+            "residual_router": 0.5705330967903137,
+            "residual_all_experts_sum": 3.2256782054901123,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0
+          }
+        }
+      },
+      "train": {
+        "steps_completed": 80,
+        "loss_curve": [
+          {
+            "step": 0,
+            "loss": 3.3931643962860107,
+            "elapsed": 0.6412606000667438
+          },
+          {
+            "step": 16,
+            "loss": 3.3175607919692993,
+            "elapsed": 11.264627436059527
+          },
+          {
+            "step": 32,
+            "loss": 3.1201668977737427,
+            "elapsed": 21.848232573014684
+          },
+          {
+            "step": 48,
+            "loss": 2.5815359354019165,
+            "elapsed": 32.35706469498109
+          },
+          {
+            "step": 64,
+            "loss": 3.083583176136017,
+            "elapsed": 42.95804993098136
+          },
+          {
+            "step": 79,
+            "loss": 3.159429371356964,
+            "elapsed": 52.91681463702116
+          }
+        ],
+        "wall_seconds": 52.91839744406752,
+        "trainable_params": 176177168
+      },
+      "val_ppl": 19.142369518667145,
+      "routing": {
+        "0": {
+          "usage_fraction": [
+            0.228515625,
+            0.263671875,
+            0.259765625,
+            0.248046875
+          ],
+          "effective_experts": 3.9880728721618652,
+          "load_max_over_mean": 1.0546875,
+          "usage_entropy_normalised": 0.9989079236984253,
+          "router_entropy_mean": 0.9541692137718201,
+          "n_tokens": 512
+        },
+        "3": {
+          "usage_fraction": [
+            0.375,
+            0.251953125,
+            0.1875,
+            0.185546875
+          ],
+          "effective_experts": 3.653778553009033,
+          "load_max_over_mean": 1.5,
+          "usage_entropy_normalised": 0.9677209258079529,
+          "router_entropy_mean": 0.9285337924957275,
+          "n_tokens": 512
+        },
+        "8": {
+          "usage_fraction": [
+            0.2578125,
+            0.23828125,
+            0.306640625,
+            0.197265625
+          ],
+          "effective_experts": 3.9033920764923096,
+          "load_max_over_mean": 1.2265625,
+          "usage_entropy_normalised": 0.9910695552825928,
+          "router_entropy_mean": 0.940165102481842,
+          "n_tokens": 512
+        },
+        "23": {
+          "usage_fraction": [
+            0.267578125,
+            0.310546875,
+            0.154296875,
+            0.267578125
+          ],
+          "effective_experts": 3.7958877086639404,
+          "load_max_over_mean": 1.2421875,
+          "usage_entropy_normalised": 0.9788985848426819,
+          "router_entropy_mean": 0.9162085652351379,
+          "n_tokens": 512
+        }
+      },
+      "error": null,
+      "btx": {
+        "per_expert": [
+          {
+            "expert": 0,
+            "blocks": 352,
+            "steps_completed": 40,
+            "loss_curve": [
+              {
+                "step": 0,
+                "loss": 1.4131820797920227,
+                "elapsed": 0.7130567439598963
+              },
+              {
+                "step": 8,
+                "loss": 1.1914125978946686,
+                "elapsed": 4.801938534947112
+              },
+              {
+                "step": 16,
+                "loss": 1.2286868393421173,
+                "elapsed": 8.918580658966675
+              },
+              {
+                "step": 24,
+                "loss": 1.268377423286438,
+                "elapsed": 13.04106568894349
+              },
+              {
+                "step": 32,
+                "loss": 1.1776148527860641,
+                "elapsed": 17.17154378001578
+              },
+              {
+                "step": 39,
+                "loss": 1.0239452049136162,
+                "elapsed": 20.780622099991888
+              }
+            ],
+            "wall_seconds": 20.78202364803292,
+            "trainable_params": 176177168
+          },
+          {
+            "expert": 1,
+            "blocks": 419,
+            "steps_completed": 40,
+            "loss_curve": [
+              {
+                "step": 0,
+                "loss": 1.9090037941932678,
+                "elapsed": 0.5156621950445697
+              },
+              {
+                "step": 8,
+                "loss": 1.4411706030368805,
+                "elapsed": 4.667701059952378
+              },
+              {
+                "step": 16,
+                "loss": 1.8081022500991821,
+                "elapsed": 8.811278968933038
+              },
+              {
+                "step": 24,
+                "loss": 1.9386963844299316,
+                "elapsed": 12.964484101044945
+              },
+              {
+                "step": 32,
+                "loss": 1.6615702509880066,
+                "elapsed": 17.117936135968193
+              },
+              {
+                "step": 39,
+                "loss": 1.4979142844676971,
+                "elapsed": 20.77677322004456
+              }
+            ],
+            "wall_seconds": 20.77822259196546,
+            "trainable_params": 176177168
+          },
+          {
+            "expert": 2,
+            "blocks": 325,
+            "steps_completed": 40,
+            "loss_curve": [
+              {
+                "step": 0,
+                "loss": 3.098828911781311,
+                "elapsed": 0.5177875340450555
+              },
+              {
+                "step": 8,
+                "loss": 3.002864956855774,
+                "elapsed": 4.715025314013474
+              },
+              {
+                "step": 16,
+                "loss": 3.3440300822257996,
+                "elapsed": 8.929743411019444
+              },
+              {
+                "step": 24,
+                "loss": 2.6956560015678406,
+                "elapsed": 13.20268200605642
+              },
+              {
+                "step": 32,
+                "loss": 2.857377916574478,
+                "elapsed": 17.50166866602376
+              },
+              {
+                "step": 39,
+                "loss": 2.5068753957748413,
+                "elapsed": 21.232358301989734
+              }
+            ],
+            "wall_seconds": 21.23374613095075,
+            "trainable_params": 176177168
+          },
+          {
+            "expert": 3,
+            "blocks": 351,
+            "steps_completed": 40,
+            "loss_curve": [
+              {
+                "step": 0,
+                "loss": 2.9090831875801086,
+                "elapsed": 0.5290976549731568
+              },
+              {
+                "step": 8,
+                "loss": 2.8149242401123047,
+                "elapsed": 4.848961282987148
+              },
+              {
+                "step": 16,
+                "loss": 3.0263160467147827,
+                "elapsed": 9.172848465968855
+              },
+              {
+                "step": 24,
+                "loss": 2.6676893830299377,
+                "elapsed": 13.509653424029239
+              },
+              {
+                "step": 32,
+                "loss": 2.92902147769928,
+                "elapsed": 17.811838167952374
+              },
+              {
+                "step": 39,
+                "loss": 2.897808313369751,
+                "elapsed": 21.582221830030903
+              }
+            ],
+            "wall_seconds": 21.583805143018253,
+            "trainable_params": 176177168
+          }
+        ],
+        "steps": 160,
+        "wall_seconds": 84.37779751396738,
+        "residual_after_stage2": {
+          "residual_best_single_expert": 0.2550772577524185,
+          "residual_oracle_topk": 0.2550772577524185,
+          "residual_router": 0.35120340436697006,
+          "residual_all_experts_sum": 3.100661337375641,
+          "active_width_fraction": 1.0,
+          "stored_width_fraction": 4.0,
+          "per_layer": {
+            "0": {
+              "residual_best_single_expert": 0.21694207191467285,
+              "residual_oracle_topk": 0.21694207191467285,
+              "residual_router": 0.2780609428882599,
+              "residual_all_experts_sum": 3.0938568115234375,
+              "active_width_fraction": 1.0,
+              "stored_width_fraction": 4.0
+            },
+            "3": {
+              "residual_best_single_expert": 0.2771141827106476,
+              "residual_oracle_topk": 0.2771141827106476,
+              "residual_router": 0.42315882444381714,
+              "residual_all_experts_sum": 3.138099193572998,
+              "active_width_fraction": 1.0,
+              "stored_width_fraction": 4.0
+            },
+            "8": {
+              "residual_best_single_expert": 0.318862646818161,
+              "residual_oracle_topk": 0.318862646818161,
+              "residual_router": 0.3947694003582001,
+              "residual_all_experts_sum": 3.1462442874908447,
+              "active_width_fraction": 1.0,
+              "stored_width_fraction": 4.0
+            },
+            "23": {
+              "residual_best_single_expert": 0.20739012956619263,
+              "residual_oracle_topk": 0.20739012956619263,
+              "residual_router": 0.30882444977760315,
+              "residual_all_experts_sum": 3.024445056915283,
+              "active_width_fraction": 1.0,
+              "stored_width_fraction": 4.0
+            }
+          }
+        }
+      },
+      "domain_ppl": {
+        "code": 4.768138269424888,
+        "math": 6.541824406584769,
+        "chat": 31.102747275448696,
+        "wiki": 22.260543182094995
+      },
+      "expert_usage_on_val": {
+        "0": [
+          0.259765625,
+          0.248046875,
+          0.21875,
+          0.2734375
+        ],
+        "3": [
+          0.19921875,
+          0.181640625,
+          0.38671875,
+          0.232421875
+        ],
+        "8": [
+          0.244140625,
+          0.181640625,
+          0.380859375,
+          0.193359375
+        ],
+        "23": [
+          0.27734375,
+          0.169921875,
+          0.0703125,
+          0.482421875
+        ]
+      }
+    },
+    {
+      "name": "btx_replica_k1_half",
+      "config": {
+        "n_experts": 4,
+        "top_k": 1,
+        "init": "replica",
+        "expert_units": 1792,
+        "n_shared": 0,
+        "combine": "softmax"
+      },
+      "accounting": {
+        "active_params": 22020096,
+        "stored_params": 88096784,
+        "active_width_fraction": 0.5,
+        "stored_width_fraction": 2.0,
+        "n_layers": 4
+      },
+      "untrained": {
+        "residual_best_single_expert": 0.5133796483278275,
+        "residual_oracle_topk": 0.5133796483278275,
+        "residual_router": 0.5133814886212349,
+        "residual_all_experts_sum": 2.4933390021324158,
+        "active_width_fraction": 0.5,
+        "stored_width_fraction": 2.0,
+        "per_layer": {
+          "0": {
+            "residual_best_single_expert": 0.6086142659187317,
+            "residual_oracle_topk": 0.6086142659187317,
+            "residual_router": 0.6086240410804749,
+            "residual_all_experts_sum": 2.3378803730010986,
+            "active_width_fraction": 0.5,
+            "stored_width_fraction": 2.0
+          },
+          "3": {
+            "residual_best_single_expert": 0.6507007479667664,
+            "residual_oracle_topk": 0.6507007479667664,
+            "residual_router": 0.6507006883621216,
+            "residual_all_experts_sum": 2.3380441665649414,
+            "active_width_fraction": 0.5,
+            "stored_width_fraction": 2.0
+          },
+          "8": {
+            "residual_best_single_expert": 0.5855104327201843,
+            "residual_oracle_topk": 0.5855104327201843,
+            "residual_router": 0.5855116844177246,
+            "residual_all_experts_sum": 2.5387680530548096,
+            "active_width_fraction": 0.5,
+            "stored_width_fraction": 2.0
+          },
+          "23": {
+            "residual_best_single_expert": 0.20869314670562744,
+            "residual_oracle_topk": 0.20869314670562744,
+            "residual_router": 0.20868954062461853,
+            "residual_all_experts_sum": 2.7586634159088135,
+            "active_width_fraction": 0.5,
+            "stored_width_fraction": 2.0
+          }
+        }
+      },
+      "trained": {
+        "residual_best_single_expert": 0.6817815899848938,
+        "residual_oracle_topk": 0.6817815899848938,
+        "residual_router": 0.7335783392190933,
+        "residual_all_experts_sum": 2.797786235809326,
+        "active_width_fraction": 0.5,
+        "stored_width_fraction": 2.0,
+        "per_layer": {
+          "0": {
+            "residual_best_single_expert": 0.6558030843734741,
+            "residual_oracle_topk": 0.6558030843734741,
+            "residual_router": 0.7061614394187927,
+            "residual_all_experts_sum": 2.5158863067626953,
+            "active_width_fraction": 0.5,
+            "stored_width_fraction": 2.0
+          },
+          "3": {
+            "residual_best_single_expert": 0.7389629483222961,
+            "residual_oracle_topk": 0.7389629483222961,
+            "residual_router": 0.7829560041427612,
+            "residual_all_experts_sum": 2.5720582008361816,
+            "active_width_fraction": 0.5,
+            "stored_width_fraction": 2.0
+          },
+          "8": {
+            "residual_best_single_expert": 0.7481892108917236,
+            "residual_oracle_topk": 0.7481892108917236,
+            "residual_router": 0.801819920539856,
+            "residual_all_experts_sum": 2.8311524391174316,
+            "active_width_fraction": 0.5,
+            "stored_width_fraction": 2.0
+          },
+          "23": {
+            "residual_best_single_expert": 0.5841711163520813,
+            "residual_oracle_topk": 0.5841711163520813,
+            "residual_router": 0.6433759927749634,
+            "residual_all_experts_sum": 3.272047996520996,
+            "active_width_fraction": 0.5,
+            "stored_width_fraction": 2.0
+          }
+        }
+      },
+      "train": {
+        "steps_completed": 80,
+        "loss_curve": [
+          {
+            "step": 0,
+            "loss": 3.5216079354286194,
+            "elapsed": 0.5684470050036907
+          },
+          {
+            "step": 16,
+            "loss": 3.429720878601074,
+            "elapsed": 9.511804970097728
+          },
+          {
+            "step": 32,
+            "loss": 3.170966625213623,
+            "elapsed": 18.606104189064354
+          },
+          {
+            "step": 48,
+            "loss": 2.6906842589378357,
+            "elapsed": 27.57444633205887
+          },
+          {
+            "step": 64,
+            "loss": 3.132374107837677,
+            "elapsed": 36.582811113097705
+          },
+          {
+            "step": 79,
+            "loss": 3.2306078672409058,
+            "elapsed": 45.08776383905206
+          }
+        ],
+        "wall_seconds": 45.089136980008334,
+        "trainable_params": 88096784
+      },
+      "val_ppl": 19.797677821995894,
+      "routing": {
+        "0": {
+          "usage_fraction": [
+            0.23046875,
+            0.263671875,
+            0.2578125,
+            0.248046875
+          ],
+          "effective_experts": 3.989893674850464,
+          "load_max_over_mean": 1.0546875,
+          "usage_entropy_normalised": 0.9990772008895874,
+          "router_entropy_mean": 0.9542236924171448,
+          "n_tokens": 512
+        },
+        "3": {
+          "usage_fraction": [
+            0.333984375,
+            0.25,
+            0.212890625,
+            0.203125
+          ],
+          "effective_experts": 3.8368899822235107,
+          "load_max_over_mean": 1.3359375,
+          "usage_entropy_normalised": 0.9853217005729675,
+          "router_entropy_mean": 0.929811954498291,
+          "n_tokens": 512
+        },
+        "8": {
+          "usage_fraction": [
+            0.22265625,
+            0.240234375,
+            0.3203125,
+            0.216796875
+          ],
+          "effective_experts": 3.8927266597747803,
+          "load_max_over_mean": 1.28125,
+          "usage_entropy_normalised": 0.9905298352241516,
+          "router_entropy_mean": 0.9420502781867981,
+          "n_tokens": 512
+        },
+        "23": {
+          "usage_fraction": [
+            0.283203125,
+            0.302734375,
+            0.150390625,
+            0.263671875
+          ],
+          "effective_experts": 3.7879891395568848,
+          "load_max_over_mean": 1.2109375,
+          "usage_entropy_normalised": 0.9777355194091797,
+          "router_entropy_mean": 0.9181484580039978,
+          "n_tokens": 512
+        }
+      },
+      "error": null,
+      "btx": {
+        "per_expert": [
+          {
+            "expert": 0,
+            "blocks": 352,
+            "steps_completed": 40,
+            "loss_curve": [
+              {
+                "step": 0,
+                "loss": 1.5513727366924286,
+                "elapsed": 0.6988732740283012
+              },
+              {
+                "step": 8,
+                "loss": 1.2424255460500717,
+                "elapsed": 4.448350841994397
+              },
+              {
+                "step": 16,
+                "loss": 1.2497957348823547,
+                "elapsed": 8.214048392954282
+              },
+              {
+                "step": 24,
+                "loss": 1.277181714773178,
+                "elapsed": 11.985471763997339
+              },
+              {
+                "step": 32,
+                "loss": 1.2253706455230713,
+                "elapsed": 15.770652977982536
+              },
+              {
+                "step": 39,
+                "loss": 1.027084857225418,
+                "elapsed": 19.094753045006655
+              }
+            ],
+            "wall_seconds": 19.09612878097687,
+            "trainable_params": 88096784
+          },
+          {
+            "expert": 1,
+            "blocks": 419,
+            "steps_completed": 40,
+            "loss_curve": [
+              {
+                "step": 0,
+                "loss": 2.05263152718544,
+                "elapsed": 0.47151943505741656
+              },
+              {
+                "step": 8,
+                "loss": 1.5177492499351501,
+                "elapsed": 4.275141770020127
+              },
+              {
+                "step": 16,
+                "loss": 1.8634074330329895,
+                "elapsed": 8.092326576006599
+              },
+              {
+                "step": 24,
+                "loss": 1.9864334464073181,
+                "elapsed": 11.929684118018486
+              },
+              {
+                "step": 32,
+                "loss": 1.7148219347000122,
+                "elapsed": 15.774084564996883
+              },
+              {
+                "step": 39,
+                "loss": 1.597638189792633,
+                "elapsed": 19.158471992006525
+              }
+            ],
+            "wall_seconds": 19.159913089009933,
+            "trainable_params": 88096784
+          },
+          {
+            "expert": 2,
+            "blocks": 325,
+            "steps_completed": 40,
+            "loss_curve": [
+              {
+                "step": 0,
+                "loss": 3.3476563692092896,
+                "elapsed": 0.496673041023314
+              },
+              {
+                "step": 8,
+                "loss": 3.059727728366852,
+                "elapsed": 4.4161565660033375
+              },
+              {
+                "step": 16,
+                "loss": 3.4967894554138184,
+                "elapsed": 8.393734126002528
+              },
+              {
+                "step": 24,
+                "loss": 2.7846811413764954,
+                "elapsed": 12.354091570014134
+              },
+              {
+                "step": 32,
+                "loss": 2.966961145401001,
+                "elapsed": 16.260313146049157
+              },
+              {
+                "step": 39,
+                "loss": 2.6714289784431458,
+                "elapsed": 19.68879086303059
+              }
+            ],
+            "wall_seconds": 19.69017068995163,
+            "trainable_params": 88096784
+          },
+          {
+            "expert": 3,
+            "blocks": 351,
+            "steps_completed": 40,
+            "loss_curve": [
+              {
+                "step": 0,
+                "loss": 3.21475088596344,
+                "elapsed": 0.4877720719669014
+              },
+              {
+                "step": 8,
+                "loss": 2.892032504081726,
+                "elapsed": 4.499352845014073
+              },
+              {
+                "step": 16,
+                "loss": 3.2047149538993835,
+                "elapsed": 8.467254798975773
+              },
+              {
+                "step": 24,
+                "loss": 2.8515102863311768,
+                "elapsed": 12.44788132503163
+              },
+              {
+                "step": 32,
+                "loss": 3.011335849761963,
+                "elapsed": 16.44525791297201
+              },
+              {
+                "step": 39,
+                "loss": 3.077946960926056,
+                "elapsed": 19.986112548969686
+              }
+            ],
+            "wall_seconds": 19.9877034049714,
+            "trainable_params": 88096784
+          }
+        ],
+        "steps": 160,
+        "wall_seconds": 77.93391596490983,
+        "residual_after_stage2": {
+          "residual_best_single_expert": 0.5608368888497353,
+          "residual_oracle_topk": 0.5608368888497353,
+          "residual_router": 0.5989439636468887,
+          "residual_all_experts_sum": 2.6229840517044067,
+          "active_width_fraction": 0.5,
+          "stored_width_fraction": 2.0,
+          "per_layer": {
+            "0": {
+              "residual_best_single_expert": 0.6245933771133423,
+              "residual_oracle_topk": 0.6245933771133423,
+              "residual_router": 0.6375349760055542,
+              "residual_all_experts_sum": 2.429265260696411,
+              "active_width_fraction": 0.5,
+              "stored_width_fraction": 2.0
+            },
+            "3": {
+              "residual_best_single_expert": 0.6783247590065002,
+              "residual_oracle_topk": 0.6783247590065002,
+              "residual_router": 0.7045756578445435,
+              "residual_all_experts_sum": 2.418757915496826,
+              "active_width_fraction": 0.5,
+              "stored_width_fraction": 2.0
+            },
+            "8": {
+              "residual_best_single_expert": 0.636752724647522,
+              "residual_oracle_topk": 0.636752724647522,
+              "residual_router": 0.6592150330543518,
+              "residual_all_experts_sum": 2.6566061973571777,
+              "active_width_fraction": 0.5,
+              "stored_width_fraction": 2.0
+            },
+            "23": {
+              "residual_best_single_expert": 0.30367669463157654,
+              "residual_oracle_topk": 0.30367669463157654,
+              "residual_router": 0.39445018768310547,
+              "residual_all_experts_sum": 2.987306833267212,
+              "active_width_fraction": 0.5,
+              "stored_width_fraction": 2.0
+            }
+          }
+        }
+      },
+      "domain_ppl": {
+        "code": 4.902067857636478,
+        "math": 6.602184423507898,
+        "chat": 33.026476750374094,
+        "wiki": 24.73264526285937
+      },
+      "expert_usage_on_val": {
+        "0": [
+          0.259765625,
+          0.248046875,
+          0.21875,
+          0.2734375
+        ],
+        "3": [
+          0.19140625,
+          0.185546875,
+          0.3984375,
+          0.224609375
+        ],
+        "8": [
+          0.23046875,
+          0.169921875,
+          0.3984375,
+          0.201171875
+        ],
+        "23": [
+          0.298828125,
+          0.19140625,
+          0.109375,
+          0.400390625
+        ]
+      }
+    },
+    {
+      "name": "btx_tile_k1_25pct",
+      "config": {
+        "n_experts": 4,
+        "top_k": 1,
+        "init": "tile",
+        "expert_units": 896,
+        "n_shared": 0,
+        "combine": "softmax"
+      },
+      "accounting": {
+        "active_params": 11010048,
+        "stored_params": 44056592,
+        "active_width_fraction": 0.25,
+        "stored_width_fraction": 1.0,
+        "n_layers": 4
+      },
+      "untrained": {
+        "residual_best_single_expert": 0.6339494436979294,
+        "residual_oracle_topk": 0.6339494436979294,
+        "residual_router": 0.8476519584655762,
+        "residual_all_experts_sum": 0.0050622482085600495,
+        "active_width_fraction": 0.25,
+        "stored_width_fraction": 1.0,
+        "per_layer": {
+          "0": {
+            "residual_best_single_expert": 0.7157377600669861,
+            "residual_oracle_topk": 0.7157377600669861,
+            "residual_router": 0.8116212487220764,
+            "residual_all_experts_sum": 0.005172389559447765,
+            "active_width_fraction": 0.25,
+            "stored_width_fraction": 1.0
+          },
+          "3": {
+            "residual_best_single_expert": 0.7871599197387695,
+            "residual_oracle_topk": 0.7871599197387695,
+            "residual_router": 0.8808527588844299,
+            "residual_all_experts_sum": 0.0051533253863453865,
+            "active_width_fraction": 0.25,
+            "stored_width_fraction": 1.0
+          },
+          "8": {
+            "residual_best_single_expert": 0.7522976994514465,
+            "residual_oracle_topk": 0.7522976994514465,
+            "residual_router": 0.8969704508781433,
+            "residual_all_experts_sum": 0.005460961256176233,
+            "active_width_fraction": 0.25,
+            "stored_width_fraction": 1.0
+          },
+          "23": {
+            "residual_best_single_expert": 0.2806023955345154,
+            "residual_oracle_topk": 0.2806023955345154,
+            "residual_router": 0.801163375377655,
+            "residual_all_experts_sum": 0.004462316632270813,
+            "active_width_fraction": 0.25,
+            "stored_width_fraction": 1.0
+          }
+        }
+      },
+      "trained": {
+        "residual_best_single_expert": 0.7544082403182983,
+        "residual_oracle_topk": 0.7544082403182983,
+        "residual_router": 0.9236999750137329,
+        "residual_all_experts_sum": 1.0800182223320007,
+        "active_width_fraction": 0.25,
+        "stored_width_fraction": 1.0,
+        "per_layer": {
+          "0": {
+            "residual_best_single_expert": 0.7497217059135437,
+            "residual_oracle_topk": 0.7497217059135437,
+            "residual_router": 0.8688467144966125,
+            "residual_all_experts_sum": 0.5363553166389465,
+            "active_width_fraction": 0.25,
+            "stored_width_fraction": 1.0
+          },
+          "3": {
+            "residual_best_single_expert": 0.8307185769081116,
+            "residual_oracle_topk": 0.8307185769081116,
+            "residual_router": 0.9102614521980286,
+            "residual_all_experts_sum": 0.7751637101173401,
+            "active_width_fraction": 0.25,
+            "stored_width_fraction": 1.0
+          },
+          "8": {
+            "residual_best_single_expert": 0.8566300272941589,
+            "residual_oracle_topk": 0.8566300272941589,
+            "residual_router": 0.9773802757263184,
+            "residual_all_experts_sum": 1.3061530590057373,
+            "active_width_fraction": 0.25,
+            "stored_width_fraction": 1.0
+          },
+          "23": {
+            "residual_best_single_expert": 0.5805626511573792,
+            "residual_oracle_topk": 0.5805626511573792,
+            "residual_router": 0.9383114576339722,
+            "residual_all_experts_sum": 1.702400803565979,
+            "active_width_fraction": 0.25,
+            "stored_width_fraction": 1.0
+          }
+        }
+      },
+      "train": {
+        "steps_completed": 80,
+        "loss_curve": [
+          {
+            "step": 0,
+            "loss": 3.7761693596839905,
+            "elapsed": 0.5193182820221409
+          },
+          {
+            "step": 16,
+            "loss": 3.667866051197052,
+            "elapsed": 9.072222494054586
+          },
+          {
+            "step": 32,
+            "loss": 3.365912973880768,
+            "elapsed": 17.679760345024988
+          },
+          {
+            "step": 48,
+            "loss": 2.9230971932411194,
+            "elapsed": 26.23746257601306
+          },
+          {
+            "step": 64,
+            "loss": 3.2551955580711365,
+            "elapsed": 34.83808154205326
+          },
+          {
+            "step": 79,
+            "loss": 3.3813294172286987,
+            "elapsed": 42.7775699889753
+          }
+        ],
+        "wall_seconds": 42.77900764904916,
+        "trainable_params": 44056592
+      },
+      "val_ppl": 21.63657750215214,
+      "routing": {
+        "0": {
+          "usage_fraction": [
+            0.23046875,
+            0.275390625,
+            0.287109375,
+            0.20703125
+          ],
+          "effective_experts": 3.933143377304077,
+          "load_max_over_mean": 1.1484375,
+          "usage_entropy_normalised": 0.9938085079193115,
+          "router_entropy_mean": 0.9546902775764465,
+          "n_tokens": 512
+        },
+        "3": {
+          "usage_fraction": [
+            0.353515625,
+            0.26953125,
+            0.20703125,
+            0.169921875
+          ],
+          "effective_experts": 3.712561845779419,
+          "load_max_over_mean": 1.4140625,
+          "usage_entropy_normalised": 0.9725154638290405,
+          "router_entropy_mean": 0.914697527885437,
+          "n_tokens": 512
+        },
+        "8": {
+          "usage_fraction": [
+            0.240234375,
+            0.224609375,
+            0.33984375,
+            0.1953125
+          ],
+          "effective_experts": 3.8196706771850586,
+          "load_max_over_mean": 1.359375,
+          "usage_entropy_normalised": 0.983771026134491,
+          "router_entropy_mean": 0.9397318363189697,
+          "n_tokens": 512
+        },
+        "23": {
+          "usage_fraction": [
+            0.197265625,
+            0.44921875,
+            0.130859375,
+            0.22265625
+          ],
+          "effective_experts": 3.252971887588501,
+          "load_max_over_mean": 1.796875,
+          "usage_entropy_normalised": 0.923516035079956,
+          "router_entropy_mean": 0.9238916635513306,
+          "n_tokens": 512
+        }
+      },
+      "error": null,
+      "btx": {
+        "per_expert": [
+          {
+            "expert": 0,
+            "blocks": 352,
+            "steps_completed": 40,
+            "loss_curve": [
+              {
+                "step": 0,
+                "loss": 1.7661665380001068,
+                "elapsed": 0.48557566094677895
+              },
+              {
+                "step": 8,
+                "loss": 1.3575991690158844,
+                "elapsed": 4.4989718169672415
+              },
+              {
+                "step": 16,
+                "loss": 1.3073541820049286,
+                "elapsed": 8.4480649799807
+              },
+              {
+                "step": 24,
+                "loss": 1.3461315631866455,
+                "elapsed": 12.381375711993314
+              },
+              {
+                "step": 32,
+                "loss": 1.2458199858665466,
+                "elapsed": 16.367361281998456
+              },
+              {
+                "step": 39,
+                "loss": 1.0928276479244232,
+                "elapsed": 19.795843177009374
+              }
+            ],
+            "wall_seconds": 19.79753088601865,
+            "trainable_params": 44056592
+          },
+          {
+            "expert": 1,
+            "blocks": 419,
+            "steps_completed": 40,
+            "loss_curve": [
+              {
+                "step": 0,
+                "loss": 2.921347200870514,
+                "elapsed": 0.49686333897989243
+              },
+              {
+                "step": 8,
+                "loss": 1.9489026069641113,
+                "elapsed": 4.448108579963446
+              },
+              {
+                "step": 16,
+                "loss": 2.0643701255321503,
+                "elapsed": 8.333357053925283
+              },
+              {
+                "step": 24,
+                "loss": 2.211856484413147,
+                "elapsed": 12.23413991194684
+              },
+              {
+                "step": 32,
+                "loss": 1.9496584832668304,
+                "elapsed": 16.17791829095222
+              },
+              {
+                "step": 39,
+                "loss": 1.799933284521103,
+                "elapsed": 19.607594854896888
+              }
+            ],
+            "wall_seconds": 19.609147514915094,
+            "trainable_params": 44056592
+          },
+          {
+            "expert": 2,
+            "blocks": 325,
+            "steps_completed": 40,
+            "loss_curve": [
+              {
+                "step": 0,
+                "loss": 4.43889182806015,
+                "elapsed": 0.4968863819958642
+              },
+              {
+                "step": 8,
+                "loss": 3.6020777821540833,
+                "elapsed": 4.419056662009098
+              },
+              {
+                "step": 16,
+                "loss": 4.0200419425964355,
+                "elapsed": 8.331186649040319
+              },
+              {
+                "step": 24,
+                "loss": 3.283738911151886,
+                "elapsed": 12.329146087053232
+              },
+              {
+                "step": 32,
+                "loss": 3.415926694869995,
+                "elapsed": 16.24656729202252
+              },
+              {
+                "step": 39,
+                "loss": 3.0538607835769653,
+                "elapsed": 19.69883055705577
+              }
+            ],
+            "wall_seconds": 19.701160007040016,
+            "trainable_params": 44056592
+          },
+          {
+            "expert": 3,
+            "blocks": 351,
+            "steps_completed": 40,
+            "loss_curve": [
+              {
+                "step": 0,
+                "loss": 4.28987330198288,
+                "elapsed": 0.47706972202286124
+              },
+              {
+                "step": 8,
+                "loss": 3.5239282846450806,
+                "elapsed": 4.422794874990359
+              },
+              {
+                "step": 16,
+                "loss": 3.8295222520828247,
+                "elapsed": 8.420082462951541
+              },
+              {
+                "step": 24,
+                "loss": 3.302767753601074,
+                "elapsed": 12.320631703012623
+              },
+              {
+                "step": 32,
+                "loss": 3.4012656807899475,
+                "elapsed": 16.278516456950456
+              },
+              {
+                "step": 39,
+                "loss": 3.6187260150909424,
+                "elapsed": 19.65418542502448
+              }
+            ],
+            "wall_seconds": 19.655691924039274,
+            "trainable_params": 44056592
+          }
+        ],
+        "steps": 160,
+        "wall_seconds": 78.76353033201303,
+        "residual_after_stage2": {
+          "residual_best_single_expert": 0.6776476949453354,
+          "residual_oracle_topk": 0.6776476949453354,
+          "residual_router": 0.874566838145256,
+          "residual_all_experts_sum": 0.5490413159132004,
+          "active_width_fraction": 0.25,
+          "stored_width_fraction": 1.0,
+          "per_layer": {
+            "0": {
+              "residual_best_single_expert": 0.7246187329292297,
+              "residual_oracle_topk": 0.7246187329292297,
+              "residual_router": 0.8155713081359863,
+              "residual_all_experts_sum": 0.31017404794692993,
+              "active_width_fraction": 0.25,
+              "stored_width_fraction": 1.0
+            },
+            "3": {
+              "residual_best_single_expert": 0.8020474910736084,
+              "residual_oracle_topk": 0.8020474910736084,
+              "residual_router": 0.8967198729515076,
+              "residual_all_experts_sum": 0.43914276361465454,
+              "active_width_fraction": 0.25,
+              "stored_width_fraction": 1.0
+            },
+            "8": {
+              "residual_best_single_expert": 0.7826125025749207,
+              "residual_oracle_topk": 0.7826125025749207,
+              "residual_router": 0.9502784013748169,
+              "residual_all_experts_sum": 0.7368481159210205,
+              "active_width_fraction": 0.25,
+              "stored_width_fraction": 1.0
+            },
+            "23": {
+              "residual_best_single_expert": 0.40131205320358276,
+              "residual_oracle_topk": 0.40131205320358276,
+              "residual_router": 0.8356977701187134,
+              "residual_all_experts_sum": 0.7100003361701965,
+              "active_width_fraction": 0.25,
+              "stored_width_fraction": 1.0
+            }
+          }
+        }
+      },
+      "domain_ppl": {
+        "code": 6.7467768622428785,
+        "math": 7.693302912214312,
+        "chat": 40.88087074734487,
+        "wiki": 32.69364867932819
+      },
+      "expert_usage_on_val": {
+        "0": [
+          0.185546875,
+          0.326171875,
+          0.26171875,
+          0.2265625
+        ],
+        "3": [
+          0.30078125,
+          0.212890625,
+          0.341796875,
+          0.14453125
+        ],
+        "8": [
+          0.123046875,
+          0.1953125,
+          0.341796875,
+          0.33984375
+        ],
+        "23": [
+          0.291015625,
+          0.109375,
+          0.22265625,
+          0.376953125
+        ]
+      }
+    },
+    {
+      "name": "trained_replica_E4_k1_full",
+      "config": {
+        "n_experts": 4,
+        "top_k": 1,
+        "init": "replica",
+        "expert_units": 3584,
+        "n_shared": 0,
+        "combine": "softmax"
+      },
+      "accounting": {
+        "active_params": 44040192,
+        "stored_params": 176177168,
+        "active_width_fraction": 1.0,
+        "stored_width_fraction": 4.0,
+        "n_layers": 4
+      },
+      "untrained": {
+        "residual_best_single_expert": 0.0,
+        "residual_oracle_topk": 0.0,
+        "residual_router": 0.004375204851385206,
+        "residual_all_experts_sum": 3.0,
+        "active_width_fraction": 1.0,
+        "stored_width_fraction": 4.0,
+        "per_layer": {
+          "0": {
+            "residual_best_single_expert": 0.0,
+            "residual_oracle_topk": 0.0,
+            "residual_router": 0.004329875577241182,
+            "residual_all_experts_sum": 3.0,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0
+          },
+          "3": {
+            "residual_best_single_expert": 0.0,
+            "residual_oracle_topk": 0.0,
+            "residual_router": 0.0038025740068405867,
+            "residual_all_experts_sum": 2.999999761581421,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0
+          },
+          "8": {
+            "residual_best_single_expert": 0.0,
+            "residual_oracle_topk": 0.0,
+            "residual_router": 0.00540389958769083,
+            "residual_all_experts_sum": 3.0,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0
+          },
+          "23": {
+            "residual_best_single_expert": 0.0,
+            "residual_oracle_topk": 0.0,
+            "residual_router": 0.003964470233768225,
+            "residual_all_experts_sum": 3.000000238418579,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0
+          }
+        }
+      },
+      "trained": {
+        "residual_best_single_expert": 0.4077967032790184,
+        "residual_oracle_topk": 0.4077967032790184,
+        "residual_router": 0.5490748211741447,
+        "residual_all_experts_sum": 3.2275710701942444,
+        "active_width_fraction": 1.0,
+        "stored_width_fraction": 4.0,
+        "per_layer": {
+          "0": {
+            "residual_best_single_expert": 0.2674355208873749,
+            "residual_oracle_topk": 0.2674355208873749,
+            "residual_router": 0.48720410466194153,
+            "residual_all_experts_sum": 3.124652862548828,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0
+          },
+          "3": {
+            "residual_best_single_expert": 0.4366985857486725,
+            "residual_oracle_topk": 0.4366985857486725,
+            "residual_router": 0.5882880091667175,
+            "residual_all_experts_sum": 3.2522974014282227,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0
+          },
+          "8": {
+            "residual_best_single_expert": 0.5276861190795898,
+            "residual_oracle_topk": 0.5276861190795898,
+            "residual_router": 0.6692912578582764,
+            "residual_all_experts_sum": 3.2995896339416504,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0
+          },
+          "23": {
+            "residual_best_single_expert": 0.3993665874004364,
+            "residual_oracle_topk": 0.3993665874004364,
+            "residual_router": 0.45151591300964355,
+            "residual_all_experts_sum": 3.2337443828582764,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0
+          }
+        }
+      },
+      "train": {
+        "steps_completed": 80,
+        "loss_curve": [
+          {
+            "step": 0,
+            "loss": 3.195624351501465,
+            "elapsed": 0.8613410770194605
+          },
+          {
+            "step": 16,
+            "loss": 3.2962120175361633,
+            "elapsed": 10.927709736046381
+          },
+          {
+            "step": 32,
+            "loss": 3.0980862975120544,
+            "elapsed": 21.021838932996616
+          },
+          {
+            "step": 48,
+            "loss": 2.5742441713809967,
+            "elapsed": 31.101638548076153
+          },
+          {
+            "step": 64,
+            "loss": 3.057593286037445,
+            "elapsed": 41.237276630010456
+          },
+          {
+            "step": 79,
+            "loss": 3.116166114807129,
+            "elapsed": 50.80762144306209
+          }
+        ],
+        "wall_seconds": 50.80904146307148,
+        "trainable_params": 176177168
+      },
+      "val_ppl": 19.105355637950236,
+      "routing": {
+        "0": {
+          "usage_fraction": [
+            0.23046875,
+            0.265625,
+            0.2578125,
+            0.24609375
+          ],
+          "effective_experts": 3.9888010025024414,
+          "load_max_over_mean": 1.0625,
+          "usage_entropy_normalised": 0.9989804029464722,
+          "router_entropy_mean": 0.9541824460029602,
+          "n_tokens": 512
+        },
+        "3": {
+          "usage_fraction": [
+            0.31640625,
+            0.28515625,
+            0.21484375,
+            0.18359375
+          ],
+          "effective_experts": 3.8271431922912598,
+          "load_max_over_mean": 1.265625,
+          "usage_entropy_normalised": 0.9835439920425415,
+          "router_entropy_mean": 0.9307262301445007,
+          "n_tokens": 512
+        },
+        "8": {
+          "usage_fraction": [
+            0.2421875,
+            0.259765625,
+            0.318359375,
+            0.1796875
+          ],
+          "effective_experts": 3.849510908126831,
+          "load_max_over_mean": 1.2734375,
+          "usage_entropy_normalised": 0.9856607913970947,
+          "router_entropy_mean": 0.9411416053771973,
+          "n_tokens": 512
+        },
+        "23": {
+          "usage_fraction": [
+            0.283203125,
+            0.3515625,
+            0.14453125,
+            0.220703125
+          ],
+          "effective_experts": 3.6576530933380127,
+          "load_max_over_mean": 1.40625,
+          "usage_entropy_normalised": 0.9650388360023499,
+          "router_entropy_mean": 0.9131579399108887,
+          "n_tokens": 512
+        }
+      },
+      "error": null
+    },
+    {
+      "name": "trained_replica_E4_k1_full_shared",
+      "config": {
+        "n_experts": 4,
+        "top_k": 1,
+        "init": "replica",
+        "expert_units": 3584,
+        "n_shared": 1,
+        "combine": "softmax"
+      },
+      "accounting": {
+        "active_params": 88080384,
+        "stored_params": 220217360,
+        "active_width_fraction": 1.0,
+        "stored_width_fraction": 4.0,
+        "n_layers": 4
+      },
+      "untrained": {
+        "residual_best_single_expert": 0.0,
+        "residual_oracle_topk": 0.0,
+        "residual_router": 0.003537632350344211,
+        "residual_all_experts_sum": 3.0,
+        "active_width_fraction": 1.0,
+        "stored_width_fraction": 4.0,
+        "residual_shared_only": 0.0,
+        "per_layer": {
+          "0": {
+            "residual_best_single_expert": 0.0,
+            "residual_oracle_topk": 0.0,
+            "residual_router": 0.003682832233607769,
+            "residual_all_experts_sum": 3.0,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0,
+            "residual_shared_only": 0.0
+          },
+          "3": {
+            "residual_best_single_expert": 0.0,
+            "residual_oracle_topk": 0.0,
+            "residual_router": 0.002627234673127532,
+            "residual_all_experts_sum": 2.999999761581421,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0,
+            "residual_shared_only": 0.0
+          },
+          "8": {
+            "residual_best_single_expert": 0.0,
+            "residual_oracle_topk": 0.0,
+            "residual_router": 0.004158868920058012,
+            "residual_all_experts_sum": 3.0,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0,
+            "residual_shared_only": 0.0
+          },
+          "23": {
+            "residual_best_single_expert": 0.0,
+            "residual_oracle_topk": 0.0,
+            "residual_router": 0.0036815935745835304,
+            "residual_all_experts_sum": 3.000000238418579,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0,
+            "residual_shared_only": 0.0
+          }
+        }
+      },
+      "trained": {
+        "residual_best_single_expert": 0.38424377888441086,
+        "residual_oracle_topk": 0.38424377888441086,
+        "residual_router": 0.5142127424478531,
+        "residual_all_experts_sum": 2.88893324136734,
+        "active_width_fraction": 1.0,
+        "stored_width_fraction": 4.0,
+        "residual_shared_only": 0.4778083711862564,
+        "per_layer": {
+          "0": {
+            "residual_best_single_expert": 0.28185683488845825,
+            "residual_oracle_topk": 0.28185683488845825,
+            "residual_router": 0.4897547960281372,
+            "residual_all_experts_sum": 2.985245704650879,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0,
+            "residual_shared_only": 0.43784835934638977
+          },
+          "3": {
+            "residual_best_single_expert": 0.4292701482772827,
+            "residual_oracle_topk": 0.4292701482772827,
+            "residual_router": 0.5673364996910095,
+            "residual_all_experts_sum": 3.072011947631836,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0,
+            "residual_shared_only": 0.532627284526825
+          },
+          "8": {
+            "residual_best_single_expert": 0.5402999520301819,
+            "residual_oracle_topk": 0.5402999520301819,
+            "residual_router": 0.683391809463501,
+            "residual_all_experts_sum": 3.149428606033325,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0,
+            "residual_shared_only": 0.6477259397506714
+          },
+          "23": {
+            "residual_best_single_expert": 0.2855481803417206,
+            "residual_oracle_topk": 0.2855481803417206,
+            "residual_router": 0.31636786460876465,
+            "residual_all_experts_sum": 2.3490467071533203,
+            "active_width_fraction": 1.0,
+            "stored_width_fraction": 4.0,
+            "residual_shared_only": 0.2930319011211395
+          }
+        }
+      },
+      "train": {
+        "steps_completed": 80,
+        "loss_curve": [
+          {
+            "step": 0,
+            "loss": 4.372682332992554,
+            "elapsed": 0.6327910190448165
+          },
+          {
+            "step": 16,
+            "loss": 3.6202641129493713,
+            "elapsed": 11.468843156006187
+          },
+          {
+            "step": 32,
+            "loss": 3.288985311985016,
+            "elapsed": 22.331052246969193
+          },
+          {
+            "step": 48,
+            "loss": 2.7067342698574066,
+            "elapsed": 33.229224181966856
+          },
+          {
+            "step": 64,
+            "loss": 3.1872925758361816,
+            "elapsed": 44.28283763001673
+          },
+          {
+            "step": 79,
+            "loss": 3.320314943790436,
+            "elapsed": 54.610589226009324
+          }
+        ],
+        "wall_seconds": 54.612288873060606,
+        "trainable_params": 220217360
+      },
+      "val_ppl": 22.779513131023673,
+      "routing": {
+        "0": {
+          "usage_fraction": [
+            0.22265625,
+            0.279296875,
+            0.28515625,
+            0.212890625
+          ],
+          "effective_experts": 3.9336154460906982,
+          "load_max_over_mean": 1.140625,
+          "usage_entropy_normalised": 0.9938890933990479,
+          "router_entropy_mean": 0.9548611044883728,
+          "n_tokens": 512
+        },
+        "3": {
+          "usage_fraction": [
+            0.341796875,
+            0.2890625,
+            0.173828125,
+            0.1953125
+          ],
+          "effective_experts": 3.7209935188293457,
+          "load_max_over_mean": 1.3671875,
+          "usage_entropy_normalised": 0.9729619026184082,
+          "router_entropy_mean": 0.9155086874961853,
+          "n_tokens": 512
+        },
+        "8": {
+          "usage_fraction": [
+            0.25390625,
+            0.2109375,
+            0.30078125,
+            0.234375
+          ],
+          "effective_experts": 3.9313738346099854,
+          "load_max_over_mean": 1.203125,
+          "usage_entropy_normalised": 0.9938010573387146,
+          "router_entropy_mean": 0.9374901652336121,
+          "n_tokens": 512
+        },
+        "23": {
+          "usage_fraction": [
+            0.224609375,
+            0.3359375,
+            0.146484375,
+            0.29296875
+          ],
+          "effective_experts": 3.6956043243408203,
+          "load_max_over_mean": 1.34375,
+          "usage_entropy_normalised": 0.968717634677887,
+          "router_entropy_mean": 0.9211038947105408,
+          "n_tokens": 512
+        }
+      },
+      "error": null
+    }
+  ]
+}

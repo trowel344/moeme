@@ -1,0 +1,38 @@
+model=Qwen/Qwen3.5-0.8B dtype=bfloat16 corpus=dataset:HuggingFaceFW/fineweb-edu tokens=661966 layers=[0, 3, 8, 23]
+dense val ppl = 15.4803
+
+config                              actw  stored   best1  oracle  router   tall     ppl
+--------------------------------------------------------------------------------------------
+tile_E8_k1_12pct                   0.125   1.00x  0.7104  0.7104  0.9231  0.005   54.00
+tile_E4_k1_25pct                   0.250   1.00x  0.6339  0.6339  0.8878  0.005   45.63
+tile_E2_k1_50pct                   0.500   1.00x  0.4975  0.4975  0.6656  0.004   26.02
+tile_E1_k1_100pct                  1.000   1.00x  0.0000  0.0000  0.0000  0.000   15.48
+tile_E4_k2_50pct                   0.500   1.00x  0.6339  0.4820  0.7392  0.005   34.34
+tile_E4_k4_100pct                  1.000   1.00x  0.6339  0.0051  0.0058  0.005   15.47
+replica_E4_k1_12pct                0.125   0.50x  0.7307  0.7307  0.7307  1.831   33.88
+replica_E4_k1_25pct                0.250   1.00x  0.6530  0.6530  0.6530  2.117   24.93
+replica_E4_k1_50pct                0.500   2.00x  0.5134  0.5134  0.5134  2.493   20.11
+replica_E4_k1_full                 1.000   4.00x  0.0000  0.0000  0.0038  3.000   15.49
+trained_tile_E4_k1_25pct           0.250   1.00x  0.6339  0.6339  0.8852  0.005   23.19   |trained router 0.9303
+trained_replica_E4_k1_full         1.000   4.00x  0.0000  0.0000  0.0044  3.000   19.11   |trained router 0.5491
+trained_replica_E4_k1_full_shared  1.000   4.00x  0.0000  0.0000  0.0035  3.000   22.78   |trained router 0.5142
+btx_replica_k1_full                1.000   4.00x  0.0000  0.0000  0.0044  3.000   19.14   |trained router 0.6296
+btx_replica_k1_half                0.500   2.00x  0.5134  0.5134  0.5134  2.493   19.80   |trained router 0.7336
+btx_tile_k1_25pct                  0.250   1.00x  0.6339  0.6339  0.8477  0.005   21.64   |trained router 0.9237
+
+--- BTX detail ---
+btx_replica_k1_full                stage3 router 0.6296 (after stage2 0.3512) domain_ppl code=4.8 math=6.5 chat=31.1 wiki=22.3
+    layer 0 usage [0.26, 0.248, 0.219, 0.273]
+    layer 3 usage [0.199, 0.182, 0.387, 0.232]
+    layer 8 usage [0.244, 0.182, 0.381, 0.193]
+    layer 23 usage [0.277, 0.17, 0.07, 0.482]
+btx_replica_k1_half                stage3 router 0.7336 (after stage2 0.5989) domain_ppl code=4.9 math=6.6 chat=33.0 wiki=24.7
+    layer 0 usage [0.26, 0.248, 0.219, 0.273]
+    layer 3 usage [0.191, 0.186, 0.398, 0.225]
+    layer 8 usage [0.23, 0.17, 0.398, 0.201]
+    layer 23 usage [0.299, 0.191, 0.109, 0.4]
+btx_tile_k1_25pct                  stage3 router 0.9237 (after stage2 0.8746) domain_ppl code=6.7 math=7.7 chat=40.9 wiki=32.7
+    layer 0 usage [0.186, 0.326, 0.262, 0.227]
+    layer 3 usage [0.301, 0.213, 0.342, 0.145]
+    layer 8 usage [0.123, 0.195, 0.342, 0.34]
+    layer 23 usage [0.291, 0.109, 0.223, 0.377]
