@@ -131,7 +131,10 @@ docs/                            source validation, feasibility report, decision
                                  upcycling design, branching-vs-slicing, expert
                                  offloading, quality-vs-speed (MoE vs dense on a
                                  fixed task set, plus engine placement),
-                                 prior-work review of the MoE route, and a model
+                                 prior-work review of the MoE route, a survey of
+                                 every route to a resident model
+                                 (solution_space.md: what is measured, what is
+                                 published and what is untested), and a model
                                  blueprint (model_atlas.html, regenerate with
                                  `make atlas`)
 results/                         raw evidence: JSON + printed tables
