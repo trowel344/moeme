@@ -96,6 +96,10 @@ tools/bench_hardware.py          non-destructive hardware characterisation
 tools/bench_inference.py         end-to-end quantised inference benchmark (ollama)
 tools/residency_table.py         what quantisation fits resident, and the tok/s that follows
 tools/summarise_results.py       re-print every headline number from results/*.json
+tools/model_atlas.py             derive every number from the artifacts and write
+                                 docs/model_atlas.html: a dependency-free 3D view of
+                                 the layer geometry, the active-parameter arithmetic
+                                 and the residency quantisation envelope (`make atlas`)
 tools/mem_watchdog.py            armed memory floor for a run that may not fit;
                                  terminates the target before the OOM killer does
 experiments/verify_real_ffn.py   partitioning verified on REAL 27B weights
@@ -126,7 +130,8 @@ docs/                            source validation, feasibility report, decision
                                  upcycling design, branching-vs-slicing, expert
                                  offloading, quality-vs-speed (MoE vs dense on a
                                  fixed task set, plus engine placement),
-                                 prior-work review of the MoE route
+                                 prior-work review of the MoE route, and a 3D model
+                                 atlas (model_atlas.html, regenerate with `make atlas`)
 results/                         raw evidence: JSON + printed tables
 ```
 

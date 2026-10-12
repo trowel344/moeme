@@ -41,7 +41,7 @@ LLAMA_EXTRA  ?= --tasks $(SHORT19) --num-predict 768
         compare-upcycled-08b self-teach \
         eval eval-llama eval-surplus quant-ppl quant-ppl-selftest \
         recover-eval-window recover-eval-window-selftest report \
-        residency clean clean-results all
+        residency atlas clean clean-results all
 
 help:
 	@echo "moeme targets:"
@@ -66,6 +66,9 @@ help:
 	@echo "                        report never recorded, by measuring the val loss"
 	@echo "                        curve and inverting it (needs the model, ~3 min)"
 	@echo "  make recover-eval-window-selftest  check that inversion offline (~1 s)"
+	@echo "  make atlas            write docs/model_atlas.html: the geometry, the"
+	@echo "                        active-parameter arithmetic and the residency envelope,"
+	@echo "                        in 3D, every number read from the artifacts"
 	@echo "  make eval             evaluation gate set (MODEL=..., NUM_PREDICT=...)"
 	@echo "                        slow models: EVAL_EXTRA=\"--think off --num-predict 384\""
 	@echo "                        subsets:     EVAL_EXTRA=\"--tasks r_lily,f_json_nulls\""
@@ -200,6 +203,14 @@ eval-surplus:
 
 report:
 	$(PY_SYS) tools/summarise_results.py
+
+# The atlas is a *view* of the artifacts rather than a drawing: every number in
+# the page is read out of results/*.json, configs/tiers.json and
+# src/moeme/accounting.py when the page is generated, so it cannot drift from
+# them silently -- tests/test_model_atlas.py fails if it does. The output is one
+# dependency-free HTML file: open it directly, no server and no network.
+atlas:
+	$(PY_SYS) tools/model_atlas.py
 
 residency:
 	$(PY_SYS) tools/residency_table.py
