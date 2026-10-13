@@ -65,10 +65,13 @@ are committed under `results/` so the claims can be checked against raw data.
    against 4.15x without it. This corrects the repo's own account — E15's omission
    of the N/k rescaling was listed as a defect of that run, and it cost nothing.
 
-Read `docs/feasibility_report.md` then `docs/decision_memo.md`. For the MoE
-question specifically, `docs/upcycling_design.md` (the plan) and
-`docs/prior_work.md` (what the field actually achieved, and why E15's negative
-result is about budget and configuration rather than feasibility).
+**Start with `docs/status.md`** — a one-page verdict on what is proven, what is
+closed and what is still open, with none of the survey's open questions left
+looking like solutions. Then `docs/feasibility_report.md` and
+`docs/decision_memo.md` for the detail behind it. For the MoE question
+specifically, `docs/upcycling_design.md` (the plan) and `docs/prior_work.md`
+(what the field actually achieved, and why E15's negative result is about budget
+and configuration rather than feasibility).
 
 ## Repository layout
 
@@ -79,7 +82,7 @@ src/moeme/accounting.py     exact parameter accounting, memory-tier throughput m
 src/moeme/branch.py         the *branching* alternative: complete experts (tile or
                             replica init), shared experts, forced-expert mode for
                             independent training, residual_report diagnostics
-tests/                      371 tests: exactness, shapes, plans, oracle bounds,
+tests/                      385 tests: exactness, shapes, plans, oracle bounds,
                             accounting, upcycling (dense limit, gradients, aux loss,
                             half precision, CUDA autocast, the E/k output rescaling),
                             branching (exact and narrow limits, shared experts,
@@ -127,7 +130,9 @@ experiments/self_teach_poc.py    can a layer be taught by its own dense FFN with
 kaggle/upcycle_poc.ipynb         the same PoC, run on free Kaggle GPUs (E15);
 kaggle/README.md, kaggle_run.log  how to run it, and the raw session log
 configs/tiers.json               measured constants, with provenance and limitations
-docs/                            source validation, feasibility report, decision memo,
+docs/                            a one-page status verdict (status.md: what is
+                                 proven, what is closed, what is still open),
+                                 source validation, feasibility report, decision memo,
                                  upcycling design, branching-vs-slicing, expert
                                  offloading, quality-vs-speed (MoE vs dense on a
                                  fixed task set, plus engine placement),
@@ -144,7 +149,7 @@ results/                         raw evidence: JSON + printed tables
 
 ```bash
 make venv        # .venv reusing system torch, plus pytest
-make test        # 371 tests, offline, ~17 s
+make test        # 385 tests, offline, ~20 s
 make doctor      # one-command local diagnostics (~90 s, writes results/hardware.json)
 make bench-inference
 make verify-sources      # re-derive parameter counts from the real artefacts
