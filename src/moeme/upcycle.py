@@ -77,6 +77,24 @@ COMBINE_MODES = ("sum", "sum_rescaled", "mean", "softmax")
 PLAN_MODES = ("contiguous", "interleaved", "random", "clustered")
 
 
+def _dequant(w: Tensor) -> Tensor:
+    """A plain detached copy, dequantizing bitsandbytes storage if needed."""
+    if type(w).__module__.startswith("bitsandbytes"):
+        try:
+            import bitsandbytes.functional as bnb_f
+            qs = getattr(w, "quant_state", None)
+            if qs is not None and getattr(w, "data", None) is not None \
+                    and w.data.dtype == torch.uint8:
+                out = bnb_f.dequantize_4bit(w.data, qs).to(torch.float32)
+                return out
+            if hasattr(w, "dequantize"):
+                return w.dequantize().to(torch.float32)
+        except Exception:
+            pass
+        return w.float().detach().clone()
+    return w.detach().clone()
+
+
 def build_plan(name: str, gate: Tensor, up: Tensor, n_experts: int,
                seed: int = 0) -> PartitionPlan:
     """Dispatch to the partition plans in `moeme.ffn`."""
@@ -225,15 +243,21 @@ class MoEFFN(nn.Module):
 
     @classmethod
     def from_hf_mlp(cls, mlp: nn.Module, config: MoEConfig) -> "MoEFFN":
-        """Upcycle an HF `*MLP` module (gate_proj/up_proj/down_proj)."""
+        """Upcycle an HF `*MLP` module (gate_proj/up_proj/down_proj).
+
+        Quantized backbones (bitsandbytes 8-bit/4-bit) are dequantized into
+        full-precision expert copies: the converted layers always train in
+        fp32/bf16 even when the frozen backbone stays quantized. This is what
+        makes 27B-class conversion fittable on a 40GB card.
+        """
         missing = [n for n in ("gate_proj", "up_proj", "down_proj")
                    if not hasattr(mlp, n)]
         if missing:
             raise ValueError(f"mlp is missing {missing}; not a swiGLU MLP")
         return cls(
-            mlp.gate_proj.weight.detach(),
-            mlp.up_proj.weight.detach(),
-            mlp.down_proj.weight.detach(),
+            _dequant(mlp.gate_proj.weight),
+            _dequant(mlp.up_proj.weight),
+            _dequant(mlp.down_proj.weight),
             config,
         )
 

@@ -1,0 +1,22 @@
+{
+  "dense": {
+    "domains": {
+      "code": 3.1,
+      "math": 8.89,
+      "chat": 16.1,
+      "wiki": 32.97,
+      "web": 28.61
+    },
+    "fineweb": 24.12
+  },
+  "mocm": {
+    "domains": {
+      "code": 3.4,
+      "math": 10.03,
+      "chat": 18.26,
+      "wiki": 39.29,
+      "web": 33.56
+    },
+    "fineweb": 30.36
+  }
+}

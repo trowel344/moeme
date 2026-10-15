@@ -1,0 +1,17 @@
+{
+  "teal_threshold": {
+    "q0.25": 17.96,
+    "q0.40": 18.08,
+    "q0.50": 18.23,
+    "q0.60": 18.76,
+    "dense": 17.93,
+    "note": "fraction of FFN intermediate activations zeroed, all 24 layers, zero training"
+  },
+  "static_routing": {
+    "per_token_top1": 21.51,
+    "per_prompt_top1": 21.47,
+    "note": "g5-topk2b ckpt forced to k=1; static=majority expert per prompt pinned"
+  },
+  "attn_skip_k4": "1.17-1.45x (worse than MLP-skip); k8 collapse (thousands-x)",
+  "semi_structured_24": "SLOWER on 4060 (0.33 vs 0.016ms T=1): cuSPARSELt overhead dominates small GEMMs"
+}

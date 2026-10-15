@@ -38,7 +38,7 @@ LLAMA_EXTRA  ?= --tasks $(SHORT19) --num-predict 768
 
 .PHONY: help venv test doctor bench-inference verify-sources \
         verify-real-ffn pilot upcycle upcycle-selftest branch branch-selftest \
-        compare-upcycled-08b self-teach \
+        mocm-selftest mocm-evo-bench compare-upcycled-08b self-teach \
         eval eval-llama eval-surplus quant-ppl quant-ppl-selftest \
         recover-eval-window recover-eval-window-selftest report \
         residency atlas clean clean-results all
@@ -53,6 +53,8 @@ help:
 	@echo "  make verify-real-ffn  verify FFN exactness on real 27B weights (535 MB download)"
 	@echo "  make pilot            pilot sparsity study, real activations (needs GPU, 1.8 GB)"
 	@echo "  make upcycle-selftest upcycling PoC pipeline check, offline, tiny model (~2 s)"
+	@echo "  make mocm-selftest    MoCM v1 pipeline check, offline, tiny model (~2 s)"
+	@echo "  make mocm-evo-bench   fitness table across MoCM result JSONs (offline)"
 	@echo "  make upcycle          upcycling PoC on a real model (needs GPU; see kaggle/)"
 	@echo "  make branch-selftest  branching-vs-slicing pipeline check, offline, CPU (~2 s)"
 	@echo "  make branch           branching (complete modules) vs slicing (needs GPU)"
@@ -119,6 +121,13 @@ pilot:
 
 upcycle-selftest:
 	$(PY_SYS) experiments/upcycle_poc.py --self-test
+
+mocm-selftest:
+	$(PY_SYS) experiments/mocm_poc.py --self-test
+
+# multi-domain fitness table across JSONs (no GPU needed)
+mocm-evo-bench:
+	$(PY_SYS) experiments/mocm_bench.py --table-only
 
 upcycle:
 	$(PY_SYS) experiments/upcycle_poc.py \

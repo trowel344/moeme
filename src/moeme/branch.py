@@ -211,11 +211,11 @@ class BranchMoEFFN(nn.Module):
         if config.init_noise:
             g = torch.Generator().manual_seed(config.seed)
             for p in (self.gate, self.up, self.down):
-                p.data.add_(torch.randn(p.shape, generator=g) * config.init_noise
-                            * p.data.std())
+                p.data.add_(torch.randn(p.shape, generator=g).to(p.device)
+                            * config.init_noise * p.data.std())
             if config.n_shared:
                 for p in (self.s_gate, self.s_up, self.s_down):
-                    p.data.add_(torch.randn(p.shape, generator=g)
+                    p.data.add_(torch.randn(p.shape, generator=g).to(p.device)
                                 * config.init_noise * p.data.std())
 
         if config.router_hidden:
@@ -261,9 +261,10 @@ class BranchMoEFFN(nn.Module):
                    if not hasattr(mlp, n)]
         if missing:
             raise ValueError(f"mlp is missing {missing}; not a swiGLU MLP")
-        return cls(mlp.gate_proj.weight.detach(),
-                   mlp.up_proj.weight.detach(),
-                   mlp.down_proj.weight.detach(), config)
+        from .upcycle import _dequant
+        return cls(_dequant(mlp.gate_proj.weight),
+                   _dequant(mlp.up_proj.weight),
+                   _dequant(mlp.down_proj.weight), config)
 
     # ---- geometry --------------------------------------------------------
 
@@ -307,11 +308,17 @@ class BranchMoEFFN(nn.Module):
         return F.linear(h, down[j])
 
     def dense_forward(self, x: Tensor) -> Tensor:
-        """The dense swiGLU layer this module was built from (exact reference)."""
+        """The dense swiGLU layer this module was built from (exact reference).
+
+        Buffers follow the incoming activation dtype: with quantized-backbone
+        builds the reference weights are fp32 while the model runs bf16.
+        """
         shape = x.shape
         x2 = x.reshape(-1, shape[-1])
-        h = F.silu(F.linear(x2, self.dense_gate)) * F.linear(x2, self.dense_up)
-        return F.linear(h, self.dense_down).reshape(shape)
+        dt = x2.dtype
+        h = F.silu(F.linear(x2, self.dense_gate.to(dt))) \
+            * F.linear(x2, self.dense_up.to(dt))
+        return F.linear(h, self.dense_down.to(dt)).reshape(shape)
 
     def router_scores(self, x: Tensor) -> Tensor:
         x2 = x.reshape(-1, x.shape[-1])
@@ -342,6 +349,12 @@ class BranchMoEFFN(nn.Module):
         raise ValueError(f"combine={combine!r}")
 
     def forward(self, x: Tensor) -> Tensor:
+        # `use_fast` routes inference through the batched dispatch path
+        # (exact to bf16 floor; see fast_forward). Training keeps the loop
+        # path unless explicitly opted in, since aux-loss bookkeeping there
+        # is what the training loops were validated against.
+        if getattr(self, "use_fast", False) and self.force_expert is None:
+            return self.fast_forward(x, stats=self.training)
         shape = x.shape
         x2 = x.reshape(-1, shape[-1])
         if self.force_expert is not None:
@@ -369,6 +382,81 @@ class BranchMoEFFN(nn.Module):
             self.last_stats = self.routing_metrics(logits.detach(),
                                                    top_idx).as_dict()
         return y.reshape(shape)
+
+    # ---- fast inference path: batched dispatch, no per-expert loop --------
+
+    def _fwd_cache(self, dtype: torch.dtype):
+        """Transposed expert weights, cached while not training.
+
+        Training mutates weights in place, so the cache is rebuilt on every
+        training forward and reused across eval forwards. Correct in both
+        modes; fast in eval.
+        """
+        key = (dtype, self.training)
+        hit = getattr(self, "_fwd_cache_hit", None)
+        if self.training or hit is None or hit[0] != key:
+            GW = self.gate.transpose(1, 2).contiguous().to(dtype)
+            UW = self.up.transpose(1, 2).contiguous().to(dtype)
+            DW = self.down.transpose(1, 2).contiguous().to(dtype)
+            if not self.training:
+                self._fwd_cache_hit = (key, GW, UW, DW)
+            return GW, UW, DW
+        return hit[1], hit[2], hit[3]
+
+    def fast_forward(self, x: Tensor, stats: bool = True) -> Tensor:
+        """Exact `forward` via padded-batched dispatch (inference path).
+
+        Tokens are replicated k times, sorted by expert, and run through 3
+        batched GEMMs. Zero-padded rows contribute exactly nothing (bias-free
+        linears), so this is bit-comparable up to bf16 summation order.
+        Shared experts and aux/stats bookkeeping match `forward`.
+
+        `stats=False` skips the aux-loss/router-metrics diagnostics, which
+        profiler shows cost more than the experts at batch 1 (logsumexp,
+        one_hot, reductions). Training loops that need aux loss must keep
+        `stats=True` (the default).
+        """
+        shape = x.shape
+        x2 = x.reshape(-1, shape[-1])
+        if self.force_expert is not None:
+            return self._forced_forward(x2, shape)
+        logits = self.router(x2.float())
+        k = self.top_k
+        E = self.E
+        T = x2.shape[0]
+        top_val, top_idx = torch.topk(logits, k, dim=1)      # (T, k)
+        dt = x2.dtype
+        flat_tok = torch.arange(T, device=x.device).unsqueeze(1).expand(-1, k)
+        flat_e = top_idx.reshape(-1)
+        order = torch.argsort(flat_e, stable=True)
+        es = flat_e[order]
+        xs = x2[flat_tok.reshape(-1)[order]]
+        cnt = torch.bincount(es, minlength=E)
+        mmax = int(cnt.max().clamp_min(1))
+        cs = torch.cumsum(cnt, 0)
+        slot = torch.arange(T * k, device=x.device) - (cs[es] - cnt[es])
+        pad = torch.zeros(E, mmax, x2.shape[1], device=x.device, dtype=dt)
+        pad[es, slot] = xs
+        GW, UW, DW = self._fwd_cache(dt)
+        h = F.silu(pad @ GW) * (pad @ UW)
+        yford = (h @ DW)[es, slot]                            # sorted order
+        inv = torch.empty_like(order)
+        inv[order] = torch.arange(order.numel(), device=x.device)
+        yf = yford[inv].reshape(T, k, x2.shape[-1])           # original order
+        w_sel = self._combine_weights(top_val, self.config.combine, dt)
+        # loop form: y = sum_e w_e * y_e with w_e = sum over slots of w_sel;
+        # per-slot form below is the same sum with terms regrouped by slot
+        wflat = w_sel.reshape(-1).to(yf.dtype)                    # (T*k,)
+        y = (yf.reshape(-1, x2.shape[-1])
+             * wflat.unsqueeze(1)).reshape(T, k, -1).sum(dim=1)
+        if self.config.n_shared:
+            y = y + self._shared_output(x2).to(y.dtype)
+        if stats:
+            self.last_aux_loss, self.last_z_loss = self._losses(logits, top_idx)
+            with torch.no_grad():
+                self.last_stats = self.routing_metrics(logits.detach(),
+                                                       top_idx).as_dict()
+        return y.to(x.dtype).reshape(shape)
 
     def _forced_forward(self, x2: Tensor, shape) -> Tensor:
         """Every token to one expert, weight 1.0, no router in the path.

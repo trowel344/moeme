@@ -22,6 +22,8 @@ Whether any of this *trains* into a usable model is a measurement, not a test:
 see `experiments/branch_poc.py`.
 """
 
+import math
+
 import torch
 import torch.nn as nn
 import pytest
@@ -733,3 +735,90 @@ def test_set_force_expert_rejects_an_out_of_range_index():
     with pytest.raises(ValueError):
         m.set_force_expert(m.n_experts)
     assert m.force_expert is None
+
+
+# ---------------------------------------------------------------------------
+# fast_forward: batched dispatch must equal the loop forward
+# ---------------------------------------------------------------------------
+
+@pytest.mark.parametrize("E,k,combine", [(8, 1, "softmax"), (8, 2, "softmax"),
+                                         (4, 2, "sum"), (4, 4, "sum")])
+@pytest.mark.parametrize("shared", [0, 1])
+def test_fast_forward_matches_loop(E, k, combine, shared):
+    """fast_forward is an inference optimization, not a new semantic: fp32
+    agreement must be exact, with and without a shared expert."""
+    torch.manual_seed(11)
+    H, I = 48, 96
+    g, u, d = torch.randn(I, H), torch.randn(I, H), torch.randn(H, I)
+    cfg = BranchConfig(n_experts=E, top_k=k, init="tile",
+                       expert_units=I // E, combine=combine,
+                       n_shared=shared, shared_units=I // 4 if shared else 64,
+                       seed=1)
+    m = BranchMoEFFN(g, u, d, cfg).float()
+    m.eval()
+    x = torch.randn(3, 9, H)
+    with torch.no_grad():
+        ref, got = m(x), m.fast_forward(x)
+    assert torch.allclose(ref, got, atol=1e-3, rtol=1e-4)  # fp32 summation-order noise on |out|~1e3
+
+
+def test_fast_forward_training_mode_matches_loop():
+    """In training mode the weight cache rebuilds every call (weights move),
+    so the result must still match the loop path."""
+    torch.manual_seed(3)
+    H, I = 32, 64
+    g, u, d = torch.randn(I, H), torch.randn(I, H), torch.randn(H, I)
+    m = BranchMoEFFN(g, u, d, BranchConfig(n_experts=4, top_k=2, init="tile",
+                                           expert_units=I // 4,
+                                           combine="softmax", seed=0)).float()
+    m.train()
+    x = torch.randn(2, 5, H)
+    assert torch.allclose(m(x), m.fast_forward(x), atol=1e-3, rtol=1e-4)
+
+
+def test_fast_forward_carries_aux_and_stats():
+    """The fast path is a drop-in: aux losses and routing stats populate."""
+    torch.manual_seed(5)
+    H, I = 32, 64
+    g, u, d = torch.randn(I, H), torch.randn(I, H), torch.randn(H, I)
+    m = BranchMoEFFN(g, u, d, BranchConfig(n_experts=4, top_k=1, init="tile",
+                                           expert_units=I // 4,
+                                           combine="softmax", seed=0)).float()
+    m.eval()
+    m(torch.randn(2, 6, H))
+    ref_stats, ref_aux = dict(m.last_stats), float(m.last_aux_loss)
+    m.fast_forward(torch.randn(2, 6, H))
+    assert m.last_stats["n_tokens"] == ref_stats["n_tokens"]
+    assert math.isfinite(float(m.last_aux_loss)) and math.isfinite(ref_aux)
+
+
+def test_fast_forward_no_stats_matches_loop():
+    """stats=False changes bookkeeping only, never numerics."""
+    torch.manual_seed(9)
+    H, I = 32, 64
+    g, u, d = torch.randn(I, H), torch.randn(I, H), torch.randn(H, I)
+    m = BranchMoEFFN(g, u, d, BranchConfig(n_experts=4, top_k=2, init="tile",
+                                           expert_units=I // 4,
+                                           combine="softmax", seed=0)).float()
+    m.eval()
+    x = torch.randn(2, 5, H)
+    with torch.no_grad():
+        ref = m.fast_forward(x, stats=True)
+        got = m.fast_forward(x, stats=False)
+    assert torch.allclose(ref, got, atol=1e-3, rtol=1e-4)
+
+
+def test_use_fast_flag_routes_through_fast_path():
+    """use_fast=True makes forward() match fast_forward(stats=False)."""
+    torch.manual_seed(13)
+    H, I = 32, 64
+    g, u, d = torch.randn(I, H), torch.randn(I, H), torch.randn(H, I)
+    m = BranchMoEFFN(g, u, d, BranchConfig(n_experts=4, top_k=2, init="tile",
+                                           expert_units=I // 4,
+                                           combine="softmax", seed=0)).float()
+    m.eval()
+    m.use_fast = True
+    x = torch.randn(2, 5, H)
+    with torch.no_grad():
+        got, ref = m(x), m.fast_forward(x, stats=False)
+    assert torch.allclose(got, ref, atol=1e-3, rtol=1e-4)

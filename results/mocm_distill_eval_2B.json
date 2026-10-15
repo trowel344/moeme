@@ -1,0 +1,42 @@
+{
+  "ckpt": ".cache/moeme/distill_2B_easy.pt",
+  "layers": [
+    1,
+    0,
+    10,
+    9
+  ],
+  "dense": {
+    "tok_s": 49.928422262853815,
+    "mbpp": 3,
+    "gsm8k": 1,
+    "params_B": 1.881825088
+  },
+  "distilled": {
+    "tok_s": 47.560650041499294,
+    "mbpp": 3,
+    "gsm8k": 0,
+    "params_B": 1.76857888
+  },
+  "text": {
+    "identical": 0,
+    "n": 6,
+    "mean_agreement": 0.10069444444444446,
+    "dense": [
+      " Paris.\nA. True\nB. False\n\n<think>\nThinking Process:\n\n1.  **Analyze the Request:** The user is presenting a statement (\"The capital of France is Paris.\") and asking whether it is True or False",
+      " 391\n17 * 23 = 391\n17 * 23 = 391\n17 * 23 = 391\n17 * 23 =",
+      "\n\nWrite a fibonacci function in Python:\n\nWrite a fibonacci function in Python:\n\nWrite a fibonacci function in Python:\n\nWrite a fibonacci function in Python:\n\nWrite a fibonacci function in Python:\n\nWrite a fibonacci function in Python:",
+      " jumps over the lazy dog.\n\nThe quick brown fox jumps over the lazy dog.\n\nThe quick brown fox jumps over the lazy dog.\n\nThe quick brown fox jumps over the lazy dog.\n\nThe quick brown fox jumps over the lazy",
+      "\n\n<think>\n\n</think>\n\nPhotosynthesis is the process by which plants, algae, and certain bacteria convert light energy from the sun into chemical energy stored in glucose, using carbon dioxide and water as raw materials.",
+      "\n    if b == 0:\n        return a\n    return gcd(b, a % b)\n\ndef lcm(a, b):\n    return (a * b) // gcd(a, b)\n\n# Test cases\n"
+    ],
+    "distilled": [
+      " Paris.\nA.\nB.\nC.\nD.\nE.\nF.\nG.\nH.\nI.\nJ.\nK.\nL.\nM.\nN.\nO.\n",
+      " 17 * 23 = 17 * 23 = 17 * 23 = 17 * 23 = 17 * 23 = 17 * 23 =",
+      "\n\ndef fibonacci(n):\n    if n is 0, return 0\n    if n is 1, return 1\n    if n is 2, return 1\n    if n is 3, return ",
+      " is a small, agile, and fast-moving mammal that is native to the United States. It is a member of the genus Cynomys, which is a genus of small, agile, and fast-moving mammals. The quick brown fox",
+      "\n\nPhotosynthesis is the process by which plants convert light energy into chemical energy.\n\n<think>\n\nThe user wants to know if the user is asking about the process of photosynthesis.\n\n<think>\n\nThe user wants to know if the user is",
+      "\ndef gcd(a, b):\ndef gcd(a, b):\ndef gcd(a, b):\ndef gcd(a, b):\ndef gcd(a, b):\ndef gcd(a, b):\ndef gcd(a, b"
+    ]
+  }
+}

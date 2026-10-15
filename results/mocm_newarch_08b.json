@@ -1,0 +1,58 @@
+{
+  "ckpt": ".cache/moeme/distill_4L25.pt",
+  "layers": [
+    9,
+    10,
+    8,
+    12
+  ],
+  "dense": {
+    "tok_s": 59.84179547823614,
+    "mbpp": 1,
+    "gsm8k": 4,
+    "params_B": 0.752393024,
+    "domains": {
+      "code": 3.0999029751249143,
+      "math": 8.887781088672483,
+      "chat": 16.097716086187603,
+      "wiki": 32.96839321623403,
+      "web": 28.609790292966903
+    },
+    "thresh": 0.0
+  },
+  "distilled": {
+    "tok_s": 49.27201270952727,
+    "mbpp": 0,
+    "gsm8k": 1,
+    "params_B": 0.71936288,
+    "domains": {
+      "code": 3.8816721284096554,
+      "math": 10.227779055337082,
+      "chat": 17.983607045854857,
+      "wiki": 37.592846112965624,
+      "web": 32.72354165172392
+    },
+    "thresh": 0.4
+  },
+  "text": {
+    "identical": 0,
+    "n": 6,
+    "mean_agreement": 0.16319444444444445,
+    "dense": [
+      " Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is",
+      " 391\n17 * 24 = 408\n17 * 25 = 425\n17 * 26 = 442\n17 * 27 =",
+      "\n1. Write a fibonacci function in Python:\n2. Write a fibonacci function in Python:\n3. Write a fibonacci function in Python:\n4. Write a fibonacci function in Python:\n5. Write a fibonacci function in",
+      " jumps over the green hedge.\nThe quick brown fox jumps over the green hedge.\nThe quick brown fox jumps over the green hedge.\nThe quick brown fox jumps over the green hedge.\nThe quick brown fox jumps over the green",
+      "\n\n<think>\n\n</think>\n\nPhotosynthesis is the process by which plants, algae, and some bacteria convert sunlight into chemical energy stored in glucose.",
+      "\n    \"\"\"\n    Calculate the greatest common divisor of two numbers.\n    \"\"\"\n    while b:\n        a, b = b, a % b\n    return a\n\ndef gcd(a, b):\n    \"\"\"\n"
+    ],
+    "distilled": [
+      " the capital of the United States.\nThe capital of France is the capital of the United States.\nThe capital of France is the capital of the United States.\nThe capital of France is the capital of the United States.\nThe",
+      " 391\n17 * 23 = 391\n17 * 23 = 391\n17 * 23 = 391\n17 * 23 =",
+      "\n\n```python\ndef fibonacci(n):\n    return 0\n```\n\n```python\ndef fibonacci(n):\n    return 0\n```\n\n```python\ndef fibonacci(n):\n    return 0\n```\n\n```python",
+      " jumps to the top of the tree.\nThe quick brown fox jumps to the top of the tree.\nThe quick brown fox jumps to the top of the tree.\nThe quick brown fox jumps to the top of the tree.\n",
+      "\n\n<think>\n</think>\n\nI am an AI model that can help you with this.\nI am an AI model that can help you with this.\nI am an AI model that can help you with this.\nI am an AI",
+      "\n    if a == 0:\n        return 0\n    if b == 0:\n        return 0\n    if a == 0:\n        return 0\n    if b == 0:\n"
+    ]
+  }
+}

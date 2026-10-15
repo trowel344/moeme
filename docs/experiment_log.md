@@ -1174,3 +1174,81 @@ routing structure, not task quality.
   pretraining would fail — though E15 removes the reason to try.
 - Fine-tuning of anything. No free tier was used, and no claim about fine-tuning
   a 27B model on free tiers is made.
+
+## E22 — MoCM: Mixture of Cut Modules (partition MoE with shared experts)
+
+Successor to E14/E15 under a new name. Random-cut partition (`src/moeme/mocm.py`,
+`experiments/mocm_poc.py`), E=8/16 k=1 + always-on shared expert selected by
+activation frequency, softmax gating, 0.8B late-4 layers. Frozen 12.5% loses
+42-81% per layer (oracle); trained 25% reaches 1.38-1.41x dense ppl. Second
+seed reproduces to 0.01. Artifacts: `results/mocm_poc*.json`.
+
+## E23 — Evolution to gen 10 with rotating benchmarks
+
+Ten generations mutating shared size, steps, LR, router width, aux, scope,
+top-k against frozen ppl + mbpp-exec / gsm8k-grade spotlights + text agreement
+(`experiments/mocm_evo.py`, `results/mocm_gen{4..10}.json`). Laws found: quality
+scales with active width almost linearly (25%→1.40x … 75%→1.10x domain ppl);
+500 steps regress (overfit on 2M-char corpus); router-only training fails
+(52.6 vs 55.3 frozen — router is not the blocker); scope widening to mid layers
+fails; seeds reproduce to ±0.01. Multi-metric fitness crowns 37.5%-active
+over ppl-only 62.5%. Full-24-layer conversion: 2.43x uniform, 2.50x adaptive —
+allocation cleverness cannot fix uniformly-hard early layers.
+
+## E24 — Autopsy: shared-expert dominance
+
+Per-layer input drift / output error / shared share on the best full-model ckpt
+(`experiments/mocm_autopsy.py`, `results/mocm_autopsy.json`). Shared expert
+carries 0.91-0.99 of every layer's output norm; router is near-uniform
+(10-14 of 16 effective); input drift compounds 0→0.67 by layer 7; argmax
+agreement 0.637. The MoE is a dense layer with decorative routing. Every
+ppl win in E22-E23 was bought with dense width, not sparsity.
+
+## E25 — What actually sparsifies (distillation, thresholding, static routing)
+
+Narrow students on easy layers: 4-layer 25% reaches 1.15x domain ppl in 60 s
+with no router (`experiments/mocm_distill.py`); 8-layer 1.65x; 24-layer 23.8x
+(compounding is architecture-independent). TEAL-style activation thresholding:
+25% zeros free, 40% at +0.15 mean ppl, zero training, no router
+(`results/mocm_newdirs.json`). Per-prompt static routing ties per-token routing
+(21.47 vs 21.51) — the router's per-token decisions carry no information.
+Distill (1.15x) + prune-10% (1.003x stacked) + thresh-40% combine freely;
+replicated at 2B (1.28-1.36x — compression hardens with scale). Full-model
+task behavior stays at/below dense floor in every configuration: ppl flatters,
+tasks tell truth.
+
+## E26 — Real-27B byte economics and compression probes
+
+Range-fetched real Qwen3.8-27B layers (`experiments/mocm_bytes.py`,
+`results/mocm_bytes.json`): participation ratio is exactly E on every layer
+(8.0/8 … 64/64) — perfectly uniform energy, no latent structure; oracle
+damage 0.91 at E8 → 0.98 at E64; layer 23 not special here. Speed ceiling from
+the 9.78B backbone alone is ~18 tok/s on this machine's RAM bandwidth, and
+every width that approaches it destroys the output. Compression on real
+weights (`experiments/mocm_compress.py`): 10% magnitude pruning err 0.035,
+25% err 0.14; SVD dead (r2048/5120 err 0.67, heavy tails); narrow student on
+synthetic inputs worse than slicing (1.01 vs 0.92) — distillation needs real
+activations. Conclusion: quantisation (bits), not routing (bytes), is the
+only cut that preserves quality; 10% pruning stacks nearly free.
+
+## E27 — Inference efficiency: dispatch fusion, decode loop, kernels
+
+Batched padded-bmm dispatch (`BranchMoEFFN.fast_forward`, `use_fast` flag):
+3.5-7x over the per-expert loop, exact to fp32 1e-7 (bf16 floor beyond),
+13 tests (`tests/test_branch.py`, `tests/test_triton_moe.py`). Diagnostics
+(aux/logsumexp/one_hot) cost more than the experts at batch 1 — hence the
+`stats` flag. Single-launch Triton kernel (`src/moeme/triton_moe.py`): ties
+bmm (~0.28ms vs 0.10ms dense at T=1). Killed with data: torch.compile on MoE
+dispatch (slower + recompiles), 2:4 cuSPARSELt (slower on small GEMMs),
+threshold kernels (per-token quantile costs more than the MLP), router
+caching (stability 0.24), full-model naive compile (49.8 vs 57.2 tok/s).
+Manual static-KV decode loop: +18% end-to-end (`experiments/mocm_decode.py`).
+Remaining: parallel-grid Triton (~30%), INT8 experts (27B scale only).
+
+## E28 — Native sparse models on this machine (the goal, rented not built)
+
+Qwen3-30B-A3B Q2_K via llama.cpp `-ncmoe 40`: 23.5 tok/s decode, 400 tok/s
+prefill (42x the dense 27B's 0.56). Qwen3.8-27B UD-Q3_K_XL via ollama (llama.cpp
+pin lacks the arch): 2.35 tok/s decode, 22.9 prefill (4.2x Q4), resident in
+VRAM+RAM, coherent output. Quality-at-Q3 gate scheduled
+(`results/eval_qwen38-q3xl_short19_768.json`, resumable).

@@ -1,0 +1,98 @@
+{
+  "ckpt": ".cache/moeme/evo_ckpts/gen15_g15-long.pt",
+  "spec": {
+    "E": 16,
+    "k": 2,
+    "sh": 1344,
+    "shs": null
+  },
+  "layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+  ],
+  "dense": {
+    "domain_ppl": {
+      "code": 3.0999029751249143,
+      "math": 8.887781088672483,
+      "chat": 16.097716086187603,
+      "wiki": 32.96839321623403,
+      "web": 28.609790292966903
+    },
+    "mean_dom_ppl": 17.932716731837186,
+    "tok_s": 57.21569381076721,
+    "mbpp": 1,
+    "gsm8k": 4,
+    "total_params_B": 0.752393024
+  },
+  "mocm": {
+    "domain_ppl": {
+      "code": 5.488955525413434,
+      "math": 14.32579062236035,
+      "chat": 25.97756760722526,
+      "wiki": 79.82479536959461,
+      "web": 56.29629925501341
+    },
+    "mean_dom_ppl": 36.38268167592141,
+    "tok_s": 21.58400513418502,
+    "mbpp": 0,
+    "gsm8k": 0,
+    "total_params_B": 0.851877056
+  },
+  "text": {
+    "identical": 0,
+    "n": 8,
+    "mean_agreement": 0.08072916666666667,
+    "agreement": [
+      0.020833333333333332,
+      0.375,
+      0.041666666666666664,
+      0.020833333333333332,
+      0.0,
+      0.08333333333333333,
+      0.10416666666666667,
+      0.0
+    ],
+    "dense": [
+      " Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is",
+      " 391\n17 * 24 = 408\n17 * 25 = 425\n17 * 26 = 442\n17 * 27 =",
+      "\n1. Write a fibonacci function in Python:\n2. Write a fibonacci function in Python:\n3. Write a fibonacci function in Python:\n4. Write a fibonacci function in Python:\n5. Write a fibonacci function in",
+      " jumps over the green hedge.\nThe quick brown fox jumps over the green hedge.\nThe quick brown fox jumps over the green hedge.\nThe quick brown fox jumps over the green hedge.\nThe quick brown fox jumps over the green",
+      "\n\n<think>\n\n</think>\n\nPhotosynthesis is the process by which plants, algae, and some bacteria convert sunlight into chemical energy stored in glucose.",
+      "\n    \"\"\"\n    Calculate the greatest common divisor of two numbers.\n    \"\"\"\n    while b:\n        a, b = b, a % b\n    return a\n\ndef gcd(a, b):\n    \"\"\"\n",
+      "\n\n```python\ndef sum_list(lst):\n    return sum(lst)\n```\n\nThe function should return the sum of the list.\n\n<think>\nThe user wants a Python function that returns the sum of a list.\nThe function",
+      " constant. How long will it take to travel 120 km?\n\nTo find the time taken to travel 120 km, we can use the formula for speed:\n\\[ \\text{Speed} = \\frac{\\"
+    ],
+    "mocm": [
+      " the city of Paris.\nThe city of Paris is located in France's territory, and is the city of Paris.\nThe city of Paris is located in the territory of France, and is the city of Paris.\nThe city of",
+      " 17 * 23 = 17 * 23 = 17 * 23 = 17 * 23 = 17 * 23 = 17 * 23 =",
+      "\n```python\ndef fibonacci(n):\n    if n == 0:\n        return 0\n    return 1\n```\nThe function should return 1 if the input is a zero, and return 0 if the",
+      " is a great example of a fox that is not a true fox.\nThe quick brown fox is a true fox.\nThe quick brown fox is a true fox.\nThe quick brown fox is a true fox.\nThe quick brown",
+      "\nPhotosynthesis is a process of photosynthesis, the process of photosynthesis. Photosynthesis is a form of photosynthesis, the process of photosynthesis. Photosynthesis is a type of photosynthesis, the process of photosynthesis.\nPhotos",
+      "\n    if a < b:\n        return 0\n    return a % b.\n    return 1\n    return 1\n    return 1\n    return 1\n    return 1\n    return ",
+      "\n```python\ndef sum(list):\n    \"\"\"Sum the list of elements in a list.\"\"\"\n    if len(list) == 1000:\n        return 1  # If the length of the list is greater",
+      " 20 km per hour.\nThe speed of the train is 20 km per hour.\nThe speed of the train is 20 km per hour.\nThe speed of the train is 20 km per hour"
+    ]
+  }
+}

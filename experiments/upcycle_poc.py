@@ -397,8 +397,9 @@ def train_one_config(*, model, originals, blocks_mod, config,
     # --- untrained (the post-hoc path) ---
     untrained_ppl = eval_perplexity(model, val_blocks, device, amp_dtype,
                                     args.eval_blocks)
+    edt = moes[0][1].gate.dtype if moes else next(model.parameters()).dtype
     untrained_m = evaluate_layers(moes, reference, device,
-                                  next(model.parameters()).dtype, config.top_k)
+                                  edt, config.top_k)
 
     # --- dense-equivalence integration check ---
     saved_k = [(m, m.config) for _, m in moes]
@@ -409,7 +410,10 @@ def train_one_config(*, model, originals, blocks_mod, config,
     for m, cfg in saved_k:
         m.config = cfg
 
-    # --- train ---
+    # --- train (skipped entirely under --frozen-only: report the frozen
+    # partition as both untrained and trained, so the gate reads off the
+    # no-training ceiling without spending a step) ---
+    frozen_only = bool(getattr(args, "frozen_only", False))
     opt = torch.optim.AdamW(trainable, lr=args.lr, weight_decay=args.weight_decay,
                             betas=(0.9, 0.95))
     gen = torch.Generator().manual_seed(args.seed)
@@ -430,7 +434,7 @@ def train_one_config(*, model, originals, blocks_mod, config,
     budget = float(getattr(args, "max_seconds", 0) or 0)
     stopped_early = False
     steps_done = start_step
-    for step in range(start_step, args.steps):
+    for step in range(start_step, 0 if frozen_only else args.steps):
         if budget and (time.perf_counter() - t_train) > budget:
             print(f"  wall-clock budget {budget:.0f}s reached before step {step}; "
                   f"stopping training and reporting what was measured",
@@ -503,6 +507,7 @@ def train_one_config(*, model, originals, blocks_mod, config,
         "trainable_params": n_train,
         "steps": args.steps,
         "steps_completed": steps_done,
+        "frozen_only": frozen_only,
         "stopped_early": stopped_early,
         "max_seconds": budget,
         "dense_val_ppl": dense_ppl,
@@ -650,6 +655,10 @@ def build_args(argv=None):
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--model", default=os.environ.get("MOEME_POC_MODEL",
                                                       "Qwen/Qwen3.5-0.8B"))
+    ap.add_argument("--load-bit", default="none", choices=["none", "8bit", "4bit"],
+                    help="quantized backbone for >8GB models (27B on 40GB): "
+                         "frozen layers stay quantized, converted layers are "
+                         "dequantized copies (see MoEFFN.from_hf_mlp)")
     ap.add_argument("--experts", type=int, nargs="+", default=[8])
     ap.add_argument("--topks", type=int, nargs="+", default=[1, 2, 4])
     ap.add_argument("--combine", default="sum", choices=["sum", "mean", "softmax"])
@@ -682,6 +691,9 @@ def build_args(argv=None):
     ap.add_argument("--ckpt-dir", default=os.path.join(".cache", "moeme", "poc_ckpt"))
     ap.add_argument("--out", default="results/upcycle_poc.json")
     ap.add_argument("--self-test", action="store_true")
+    ap.add_argument("--frozen-only", action="store_true",
+                    help="no training: report the frozen partition's oracle and "
+                         "ppl (the no-training ceiling) without spending a step")
     return ap.parse_args(argv)
 
 
@@ -704,16 +716,29 @@ def main() -> int:
     tok = AutoTokenizer.from_pretrained(args.model)
     dtype = amp_dtype or torch.float32
     last = None
-    for kw in ({"dtype": dtype}, {"torch_dtype": dtype}):
-        try:
-            model = AutoModelForCausalLM.from_pretrained(
-                args.model, low_cpu_mem_usage=True, **kw)
-            break
-        except TypeError as e:
-            last = e
+    if args.load_bit in ("8bit", "4bit"):
+        # 27B-class on a 40GB card: quantized backbone, dequantized copies of
+        # the converted layers only (see MoEFFN.from_hf_mlp dequant handling).
+        from transformers import BitsAndBytesConfig
+        qconf = BitsAndBytesConfig(
+            load_in_8bit=(args.load_bit == "8bit"),
+            load_in_4bit=(args.load_bit == "4bit"),
+            bnb_4bit_compute_dtype=dtype)
+        model = AutoModelForCausalLM.from_pretrained(
+            args.model, quantization_config=qconf, device_map="auto",
+            low_cpu_mem_usage=True)
+        device = torch.device("cuda:0")
     else:
-        raise last
-    model = model.to(device)
+        for kw in ({"dtype": dtype}, {"torch_dtype": dtype}):
+            try:
+                model = AutoModelForCausalLM.from_pretrained(
+                    args.model, low_cpu_mem_usage=True, **kw)
+                break
+            except TypeError as e:
+                last = e
+        else:
+            raise last
+        model = model.to(device)
     print(f"params {sum(p.numel() for p in model.parameters())/1e9:.3f}B")
 
     ids, corpus_source = load_token_stream(args, tok)

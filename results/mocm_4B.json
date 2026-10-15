@@ -1,0 +1,328 @@
+{
+  "model": "Qwen/Qwen3-4B",
+  "device": "cuda:0",
+  "corpus": "dataset:HuggingFaceFW/fineweb-edu",
+  "corpus_tokens": 439225,
+  "seq_len": 256,
+  "dense_val_ppl": 21.019933281731376,
+  "layers": [
+    32,
+    33,
+    34,
+    35
+  ],
+  "intermediate": 12451840,
+  "runs": [
+    {
+      "name": "mocm4b",
+      "config": {
+        "n_routed": 8,
+        "top_k": 1,
+        "shared_units": 0,
+        "router_hidden": null,
+        "aux_loss_coef": 0.01,
+        "combine": "softmax",
+        "init": "tile",
+        "activation_order": true
+      },
+      "accounting": {
+        "active_params": 37355520,
+        "stored_params": 298926112,
+        "active_width_fraction": 0.125,
+        "stored_width_fraction": 1.0,
+        "n_layers": 4
+      },
+      "active_width_true": 0.125,
+      "frozen": {
+        "residual_best_single_expert": 0.6484960690140724,
+        "residual_oracle_topk": 0.6484960690140724,
+        "residual_router": 0.9082803130149841,
+        "residual_all_experts_sum": 0.006291110999882221,
+        "active_width_fraction": 0.125,
+        "stored_width_fraction": 1.0,
+        "per_layer": {
+          "32": {
+            "residual_best_single_expert": 0.7957451939582825,
+            "residual_oracle_topk": 0.7957451939582825,
+            "residual_router": 0.9414308071136475,
+            "residual_all_experts_sum": 0.007066985126584768,
+            "active_width_fraction": 0.125,
+            "stored_width_fraction": 1.0
+          },
+          "33": {
+            "residual_best_single_expert": 0.7721489071846008,
+            "residual_oracle_topk": 0.7721489071846008,
+            "residual_router": 0.9009066224098206,
+            "residual_all_experts_sum": 0.0072765289805829525,
+            "active_width_fraction": 0.125,
+            "stored_width_fraction": 1.0
+          },
+          "34": {
+            "residual_best_single_expert": 0.7261312007904053,
+            "residual_oracle_topk": 0.7261312007904053,
+            "residual_router": 0.9107364416122437,
+            "residual_all_experts_sum": 0.00522858090698719,
+            "active_width_fraction": 0.125,
+            "stored_width_fraction": 1.0
+          },
+          "35": {
+            "residual_best_single_expert": 0.2999589741230011,
+            "residual_oracle_topk": 0.2999589741230011,
+            "residual_router": 0.8800473809242249,
+            "residual_all_experts_sum": 0.005592348985373974,
+            "active_width_fraction": 0.125,
+            "stored_width_fraction": 1.0
+          }
+        }
+      },
+      "frozen_ppl": 125.7186436778311,
+      "trained": {
+        "residual_best_single_expert": 0.7721496373414993,
+        "residual_oracle_topk": 0.7721496373414993,
+        "residual_router": 0.9588649868965149,
+        "residual_all_experts_sum": 1.2031354457139969,
+        "active_width_fraction": 0.125,
+        "stored_width_fraction": 1.0,
+        "per_layer": {
+          "32": {
+            "residual_best_single_expert": 0.8837785124778748,
+            "residual_oracle_topk": 0.8837785124778748,
+            "residual_router": 0.9694146513938904,
+            "residual_all_experts_sum": 1.0315308570861816,
+            "active_width_fraction": 0.125,
+            "stored_width_fraction": 1.0
+          },
+          "33": {
+            "residual_best_single_expert": 0.915131151676178,
+            "residual_oracle_topk": 0.915131151676178,
+            "residual_router": 1.032311201095581,
+            "residual_all_experts_sum": 1.4991410970687866,
+            "active_width_fraction": 0.125,
+            "stored_width_fraction": 1.0
+          },
+          "34": {
+            "residual_best_single_expert": 0.8379738330841064,
+            "residual_oracle_topk": 0.8379738330841064,
+            "residual_router": 0.918382465839386,
+            "residual_all_experts_sum": 1.4303854703903198,
+            "active_width_fraction": 0.125,
+            "stored_width_fraction": 1.0
+          },
+          "35": {
+            "residual_best_single_expert": 0.45171505212783813,
+            "residual_oracle_topk": 0.45171505212783813,
+            "residual_router": 0.9153516292572021,
+            "residual_all_experts_sum": 0.8514843583106995,
+            "active_width_fraction": 0.125,
+            "stored_width_fraction": 1.0
+          }
+        }
+      },
+      "train": {
+        "steps_completed": 600,
+        "loss_curve": [
+          {
+            "step": 0,
+            "loss": 4.618179142475128,
+            "elapsed": 1.9714223369956017
+          },
+          {
+            "step": 25,
+            "loss": 4.516257584095001,
+            "elapsed": 51.67992821399821
+          },
+          {
+            "step": 50,
+            "loss": 4.076455473899841,
+            "elapsed": 101.94886339499499
+          },
+          {
+            "step": 75,
+            "loss": 3.1165520548820496,
+            "elapsed": 153.03833876401768
+          },
+          {
+            "step": 100,
+            "loss": 3.370683014392853,
+            "elapsed": 204.4056168300158
+          },
+          {
+            "step": 125,
+            "loss": 3.5983015298843384,
+            "elapsed": 256.16550062200986
+          },
+          {
+            "step": 150,
+            "loss": 2.9225966930389404,
+            "elapsed": 308.0915503879951
+          },
+          {
+            "step": 175,
+            "loss": 3.1298413276672363,
+            "elapsed": 360.0937933640089
+          },
+          {
+            "step": 200,
+            "loss": 3.6069613695144653,
+            "elapsed": 411.99212428499595
+          },
+          {
+            "step": 225,
+            "loss": 3.5085078477859497,
+            "elapsed": 464.2150663740176
+          },
+          {
+            "step": 250,
+            "loss": 2.5872210562229156,
+            "elapsed": 516.4553247049917
+          },
+          {
+            "step": 275,
+            "loss": 3.3110475540161133,
+            "elapsed": 568.7473688510072
+          },
+          {
+            "step": 300,
+            "loss": 3.1207298040390015,
+            "elapsed": 620.9911148640094
+          },
+          {
+            "step": 325,
+            "loss": 3.2552517652511597,
+            "elapsed": 673.1224987980095
+          },
+          {
+            "step": 350,
+            "loss": 2.929125964641571,
+            "elapsed": 725.3121402040124
+          },
+          {
+            "step": 375,
+            "loss": 3.0776926279067993,
+            "elapsed": 777.5411871960096
+          },
+          {
+            "step": 400,
+            "loss": 2.6020507514476776,
+            "elapsed": 829.9615632290079
+          },
+          {
+            "step": 425,
+            "loss": 3.377415120601654,
+            "elapsed": 882.9342069410195
+          },
+          {
+            "step": 450,
+            "loss": 2.4776931703090668,
+            "elapsed": 935.9551536320068
+          },
+          {
+            "step": 475,
+            "loss": 2.676478773355484,
+            "elapsed": 989.0036996820127
+          },
+          {
+            "step": 500,
+            "loss": 2.627882182598114,
+            "elapsed": 1041.9176830940123
+          },
+          {
+            "step": 525,
+            "loss": 2.710893213748932,
+            "elapsed": 1094.9123387930158
+          },
+          {
+            "step": 550,
+            "loss": 2.6050139665603638,
+            "elapsed": 1148.0522457309999
+          },
+          {
+            "step": 575,
+            "loss": 2.4718930423259735,
+            "elapsed": 1201.110876524006
+          },
+          {
+            "step": 599,
+            "loss": 2.557808429002762,
+            "elapsed": 1251.8628160179942
+          }
+        ],
+        "wall_seconds": 1251.8650131110044,
+        "trainable_params": 298926112
+      },
+      "btx": null,
+      "val_ppl": 33.861332166836696,
+      "routing": {
+        "32": {
+          "usage_fraction": [
+            0.078125,
+            0.16015625,
+            0.09375,
+            0.1640625,
+            0.1484375,
+            0.12890625,
+            0.09375,
+            0.1328125
+          ],
+          "effective_experts": 7.54501485824585,
+          "load_max_over_mean": 1.3125,
+          "usage_entropy_normalised": 0.985008180141449,
+          "router_entropy_mean": 0.96532142162323,
+          "n_tokens": 256
+        },
+        "33": {
+          "usage_fraction": [
+            0.21875,
+            0.07421875,
+            0.13671875,
+            0.06640625,
+            0.07421875,
+            0.21484375,
+            0.109375,
+            0.10546875
+          ],
+          "effective_experts": 6.6131181716918945,
+          "load_max_over_mean": 1.75,
+          "usage_entropy_normalised": 0.9523338675498962,
+          "router_entropy_mean": 0.9662029147148132,
+          "n_tokens": 256
+        },
+        "34": {
+          "usage_fraction": [
+            0.0859375,
+            0.12109375,
+            0.25390625,
+            0.10546875,
+            0.14453125,
+            0.125,
+            0.08984375,
+            0.07421875
+          ],
+          "effective_experts": 6.7688493728637695,
+          "load_max_over_mean": 2.03125,
+          "usage_entropy_normalised": 0.9622060060501099,
+          "router_entropy_mean": 0.9604935050010681,
+          "n_tokens": 256
+        },
+        "35": {
+          "usage_fraction": [
+            0.3046875,
+            0.16015625,
+            0.046875,
+            0.08984375,
+            0.1328125,
+            0.08984375,
+            0.11328125,
+            0.0625
+          ],
+          "effective_experts": 5.84099817276001,
+          "load_max_over_mean": 2.4375,
+          "usage_entropy_normalised": 0.9233339428901672,
+          "router_entropy_mean": 0.9605324268341064,
+          "n_tokens": 256
+        }
+      },
+      "error": null
+    }
+  ]
+}

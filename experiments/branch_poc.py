@@ -298,6 +298,11 @@ def train_model(model, moes, args, train_blocks, device, amp_dtype, scaler,
                 steps: int | None = None):
     """Short continued-pretraining run. Only the MoE modules move."""
     steps = args.steps if steps is None else steps
+    if getattr(args, "grad_ckpt", False):
+        # trade ~25% step time for ~5-10x less activation memory: required
+        # for 4B+ training on 8GB cards (151k-vocab logits + 36-layer
+        # activations otherwise OOM by ~150MB with no headroom left).
+        model.gradient_checkpointing_enable()
     for p in model.parameters():
         p.requires_grad_(False)
     trainable = []
@@ -306,7 +311,13 @@ def train_model(model, moes, args, train_blocks, device, amp_dtype, scaler,
             p.requires_grad_(True)
             trainable.append(p)
 
-    opt = torch.optim.AdamW(trainable, lr=args.lr, weight_decay=args.weight_decay,
+    if getattr(args, "adam8", False):
+        import bitsandbytes as bnb
+        opt = bnb.optim.AdamW8bit(trainable, lr=args.lr,
+                                  weight_decay=args.weight_decay,
+                                  betas=(0.9, 0.95))
+    else:
+        opt = torch.optim.AdamW(trainable, lr=args.lr, weight_decay=args.weight_decay,
                             betas=(0.9, 0.95))
     gen = torch.Generator().manual_seed(args.seed)
     model.train()
@@ -499,6 +510,9 @@ def build_args(argv=None):
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--model", default="Qwen/Qwen3.5-0.8B")
+    ap.add_argument("--load-bit", default="none", choices=["none", "8bit", "4bit"],
+                    help="quantized backbone for >8GB models: frozen layers stay "
+                         "quantized, converted layers dequantize on build")
     ap.add_argument("--layers", nargs="+", default=["0", "3", "8", "23"])
     ap.add_argument("--steps", type=int, default=150)
     ap.add_argument("--lr", type=float, default=1e-4)
@@ -563,8 +577,19 @@ def main() -> int:
 
     tokenizer = AutoTokenizer.from_pretrained(args.model)
     wdtype = getattr(torch, args.dtype)
-    model = AutoModelForCausalLM.from_pretrained(
-        args.model, dtype=wdtype).to(device)
+    if args.load_bit in ("8bit", "4bit"):
+        from transformers import BitsAndBytesConfig
+        qconf = BitsAndBytesConfig(
+            load_in_8bit=(args.load_bit == "8bit"),
+            load_in_4bit=(args.load_bit == "4bit"),
+            bnb_4bit_compute_dtype=wdtype)
+        model = AutoModelForCausalLM.from_pretrained(
+            args.model, quantization_config=qconf, device_map="auto",
+            low_cpu_mem_usage=True)
+        device = torch.device("cuda:0")
+    else:
+        model = AutoModelForCausalLM.from_pretrained(
+            args.model, dtype=wdtype).to(device)
     model.eval()
 
     ids, corpus = POC.load_token_stream(args, tokenizer)

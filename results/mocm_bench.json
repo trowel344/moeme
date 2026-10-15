@@ -1,0 +1,270 @@
+{
+  "champs": {
+    "bench25": {
+      "E": 8,
+      "k": 1,
+      "shared": 448,
+      "active": 0.25,
+      "dense_ppl": 23.4195049843501,
+      "frozen_ppl": 55.32986827682805,
+      "trained_ppl": 32.665291906745956,
+      "xdense": 1.3947900234686548,
+      "lat_ms_dense": 0.10465844999998808,
+      "lat_ms_mocm": 0.9374459899845533,
+      "identical": 1,
+      "n_prompts": 6,
+      "first_divergence": [
+        48,
+        38,
+        1,
+        0,
+        0,
+        5
+      ],
+      "dense_texts": [
+        " Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is",
+        " 391\n17 * 24 = 408\n17 * 25 = 425\n17 * 26 = 442\n17 * 27 =",
+        "\n1. Write a fibonacci function in Python:\n2. Write a fibonacci function in Python:\n3. Write a fibonacci function in Python:\n4. Write a fibonacci function in Python:\n5. Write a fibonacci function in",
+        " jumps over the green hedge.\nThe quick brown fox jumps over the green hedge.\nThe quick brown fox jumps over the green hedge.\nThe quick brown fox jumps over the green hedge.\nThe quick brown fox jumps over the green",
+        "\n\n<think>\n\n</think>\n\nPhotosynthesis is the process by which plants, algae, and some bacteria convert sunlight into chemical energy stored in glucose.",
+        "\n    \"\"\"\n    Calculate the greatest common divisor of two numbers.\n    \"\"\"\n    while b:\n        a, b = b, a % b\n    return a\n\ndef gcd(a, b):\n    \"\"\"\n"
+      ],
+      "mocm_texts": [
+        " Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is",
+        " 391\n17 * 24 = 408\n17 * 25 = 425\n17 * 26 = 452\n17 * 27 =",
+        "\n- The function should return the n-th Fibonacci number.\n- The function should return the same value for n and n+1.\n- The function should return the same value for n and n-1.\n- The function",
+        " is a character in the series of the game \"The Legend of the Xeroe\".\n==Character==\nThe quick brown fox is a character in the series of the game \"The Legend of the Xeroe\".\n==History",
+        "\nA. Photosynthesis is the process where plants convert light energy into chemical energy.\nB. Photosynthesis is the process where plants convert light energy into chemical energy.\nC. Photosynthesis is the process where plants convert light energy into",
+        "\n    \"\"\"\n    Find the greatest common divisor of two numbers.\n    \"\"\"\n    # If either number is zero, the result is the non-zero number\n    if b == 0:\n        return a\n    #"
+      ],
+      "mean_agreement": 0.40972222222222227
+    },
+    "bench50": {
+      "E": 8,
+      "k": 1,
+      "shared": 1344,
+      "active": 0.5,
+      "dense_ppl": 23.4195049843501,
+      "frozen_ppl": 40.887808591785806,
+      "trained_ppl": 29.72777509341489,
+      "xdense": 1.269359668928965,
+      "lat_ms_dense": 0.1037764000648167,
+      "lat_ms_mocm": 0.9456933599722106,
+      "identical": 0,
+      "n_prompts": 6,
+      "first_divergence": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        11
+      ],
+      "dense_texts": [
+        " Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is",
+        " 391\n17 * 24 = 408\n17 * 25 = 425\n17 * 26 = 442\n17 * 27 =",
+        "\n1. Write a fibonacci function in Python:\n2. Write a fibonacci function in Python:\n3. Write a fibonacci function in Python:\n4. Write a fibonacci function in Python:\n5. Write a fibonacci function in",
+        " jumps over the green hedge.\nThe quick brown fox jumps over the green hedge.\nThe quick brown fox jumps over the green hedge.\nThe quick brown fox jumps over the green hedge.\nThe quick brown fox jumps over the green",
+        "\n\n<think>\n\n</think>\n\nPhotosynthesis is the process by which plants, algae, and some bacteria convert sunlight into chemical energy stored in glucose.",
+        "\n    \"\"\"\n    Calculate the greatest common divisor of two numbers.\n    \"\"\"\n    while b:\n        a, b = b, a % b\n    return a\n\ndef gcd(a, b):\n    \"\"\"\n"
+      ],
+      "mocm_texts": [
+        " located in the southern region of the country.\nThe 2008 World Cup was a major event in the history of the world.\nThe 2008 World Cup was a major event in the history of the world",
+        " 401\n17 * 24 = 408\n17 * 25 = 425\n17 * 26 = 442\n17 * 27 =",
+        "\n- The function should return the n-th Fibonacci number.\n- The function should return the n-th Fibonacci number using the n-th Fibonacci number.\n- The function should return the n-th Fibonacci number using the n-th Fibonacci number.",
+        " is a character in the series of the 1999 film, The Fox.\n==Character==\nThe quick brown fox is a character in the series of the 1999 film, The Fox.\n==Role",
+        "\nPhotosynthesis is the process by which plants, bacteria, and other organisms use light to convert carbon dioxide and water into glucose and oxygen.\nPhotosynthesis is the chemical reaction that converts carbon dioxide and water into glucose and oxygen using light energy",
+        "\n    \"\"\"\n    Calculate the greatest common divisor of a and b using the Euclidean algorithm.\n    \"\"\"\n    # Handle cases where a or b is 0\n    if a == 0:\n        return b\n"
+      ],
+      "mean_agreement": 0.21875
+    },
+    "bench37": {
+      "E": 8,
+      "k": 1,
+      "shared": 896,
+      "active": 0.375,
+      "dense_ppl": 23.4195049843501,
+      "frozen_ppl": 46.38383787916335,
+      "trained_ppl": 30.82390196156508,
+      "xdense": 1.316163684166805,
+      "lat_ms_dense": 0.1034977899689693,
+      "lat_ms_mocm": 0.8034750701335724,
+      "identical": 2,
+      "n_prompts": 6,
+      "mean_agreement": 0.40972222222222227,
+      "agreement": [
+        1.0,
+        1.0,
+        0.020833333333333332,
+        0.10416666666666667,
+        0.0,
+        0.3333333333333333
+      ],
+      "first_divergence": [
+        48,
+        48,
+        1,
+        0,
+        0,
+        5
+      ],
+      "dense_texts": [
+        " Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is",
+        " 391\n17 * 24 = 408\n17 * 25 = 425\n17 * 26 = 442\n17 * 27 =",
+        "\n1. Write a fibonacci function in Python:\n2. Write a fibonacci function in Python:\n3. Write a fibonacci function in Python:\n4. Write a fibonacci function in Python:\n5. Write a fibonacci function in",
+        " jumps over the green hedge.\nThe quick brown fox jumps over the green hedge.\nThe quick brown fox jumps over the green hedge.\nThe quick brown fox jumps over the green hedge.\nThe quick brown fox jumps over the green",
+        "\n\n<think>\n\n</think>\n\nPhotosynthesis is the process by which plants, algae, and some bacteria convert sunlight into chemical energy stored in glucose.",
+        "\n    \"\"\"\n    Calculate the greatest common divisor of two numbers.\n    \"\"\"\n    while b:\n        a, b = b, a % b\n    return a\n\ndef gcd(a, b):\n    \"\"\"\n"
+      ],
+      "mocm_texts": [
+        " Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is",
+        " 391\n17 * 24 = 408\n17 * 25 = 425\n17 * 26 = 442\n17 * 27 =",
+        "\n- The function should return the 10th Fibonacci number.\n- The function should return the 10th Fibonacci number.\n- The function should return the 10th Fibonacci number.\n- The function should return",
+        " is a character in the game.\n==Character==\nThe quick brown fox is a character in the game.\n==In-game==\nThe quick brown fox is a character in the game.\n==Person==\nThe quick brown",
+        "\nA. Plants use light to make food.\nB. Plants use light to make energy.\nC. Plants use light to make water.\nD. Plants use light to make oxygen.\nE. Plants use light to make",
+        "\n    \"\"\"\n    Find the greatest common divisor of two integers a and b.\n    \n    Parameters:\n    a (int): First integer\n    b (int): Second\n    \n    Returns:\n    int: Greatest common divisor"
+      ]
+    },
+    "bench12": {
+      "E": 16,
+      "k": 1,
+      "shared": 224,
+      "active": 0.125,
+      "dense_ppl": 23.4195049843501,
+      "frozen_ppl": 62.53543934846167,
+      "trained_ppl": 34.826947327655795,
+      "xdense": 1.4870915226828503,
+      "lat_ms_dense": 0.10129693997441791,
+      "lat_ms_mocm": 1.045850680093281,
+      "identical": 1,
+      "n_prompts": 6,
+      "mean_agreement": 0.3541666666666667,
+      "agreement": [
+        1.0,
+        0.9791666666666666,
+        0.0625,
+        0.020833333333333332,
+        0.0,
+        0.0625
+      ],
+      "first_divergence": [
+        48,
+        26,
+        1,
+        0,
+        0,
+        2
+      ],
+      "dense_texts": [
+        " Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is",
+        " 391\n17 * 24 = 408\n17 * 25 = 425\n17 * 26 = 442\n17 * 27 =",
+        "\n1. Write a fibonacci function in Python:\n2. Write a fibonacci function in Python:\n3. Write a fibonacci function in Python:\n4. Write a fibonacci function in Python:\n5. Write a fibonacci function in",
+        " jumps over the green hedge.\nThe quick brown fox jumps over the green hedge.\nThe quick brown fox jumps over the green hedge.\nThe quick brown fox jumps over the green hedge.\nThe quick brown fox jumps over the green",
+        "\n\n<think>\n\n</think>\n\nPhotosynthesis is the process by which plants, algae, and some bacteria convert sunlight into chemical energy stored in glucose.",
+        "\n    \"\"\"\n    Calculate the greatest common divisor of two numbers.\n    \"\"\"\n    while b:\n        a, b = b, a % b\n    return a\n\ndef gcd(a, b):\n    \"\"\"\n"
+      ],
+      "mocm_texts": [
+        " Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is",
+        " 391\n17 * 24 = 408\n17 * 25 = 415\n17 * 26 = 442\n17 * 27 =",
+        "\n- The function should return the nth Fibonacci number.\n- The function should return the nth Fibonacci number.\n- The function should return the nth Fibonacci number.\n- The function should return the nth Fibonacci number.",
+        " is a character in the game, and is a main character in the game.\n== Character description ==\nThe quick brown fox is a main character in the game, and is a main character in the game.\n== Character history ==",
+        "\nA.\nPhotosynthesis is the process where plants convert light energy into chemical energy.\nB.\nPhotosynthesis is the process where plants convert light energy into energy.\nC.\nPhotosynthesis is the process where plants convert light",
+        "\n    while b:\n        b, b = b, b % b\n    return b\n\n\ndef main():\n    n = int(input(\"Enter n: \")\n    if n == 0:\n        print(\"N"
+      ]
+    },
+    "bench62": {
+      "E": 8,
+      "k": 1,
+      "shared": 1792,
+      "active": 0.625,
+      "dense_ppl": 23.4195049843501,
+      "frozen_ppl": 38.47078282362064,
+      "trained_ppl": 28.41708095677287,
+      "xdense": 1.2133937491745603,
+      "lat_ms_dense": 0.10334566002711654,
+      "lat_ms_mocm": 1.305296540085692,
+      "identical": 1,
+      "n_prompts": 6,
+      "mean_agreement": 0.2638888888888889,
+      "agreement": [
+        0.4375,
+        1.0,
+        0.041666666666666664,
+        0.020833333333333332,
+        0.020833333333333332,
+        0.0625
+      ],
+      "first_divergence": [
+        0,
+        48,
+        1,
+        0,
+        0,
+        2
+      ],
+      "dense_texts": [
+        " Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is",
+        " 391\n17 * 24 = 408\n17 * 25 = 425\n17 * 26 = 442\n17 * 27 =",
+        "\n1. Write a fibonacci function in Python:\n2. Write a fibonacci function in Python:\n3. Write a fibonacci function in Python:\n4. Write a fibonacci function in Python:\n5. Write a fibonacci function in",
+        " jumps over the green hedge.\nThe quick brown fox jumps over the green hedge.\nThe quick brown fox jumps over the green hedge.\nThe quick brown fox jumps over the green hedge.\nThe quick brown fox jumps over the green",
+        "\n\n<think>\n\n</think>\n\nPhotosynthesis is the process by which plants, algae, and some bacteria convert sunlight into chemical energy stored in glucose.",
+        "\n    \"\"\"\n    Calculate the greatest common divisor of two numbers.\n    \"\"\"\n    while b:\n        a, b = b, a % b\n    return a\n\ndef gcd(a, b):\n    \"\"\"\n"
+      ],
+      "mocm_texts": [
+        " located in the northwestern part of the country.\nThe capital of France is located in the northwestern part of the country.\nThe capital of France is located in the northwestern part of the country.\nThe capital of France is",
+        " 391\n17 * 24 = 408\n17 * 25 = 425\n17 * 26 = 442\n17 * 27 =",
+        "\n- Return the nth Fibonacci number.\n- Return the nth Fibonacci number.\n- Return the nth Fibonacci number.\n- Return the nth Fibonacci number.\n- Return the nth Fibonacci number.\n- Return the nth Fibonacci number.",
+        " is a character from the show \"The Big Lemonade\" who is a fox who is a friend of the main character, Leo.\n==Character History==\nThe quick brown fox is a friend of Leo who is a friend of",
+        "\nA. Plants use light energy to create carbon dioxide and water.\nB. Plants use light energy to create carbon dioxide and water.\nC. Plants use light energy to create carbon dioxide and water.\nD. Plants use light",
+        "\n    if a == b:\n        return a\n    if b == 0:\n        return a\n    return gcd(b, a % b)\nprint(gcd(4, 6))\nprint(gcd("
+      ]
+    },
+    "bench50t": {
+      "E": 16,
+      "k": 2,
+      "shared": 1344,
+      "active": 0.5,
+      "dense_ppl": 23.4195049843501,
+      "frozen_ppl": 37.460112885666994,
+      "trained_ppl": 28.94795826483045,
+      "xdense": 1.236061918651769,
+      "lat_ms_dense": 0.1050907198805362,
+      "lat_ms_mocm": 1.1693645399645902,
+      "identical": 1,
+      "n_prompts": 6,
+      "mean_agreement": 0.2222222222222222,
+      "agreement": [
+        1.0,
+        0.1875,
+        0.020833333333333332,
+        0.041666666666666664,
+        0.0,
+        0.08333333333333333
+      ],
+      "first_divergence": [
+        48,
+        5,
+        1,
+        0,
+        0,
+        2
+      ],
+      "dense_texts": [
+        " Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is",
+        " 391\n17 * 24 = 408\n17 * 25 = 425\n17 * 26 = 442\n17 * 27 =",
+        "\n1. Write a fibonacci function in Python:\n2. Write a fibonacci function in Python:\n3. Write a fibonacci function in Python:\n4. Write a fibonacci function in Python:\n5. Write a fibonacci function in",
+        " jumps over the green hedge.\nThe quick brown fox jumps over the green hedge.\nThe quick brown fox jumps over the green hedge.\nThe quick brown fox jumps over the green hedge.\nThe quick brown fox jumps over the green",
+        "\n\n<think>\n\n</think>\n\nPhotosynthesis is the process by which plants, algae, and some bacteria convert sunlight into chemical energy stored in glucose.",
+        "\n    \"\"\"\n    Calculate the greatest common divisor of two numbers.\n    \"\"\"\n    while b:\n        a, b = b, a % b\n    return a\n\ndef gcd(a, b):\n    \"\"\"\n"
+      ],
+      "mocm_texts": [
+        " Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is Paris.\nThe capital of France is",
+        " 391\n- 17 * 24 = 408\n- 17 * 25 = 425\n- 17 * 26 = 442\n-",
+        "\n- The function should return the 10th Fibonacci number.\n- The function should return the 10th Fibonacci number.\n- The function should return the 10th Fibonacci number.\n- The function should return",
+        " is a character in the series of the series of the series of the series of the series of the series of the series of the series of the series of the series of the series of the series of the series of the series of the series",
+        "\nPhotosynthesis is the process by which plants, algae, and some bacteria convert light into energy to produce glucose and oxygen.\nPhotosynthesis is the process by which plants, algae, and some bacteria convert light into energy to produce glucose and",
+        "\n    if b == 0:\n        return a\n    return gcd(b, a % b)\nprint(gcd(4, 2))\nprint(gcd(2, 4))\nprint(gcd(2"
+      ]
+    }
+  }
+}
