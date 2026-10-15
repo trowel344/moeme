@@ -1,5 +1,10 @@
 # MoEMe
 
+> **Continued in [trowel344/mocm](https://github.com/trowel344/mocm)** — the
+> Mixture-of-Cut-Modules architecture program: trained MoCM conversions,
+> GGUF emit + serving, kernels, and cloud tracks. Partner repo, same goal
+> (make a dense model a MoE/MoCM).
+
 **An experiment in converting a dense 27B LLM into a sparse mixture-of-experts
 model by surgery alone — and an honest record of where it broke.**
 
